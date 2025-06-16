@@ -32,11 +32,25 @@
 
                         <!-- Campo Nombre -->
                         <div class="mb-4">
-                            <label for="name" class="form-label">{{ __('Nombre Completo') }}</label>
+                            <label for="name" class="form-label">{{ __('Nombre') }}</label>
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" 
                                    name="name" value="{{ old('name') }}" required autocomplete="name" autofocus
-                                   placeholder="Ej: María González">
+                                   placeholder="Ej: María">
                             @error('name')
+                                <div class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            @enderror
+                        </div>
+
+
+                        <!-- Campo Apellido -->
+                        <div class="mb-4">
+                            <label for="surname" class="form-label">{{ __('Apellido') }}</label>
+                            <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" 
+                                   name="surname" value="{{ old('surname') }}" required autocomplete="surname" autofocus
+                                   placeholder="Ej: González">
+                            @error('surname')
                                 <div class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
                                 </div>

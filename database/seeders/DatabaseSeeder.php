@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 {
     $this->call(BusinessSeeder::class);
     $this->call(UserSeeder::class);
+    $this->call(CampañaSeeder::class);
 
     // Primero creamos 100 usuarios referidores (sin padres)
     $referrers = User::factory()->count(100)->create();

@@ -10,15 +10,20 @@ class Referencia extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'campaña',
+        'campaña_id',
         'objetivo',
         'fuente',
         'medio',
+        'user_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function campaña()
+    {
+        return $this->belongsTo(Campaña::class);
     }
 }

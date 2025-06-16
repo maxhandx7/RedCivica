@@ -213,6 +213,7 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
+                            {{-- las notificaciones se activan y desactivan con las clases notification-indicator y notification-indicator-primary --}}
                             <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait"
                                 id="navbarDropdownNotification" role="button" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"

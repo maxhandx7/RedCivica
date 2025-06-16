@@ -40,8 +40,13 @@ Route::get('/actividades', [ActividadController::class, 'index'])->name('activid
     Route::get('/referencias', [ReferenciaController::class, 'index'])->name('referencias.index');
     Route::get('/referencias/crear', [ReferenciaController::class, 'create'])->name('referencias.create');
     Route::post('/referencias', [ReferenciaController::class, 'store'])->name('referencias.store');
+
+    Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
+    ->name('referidos.registro');
 });
 
+Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
 
 Auth::routes();
 

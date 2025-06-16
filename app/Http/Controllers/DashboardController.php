@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaña;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -10,6 +11,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $campañas = Campaña::get();
 
         $referidosTotales = $user->descendants()->count();
         $total = $user->descendants()->count();
@@ -26,6 +28,7 @@ class DashboardController extends Controller
         return view('home', compact(
             'referidosTotales',
             'probabilidadVoto',
+            'campañas',
             'partidariosActivos'
         ));
     }

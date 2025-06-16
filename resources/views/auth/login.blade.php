@@ -23,6 +23,7 @@
                                 <h1 class="logo-text"><span>Red</span>Cívica</h1>
                             </div>
                         </a>
+                        @include('alert.message')
                         <h4 class="mt-3">Iniciar sesión</h4>
                         <p class="text-muted">Ingresa tus credenciales para acceder</p>
                     </div>
@@ -89,7 +90,7 @@
                             
                             <div class="divider my-4">o</div>
                             
-                            <a href="#" class="btn btn-outline-google w-100">
+                            <a href="{{ route('login.google') }}" class="btn btn-outline-google w-100">
                                 <img src="/falcon/public/assets/img/gallery/Google__G__logo.svg" alt="Google" class="google-icon">
                                 {{ __('Iniciar sesión con Google') }}
                             </a>

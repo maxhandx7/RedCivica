@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('referencias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Quién la creó
-            $table->string('campaña')->nullable();
+            $table->foreignId('campaña_id')->constrained('campañas')->onDelete('cascade');
             $table->string('objetivo')->nullable();
             $table->string('fuente')->nullable(); // ej: facebook
             $table->string('medio')->nullable();  // ej: redes sociales

@@ -8,11 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRecursiveRelationships;
+    use HasApiTokens, HasFactory, Notifiable, HasRecursiveRelationships, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,14 +22,18 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'cedula',
         'telefono',
         'barrio',
+        'direccion',
         'ciudad',
         'mesa',
         'password',
         'parent_id',
+        'google_id',
+        'referencia_id',
     ];
     /**
      * The attributes that should be hidden for serialization.

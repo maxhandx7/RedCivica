@@ -13,9 +13,11 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('surname');
             $table->string('email')->unique();
             $table->string('cedula')->unique();
             $table->string('telefono')->nullable();
+            $table->string('direccion')->nullable();
             $table->string('barrio')->nullable();
             $table->string('ciudad')->nullable();
             $table->string('mesa')->nullable();
@@ -25,7 +27,6 @@ return new class extends Migration {
             $table->rememberToken();
             $table->timestamps();
 
-            
             $table->foreign('parent_id')->references('id')->on('users')->nullOnDelete();
         });
     }
