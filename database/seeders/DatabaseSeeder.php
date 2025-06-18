@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
     $this->call(UserSeeder::class);
     $this->call(CampañaSeeder::class);
 
-    // Primero creamos 100 usuarios referidores (sin padres)
-    $referrers = User::factory()->count(100)->create();
+   /*  // Primero creamos 100 usuarios referidores (sin padres)
+    $referrers = User::factory()->count(10)->create();
     echo "Creados 100 usuarios referidores\n";
 
-    $batchSize = 100;
-    $totalUsers = 1000;
+    $batchSize = 10;
+    $totalUsers = 100;
 
     for ($i = 0; $i < $totalUsers / $batchSize; $i++) {
         $users = User::factory()->count($batchSize)->create([
@@ -43,6 +43,6 @@ class DatabaseSeeder extends Seeder
     User::factory()
         ->unverified()
         ->withReferrer()
-        ->create();
+        ->create(); */
 }
 }

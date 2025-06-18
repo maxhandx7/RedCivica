@@ -22,6 +22,14 @@ class Referencia extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function usuariosRegistrados()
+{
+    return $this->hasMany(User::class, 'referencia_id');
+}
+
+
+    
+
     public function campaña()
     {
         return $this->belongsTo(Campaña::class);

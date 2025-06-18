@@ -114,7 +114,7 @@
 
         {{-- Formulario para crear enlaces --}}
         <div class="card mb-4">
-            <div class="card-header">Crear Enlace de Referencia</div>
+            <div class="card-header">Crear Enlace de campaña</div>
             <div class="card-body">
                 <form method="POST" action="{{ route('referencias.store') }}">
                     @csrf
@@ -123,7 +123,7 @@
                         <div class="col">
                             <label for="campaña_id">Campaña</label>
                             <select name="campaña_id" id="campaña_id" class="form-select">
-                                <option value="" disabled>Seleccione una campaña...</option>
+                                <option value="" selected disabled>Seleccione una campaña...</option>
                                 @foreach ($campañas as $campaña)
                                     <option value="{{ $campaña->id }}"
                                         {{ old('campaña_id') == $campaña->id ? 'selected' : '' }}>

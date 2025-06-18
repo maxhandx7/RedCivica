@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaña;
 use App\Models\Referencia;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,13 +11,20 @@ class ReferenciaController extends Controller
 {
     public function index()
     {
-        $referencias = auth()->user()->referencias;
+        $referencias = Referencia::all();
         return view('admin.referencia.index', compact('referencias'));
     }
 
     public function create()
     {
-        return view('admin.referencia.create');
+        $campañas = Campaña::get();
+        return view('admin.referencia.create', compact('campañas'));
+    }
+
+    public function edit(Referencia $referencia)
+    {
+        $campañas = Campaña::get();
+        return view('admin.referencia.edit', compact('referencia', 'campañas'));
     }
 
     public function store(Request $request)
@@ -28,35 +36,73 @@ class ReferenciaController extends Controller
         ]);
         $nuevareferencia = auth()->user()->referencias()->create($request->all());
 
+        if (!$nuevareferencia) {
+            return back()->with('error', 'Ocurrió un error al crear la referencia');
+        }
         return redirect()->route('referencias.index')
             ->with('show_modal', true)
             ->with('modal_config', [
                 'title' => '¡Referencia creada con éxito!',
                 'message' => 'Comparte este enlace para registrar nuevos referidos',
-                'user_id' => auth()->id(),
-                'fuente' => $nuevareferencia->id,
+                'usr' => auth()->id(),
+                'fuente' => $request->fuente,
+                'medio' => $request->medio,
+                'ref_id' => $nuevareferencia->id,
             ]);
     }
 
+    public function update(Referencia $referencia, Request $request)
+    {
+
+        $request->validate([
+            'campaña_id' => 'required',
+            'objetivo' => 'nullable|string|max:100',
+            'fuente' => 'nullable|string|max:100',
+            'medio' => 'nullable|string|max:100',
+        ]);
+
+
+        try {
+
+            $referencia->update($request->all());
+            return back()->with('success', 'Campaña actualizada');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrió un error al actualizar la campaña ' . $th->getMessage());
+        }
+    }
+
+
+
+
+    public function destroy(Referencia $referencia)
+    {
+        try {
+            $referencia->delete();
+            return back()->with('success', 'Campaña eliminada');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrió un error al eliminar la campaña');
+        }
+    }
 
     public function mostrarFormularioRegistro(Request $request)
-{
-    
-    $request->validate([
-        'usr' => 'nullable|exists:users,id',
-        'fuente' => 'nullable|string',
-        'medio' => 'nullable|string',
-        'ref_id' => 'nullable',
-    ]);
-    
-    $referidor = User::find($request->usr);
-    $referido = Referencia::find($request->ref_id)->first();
+    {
 
-    return view('admin.form.index', [
-        'referidor' => $referidor,
-        'referido' => $referido,
-        'fuente' => $request->fuente,
-        'medio' => $request->medio
-    ]);
-}
+        $request->validate([
+            'usr' => 'nullable|exists:users,id',
+            'fuente' => 'nullable|string',
+            'medio' => 'nullable|string',
+            'ref_id' => 'nullable',
+        ]);
+
+        $referidor = User::find($request->usr);
+        $referido = Referencia::find($request->ref_id)->first();
+
+        return view('admin.form.index', [
+            'referidor' => $referidor,
+            'referido' => $referido,
+            'fuente' => $request->fuente,
+            'medio' => $request->medio
+        ]);
+    }
+
 }

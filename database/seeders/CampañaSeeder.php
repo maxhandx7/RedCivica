@@ -16,7 +16,7 @@ class CampañaSeeder extends Seeder
     public function run(): void
     {
         Campaña::create([
-            'name' => "Campaña precidencial 2026",
+            'name' => "Campaña presidencial 2026",
             'description' => "Esto es un ejemplo",
             'image' => "system/default.jpg",
         ]);

@@ -57,24 +57,42 @@
         }
     </style>
 
-    <div class="container mt-4">
-        <h1 class="mb-4">Mis Referencias Generadas</h1>
+    <div class="container mt-5">
+        <div class="page-header d-flex justify-content-between">
+            <h3 class="page-title">
+                Mis Campañas
+            </h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item"><a href="/home">Panel principal</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Campañas</li>
+                </ol>
+            </nav>
+        </div>
 
-        <a href="{{ route('referencias.create') }}" class="btn btn-primary mb-3">Crear Nueva Referencia</a>
+        <div class="d-flex justify-content-between">
+            <h4 class="card-title">lista de campañas</h4>
+            <div class="btn-group">
+                <a href="{{ route('referencias.create') }}" class="btn btn-primary me-1 mb-1" type="button">
+                    <span class="fas fa-plus ms-1" data-fa-transform="shrink-3"></span>
+                    Crear enlace de campaña</a>
+            </div>
+        </div>
 
         @if ($referencias->isEmpty())
-            <div class="alert alert-info">Aún no has generado ninguna referencia.</div>
+            <div class="alert alert-info">Aún no has generado ninguna campañas.</div>
         @else
-            <div class="table-responsive">
-                <table id="order-listing" class="table">
+            @include('alert.message')
+            <div class="table-responsive  pt-3">
+                <table id="order-listing" class="table mb-0 table-striped data-table fs-10">
                     <thead>
                         <tr>
                             <th>Campaña</th>
                             <th>Objetivo</th>
                             <th>Fuente</th>
                             <th>Medio</th>
-                            <th>Creado</th>
-                            <th style="width: 100px;">Acciones</th>
+                            <th style="width: 100px;">Creado</th>
+                            <th style="width: 150px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,14 +102,20 @@
                                 <td>{{ $ref->objetivo }}</td>
                                 <td>{{ $ref->fuente }}</td>
                                 <td>{{ $ref->medio }}</td>
-                                <td>{{ $ref->created_at->diffForHumans() }}</td>
+                                <td style="width: 100px;">{{ $ref->created_at->diffForHumans() }}</td>
 
-                                <td style="width: 100px;">
+                                <td style="width: 160px;">
+                                    {!! Form::open([
+                                        'route' => ['referencias.destroy', $ref],
+                                        'method' => 'DELETE',
+                                        'id' => 'delete-form-' . $ref->id,
+                                    ]) !!}
 
-                                    <button class="btn btn-outline-info show-reference-btn" data-bs-toggle="modal"
-                                        data-bs-target="#referenceModal" data-reference-id="{{ $ref->id }}"
-                                        data-campaign="{{ $ref->campaña->name }}" data-objective="{{ $ref->objetivo }}"
-                                        data-source="{{ $ref->fuente }}" data-medium="{{ $ref->medio }}"
+                                    <a class="btn btn-outline-info me-1 mb-1 show-reference-btn btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#referenceModal"
+                                        data-reference-id="{{ $ref->id }}" data-campaign="{{ $ref->campaña->name }}"
+                                        data-objective="{{ $ref->objetivo }}" data-source="{{ $ref->fuente }}"
+                                        data-medium="{{ $ref->medio }}"
                                         data-created="{{ $ref->created_at->format('d/m/Y H:i') }}"
                                         data-referral-url="{{ route('referidos.registro', [
                                             'usr' => auth()->id(),
@@ -99,9 +123,20 @@
                                             'medio' => $ref->medio,
                                             'ref_id' => $ref->id,
                                         ]) }}"
-                                        title="Ver enlace de referencia">
-                                        <i class="far fa-eye"></i>
+                                        title="Ver enlace de campaña">
+                                        <span class="fas fa-link ms-1" data-fa-transform="shrink-3"></span>
+                                    </a>
+
+                                    <a class="btn btn-outline-success me-1 mb-1 btn-sm"
+                                        href="{{ route('referencias.edit', $ref) }}" type="button" title="Editar">
+                                        <span class="fas fa-pen ms-1" data-fa-transform="shrink-3"></span>
+                                    </a>
+
+                                    <button class="btn btn-outline-danger me-1 mb-1 delete-confirm btn-sm" type="submit"
+                                        title="Eliminar" onclick="return confirmDelete()">
+                                        <span class="fas fa-trash ms-1" data-fa-transform="shrink-3"></span>
                                     </button>
+                                    {!! Form::close() !!}
 
                                 </td>
                             </tr>
@@ -112,9 +147,9 @@
         @endif
     </div>
 
-@include('admin.referencia.__modal_exito')
+    @include('admin.referencia.__modal_exito')
 
-@include('admin.referencia.__modal_referencia')
+    @include('admin.referencia.__modal_referencia')
 
 @endsection
 @section('scripts')
@@ -124,6 +159,8 @@
 
     @if (session('show_modal'))
         <script>
+            var toastEl = document.getElementById('liveToast');
+        var toast = new bootstrap.Toast(toastEl);
             document.addEventListener('DOMContentLoaded', function() {
                 // Configuración del modal
                 const modalConfig = {
@@ -136,8 +173,10 @@
                 function generateReferralLink() {
                     const baseUrl = "{{ route('referidos.registro') }}";
                     const params = new URLSearchParams({
-                        user_id: "{{ session('modal_config.user_id') }}",
+                        usr: "{{ session('modal_config.usr') }}",
                         fuente: "{{ session('modal_config.fuente', null) }}",
+                        medio: "{{ session('modal_config.medio') }}",
+                        ref_id: "{{ session('modal_config.ref_id', null) }}",
                     });
                     return `${baseUrl}?${params.toString()}`;
                 }
@@ -166,7 +205,7 @@
                     const copyText = document.getElementById("referralLink");
                     copyText.select();
                     document.execCommand("copy");
-                    alert("Enlace copiado al portapapeles");
+                    toast.show();
                 };
 
                 // Compartir en WhatsApp
@@ -189,8 +228,21 @@
 
 
 
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+        <div class="toast fade" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary text-white"><strong class="me-auto">RedCivica</strong><small>11 mins
+                    ago</small>
+                <div data-bs-theme="dark">
+                    <button class="btn-close" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="toast-body">Enlace copiado al portapapeles. Puedes compartirlo manualmente.</div>
+        </div>
+    </div>
 
     <script>
+        var toastEl = document.getElementById('liveToast');
+        var toast = new bootstrap.Toast(toastEl);
         document.addEventListener('DOMContentLoaded', function() {
             // Variables para almacenar datos
             let currentReferenceUrl = '';
@@ -258,7 +310,7 @@
                 if (navigator.share) {
                     navigator.share({
                         title: 'Únete a nuestra campaña',
-                        text: 'Por favor regístrate usando este enlace de referencia',
+                        text: 'Por favor regístrate usando este enlace de campaña',
                         url: currentReferenceUrl
                     }).catch(err => {
                         console.log('Error al compartir:', err);
@@ -266,7 +318,8 @@
                 } else {
                     // Fallback para navegadores que no soportan Web Share API
                     copyReferenceLink();
-                    alert('Enlace copiado al portapapeles. Puedes compartirlo manualmente.');
+                    toast.show();
+                  
                 }
             };
         });

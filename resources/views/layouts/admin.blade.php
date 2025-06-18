@@ -104,30 +104,36 @@
                                         <hr class="mb-0 navbar-vertical-divider" />
                                     </div>
                                 </div>
-                                <!-- parent pages--><a class="nav-link" href="{{url('/')}}"
+                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'home' ? 'active' : '' }}" href="{{url('/')}}"
                                     role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                 class="fas fa-home"></span></span><span
                                             class="nav-link-text ps-1">Home</span>
                                     </div>
                                 </a>
-                                <!-- parent pages--><a class="nav-link" href="{{route('referencias.index')}}"
+                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}" href="{{route('referencias.index')}}"
                                     role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                 class="fas fa-bullhorn"></span></span><span
                                             class="nav-link-text ps-1">Campañas</span>
                                     </div>
                                 </a>
-                                <!-- parent pages--><a class="nav-link" href="{{route('red.index')}}" role="button">
+                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'red' ? 'active' : '' }}" href="{{route('red.index')}}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                 class="fas fa-network-wired"></span></span><span
                                             class="nav-link-text ps-1">Red</span>
                                     </div>
                                 </a>
-                                <!-- parent pages--><a class="nav-link" href="{{route('actividades.index')}}" role="button">
+                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}" href="{{route('analitica.index')}}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                 class="fas fa-chart-bar"></span></span><span
-                                            class="nav-link-text ps-1">Analitica</span>
+                                            class="nav-link-text ps-1">Analítica </span>
+                                    </div>
+                                </a>
+                                <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}" href="{{route('users.index')}}" role="button">
+                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                class="fas fa-user"></span></span><span
+                                            class="nav-link-text ps-1">Usuarios </span>
                                     </div>
                                 </a>
                             </li>

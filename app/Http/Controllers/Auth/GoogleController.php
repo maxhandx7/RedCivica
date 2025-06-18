@@ -27,6 +27,7 @@ class GoogleController extends Controller
                 // Crear nuevo usuario
                 $user = User::create([
                     'name' => $googleUser->getName(),
+                    'surname' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'cedula' => 'temp-'.$ultimoId,
                     'google_id' => $googleUser->getId(),

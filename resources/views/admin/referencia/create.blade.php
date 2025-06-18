@@ -2,30 +2,54 @@
 
 
 @section('content')
-<div class="container mt-4">
-    <h1 class="mb-4">Crear Nueva Referencia</h1>
+    <div class="container mt-4   p-4 shadow-sm">
+        <div class="page-header d-flex justify-content-between">
+            <h3 class="page-title">
+                Nueva Campaña
+            </h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item"><a href="/home">Panel principal</a></li>
+                    <li class="breadcrumb-item"><a href="/referencias">Campañas</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Nueva campaña</li>
+                </ol>
+            </nav>
+        </div>
 
-    <form method="POST" action="{{ route('referencias.store') }}">
-        @csrf
-        <div class="mb-3">
-            <label>Campaña</label>
-            <input type="text" name="campaña" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label>Objetivo</label>
-            <input type="text" name="objetivo" class="form-control">
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label>Fuente</label>
-                <input type="text" name="fuente" class="form-control">
+            
+
+        @include('alert.message')
+        <form method="POST" action="{{ route('referencias.store') }}">
+            @csrf
+            <div class="mb-3">
+                <label for="campaña_id">Campaña</label>
+                <select name="campaña_id" id="campaña_id" class="form-select">
+                    <option value="" selected disabled>Seleccione una campaña...</option>
+                    @foreach ($campañas as $campaña)
+                        <option value="{{ $campaña->id }}" {{ old('campaña_id') == $campaña->id ? 'selected' : '' }}>
+                            {{ $campaña->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col">
-                <label>Medio</label>
-                <input type="text" name="medio" class="form-control">
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Objetivo</label>
+                    <textarea name="objetivo" class="form-control" placeholder="Ej: Inscripción votantes" rows="3"></textarea>
+
+                </div>
             </div>
-        </div>
-        <button class="btn btn-success">Guardar</button>
-    </form>
-</div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Fuente</label>
+                    <input type="text" name="fuente" class="form-control" placeholder="facebook, whatsapp, etc">
+                </div>
+                <div class="col">
+                    <label>Medio</label>
+                    <input type="text" name="medio" class="form-control" placeholder="Redes, Impreso, etc">
+                </div>
+            </div>
+            <button class="btn btn-primary w-100">Generar enlace de campaña</button>
+        </form>
+    </div>
 @endsection

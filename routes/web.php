@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\ActividadController;
+use App\Http\Controllers\AnaliticaController;
 use App\Http\Controllers\BusinessController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RedController;
 use App\Http\Controllers\ReferenciaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -31,18 +33,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/red', [RedController::class, 'index'])->name('red.index');
 
     Route::resource('business', BusinessController::class)->names('business')->only([
-    'index', 'update'
-]);
+        'index',
+        'update'
+    ]);
 
-Route::get('/actividades', [ActividadController::class, 'index'])->name('actividades.index');
+    Route::get('/actividades', [ActividadController::class, 'index'])->name('actividades.index');
 
     // Referencias
-    Route::get('/referencias', [ReferenciaController::class, 'index'])->name('referencias.index');
-    Route::get('/referencias/crear', [ReferenciaController::class, 'create'])->name('referencias.create');
-    Route::post('/referencias', [ReferenciaController::class, 'store'])->name('referencias.store');
+    Route::resource('referencias', ReferenciaController::class)->names('referencias')->except([
+        'show',
+        'mostrarFormularioRegistro'
+    ]);
 
     Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
-    ->name('referidos.registro');
+        ->name('referidos.registro');
+
+    Route::resource('users', UserController::class)->names('users');
+
+    Route::get('/analitica', [AnaliticaController::class, 'index'])->name('analitica.index');
 });
 
 Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');

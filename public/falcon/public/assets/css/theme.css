@@ -44,7 +44,7 @@
   --falcon-danger: #e63757;
   --falcon-light: #f9fafd;
   --falcon-dark: #0b1727;
-  --falcon-primary-rgb: 44, 123, 229;
+  --falcon-primary-rgb: 179, 58, 58;
   --falcon-secondary-rgb: 116, 129, 148;
   --falcon-success-rgb: 0, 210, 122;
   --falcon-info-rgb: 39, 188, 253;
@@ -101,7 +101,7 @@
   --falcon-tertiary-bg-rgb: 249, 250, 253;
   --falcon-heading-color: var(--falcon-secondary-color);
   --falcon-link-color: #b33a3a;
-  --falcon-link-color-rgb: 44, 123, 229;
+  --falcon-link-color-rgb: 179, 58, 58;
   --falcon-link-decoration: none;
   --falcon-link-hover-color: #b33a3a;
   --falcon-link-hover-color-rgb: 35, 98, 183;
@@ -126,7 +126,7 @@
   --falcon-box-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.075);
   --falcon-focus-ring-width: 0.25rem;
   --falcon-focus-ring-opacity: 0.25;
-  --falcon-focus-ring-color: rgba(44, 123, 229, 0.25);
+  --falcon-focus-ring-color: rgba(179, 58, 58, 0.25);
   --falcon-form-valid-color: #00d27a;
   --falcon-form-valid-border-color: #00d27a;
   --falcon-form-invalid-color: #e63757;
@@ -176,7 +176,7 @@
   --falcon-heading-color: var(--falcon-secondary-color);
   --falcon-link-color: #b33a3a;
   --falcon-link-hover-color: #b33a3a;
-  --falcon-link-color-rgb: 44, 123, 229;
+  --falcon-link-color-rgb: 179, 58, 58;
   --falcon-link-hover-color-rgb: 35, 98, 183;
   --falcon-code-color: #ff679b;
   --falcon-highlight-color: #9da9bb;
@@ -282,7 +282,7 @@
   --falcon-btn-falcon-dark-hover-color: #091320;
   --falcon-btn-falcon-dark-active-background: #ced1d4;
   --falcon-btn-falcon-dark-active-color: #091320;
-  --falcon-input-btn-focus-color: rgba(44, 123, 229, 0.25);
+  --falcon-input-btn-focus-color: rgba(179, 58, 58, 0.25);
   --falcon-btn-link-color: var(--falcon-link-color);
   --falcon-btn-link-hover-color: #b33a3a;
   --falcon-btn-disabled-color: #748194;
@@ -523,7 +523,7 @@
   --falcon-gray-900-rgb: 216, 226, 239 ;
   --falcon-gray-1000-rgb: 237, 242, 249 ;
   --falcon-gray-1100-rgb: 249, 250, 253 ;
-  --falcon-primary-rgb: 44, 123, 229 ;
+  --falcon-primary-rgb: 179, 58, 58 ;
   --falcon-secondary-rgb: 116, 129, 148 ;
   --falcon-success-rgb: 0, 210, 122 ;
   --falcon-info-rgb: 39, 188, 253 ;
@@ -3304,8 +3304,8 @@ progress {
   background-color: var(--falcon-quaternary-bg);
   border-color: var(--falcon-input-focus-border-color-global);
   outline: 0;
-  -webkit-box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
-  box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  -webkit-box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
+  box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .form-control::-webkit-date-and-time-value {
   min-width: 85px;
@@ -3481,8 +3481,8 @@ textarea.form-control-lg {
 .form-select:focus {
   border-color: var(--falcon-input-focus-border-color-global);
   outline: 0;
-  -webkit-box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
-  box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  -webkit-box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
+  box-shadow: var(--falcon-box-shadow-inset), 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .form-select[multiple], .form-select[size]:not([size="1"]) {
   padding-right: 1rem;
@@ -3570,8 +3570,8 @@ textarea.form-control-lg {
 .form-check-input:focus {
   border-color: var(--falcon-input-focus-border-color-global);
   outline: 0;
-  -webkit-box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
-  box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  -webkit-box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .form-check-input:checked {
   background-color: #b33a3a;
@@ -3680,11 +3680,11 @@ textarea.form-control-lg {
   outline: 0;
 }
 .form-range:focus::-webkit-slider-thumb {
-  -webkit-box-shadow: 0 0 0 1px #edf2f9, 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
-  box-shadow: 0 0 0 1px #edf2f9, 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  -webkit-box-shadow: 0 0 0 1px #edf2f9, 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
+  box-shadow: 0 0 0 1px #edf2f9, 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .form-range:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 1px #edf2f9, 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  box-shadow: 0 0 0 1px #edf2f9, 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .form-range::-moz-focus-outer {
   border: 0;
@@ -4614,7 +4614,7 @@ fieldset:disabled .tox .tox-dialog__footer .tox-button--secondary,
   --falcon-btn-hover-color: #fff;
   --falcon-btn-hover-bg: #b33a3a;
   --falcon-btn-hover-border-color: #b33a3a;
-  --falcon-btn-focus-shadow-rgb: 44, 123, 229;
+  --falcon-btn-focus-shadow-rgb: 179, 58, 58;
   --falcon-btn-active-color: #fff;
   --falcon-btn-active-bg: #b33a3a;
   --falcon-btn-active-border-color: #b33a3a;
@@ -5760,8 +5760,8 @@ fieldset:disabled .tox .tox-dialog__footer .tox-button--secondary,
 }
 .nav-link:focus-visible {
   outline: 0;
-  -webkit-box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
-  box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  -webkit-box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .nav-link.disabled, .nav-link:disabled {
   color: var(--falcon-nav-link-disabled-color);
@@ -6663,7 +6663,7 @@ fieldset:disabled .tox .tox-dialog__footer .tox-button--secondary,
   --falcon-accordion-btn-icon-transform: rotate(-180deg);
   --falcon-accordion-btn-icon-transition: transform 0.2s ease-in-out;
   --falcon-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
-  --falcon-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  --falcon-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
   --falcon-accordion-body-padding-x: 1.25rem;
   --falcon-accordion-body-padding-y: 1rem;
   --falcon-accordion-active-color: #286fce;
@@ -7514,7 +7514,7 @@ fieldset:disabled .tox .tox-dialog__footer .tox-button--secondary,
   --falcon-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
   --falcon-btn-close-opacity: 0.5;
   --falcon-btn-close-hover-opacity: 0.75;
-  --falcon-btn-close-focus-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  --falcon-btn-close-focus-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
   --falcon-btn-close-focus-opacity: 1;
   --falcon-btn-close-disabled-opacity: 0.25;
   --falcon-btn-close-white-filter: invert(1) grayscale(100%) brightness(200%);
@@ -28488,8 +28488,8 @@ html[dir=rtl] .rtl-row-reverse {
 /*                                  LMS                                       */
 /* -------------------------------------------------------------------------- */
 .bar-indicator-gradient {
-  background: -webkit-gradient(linear, left top, right top, from(rgba(44, 123, 229, 0.1)), to(var(--falcon-primary)));
-  background: linear-gradient(to right, rgba(44, 123, 229, 0.1), var(--falcon-primary));
+  background: -webkit-gradient(linear, left top, right top, from(rgba(179, 58, 58, 0.1)), to(var(--falcon-primary)));
+  background: linear-gradient(to right, rgba(179, 58, 58, 0.1), var(--falcon-primary));
   height: 0.25rem;
   width: 100%;
   border-radius: 1rem;
@@ -29150,8 +29150,8 @@ a[href].bg-200:hover, a[href].bg-200:focus {
   border-color: #b33a3a !important;
 }
 .form-check-input-primary:focus {
-  -webkit-box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
-  box-shadow: 0 0 0 0.25rem rgba(44, 123, 229, 0.25);
+  -webkit-box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(179, 58, 58, 0.25);
 }
 .form-check-input-primary:checked {
   background-color: #b33a3a !important;
@@ -30637,8 +30637,8 @@ div[data-collapse] + .kanban-item,
 .timeline-primary.timeline-current::after {
   height: 0.5rem;
   width: 0.5rem;
-  -webkit-box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.3);
-  box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.3);
+  -webkit-box-shadow: 0 0 0 3px rgba(179, 58, 58, 0.3);
+  box-shadow: 0 0 0 3px rgba(179, 58, 58, 0.3);
 }
 .timeline-secondary.timeline-past::after, .timeline-secondary.timeline-current::after {
   background-color: #748194;

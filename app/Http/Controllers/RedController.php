@@ -57,35 +57,53 @@ protected function prepareNetworkData($referidos)
     });
 } */
     public function index()
-    {
-        $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
+{
+    $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
 
-        $networkData = $referidos->map(function ($u) use ($referidos) {
-            $nivel = 1;
-            $parent = $u;
+    $networkData = $referidos->map(function ($u) use ($referidos) {
+        $nivel = 1;
+        $parent = $u;
 
-            while ($parent->parent_id && $parent->parent_id !== auth()->id()) {
-                $nivel++;
-                $parent = $referidos->firstWhere('id', $parent->parent_id);
-            }
+       // dd($parent->parent_id && $parent->parent_id !== auth()->id());
 
-            return [
-                'id' => (string) $u->id, // 👈 FORZAR STRING
-                'name' => $u->name,
-                'cedula' => $u->cedula,
-                'parent_id' => (string) $u->parent_id,
-                'nivel' => $nivel,
-            ];
-        });
-
-        // Formato para vista humana
-        foreach ($referidos as $referido) {
-            $referido->formatted_date = $referido->created_at->isoFormat('D [de] MMMM [de] YYYY');
-        }
-
-        return view('admin.red.index', [
-            'referidos' => $referidos,
-            'networkData' => $networkData,
-        ]);
+        while ($parent && $parent->parent_id && $parent->parent_id !== auth()->id()) {
+    $nivel++;
+    $parent = $referidos->firstWhere('id', $parent->parent_id);
+    
+    // Si no encontramos al padre, salimos del bucle
+    if (!$parent) {
+        break;
     }
+}
+
+        return [
+            'id' => (string) $u->id, // 👈 FORZAR STRING
+            'name' => $u->name,
+            'cedula' => $u->cedula,
+            'parent_id' => (string) $u->parent_id,
+            'nivel' => $nivel,
+            'no' => $u->children->count(), // 👈 Número de hijos directos
+        ];
+    });
+
+    // Formato para vista humana
+    foreach ($referidos as $referido) {
+        $referido->formatted_date = $referido->created_at->isoFormat('D [de] MMMM [de] YYYY');
+    }
+
+    // 🔥 NUEVO: Top 3 usuarios con más hijos directos (excluyéndote a ti mismo)
+    $topReferidores = \App\Models\User::withCount('children')
+        ->whereIn('id', $referidos->pluck('id')->toArray()) // Solo los de la red
+        ->where('id', '!=', auth()->id())
+        ->orderByDesc('children_count')
+        ->take(3)
+        ->get();
+
+    return view('admin.red.index', [
+        'referidos' => $referidos,
+        'networkData' => $networkData,
+        'topReferidores' => $topReferidores, // 👈 lo pasamos a la vista
+    ]);
+}
+
 }
