@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col-auto">
-                <a href="{{ route('campañas.create') }}" class="btn btn-sm btn-success">
+                <a href="{{ route('campañas.create') }}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus me-1"></i> Agregar
                 </a>
             </div>

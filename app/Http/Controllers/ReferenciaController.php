@@ -76,9 +76,9 @@ class ReferenciaController extends Controller
         try {
 
             $referencia->update($request->all());
-            return back()->with('success', 'Campaña actualizada');
+            return back()->with('success', 'Referencia actualizada');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Ocurrió un error al actualizar la campaña ' . $th->getMessage());
+            return back()->with('error', 'Ocurrió un error al actualizar la referencia ' . $th->getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ class ReferenciaController extends Controller
             $referencia->delete();
             return back()->with('success', 'Campaña eliminada');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Ocurrió un error al eliminar la campaña');
+            return back()->with('error', 'Ocurrió un error al eliminar la referencia');
         }
     }
 
@@ -108,8 +108,8 @@ class ReferenciaController extends Controller
         $referidor = User::find($request->usr);
         $referido = Referencia::find($request->ref_id);
 
-        
-        
+
+
         if (!$referidor || !$referido) {
             return redirect('login')->with('error', 'El referidor o la referencia no existen');
         }

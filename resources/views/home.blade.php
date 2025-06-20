@@ -105,7 +105,7 @@
             @include('alert.message')
             <!-- Formulario para crear enlaces -->
             <div class="card mb-4">
-                <div class="card-header bg-primary text-white">Crear Enlace de campaña</div>
+                <div class="card-header bg-primary text-white">Crear Enlace de referencia</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('referencias.store') }}">
                         @csrf

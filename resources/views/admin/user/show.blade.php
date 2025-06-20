@@ -64,17 +64,17 @@
 
                     <div class="d-flex justify-content-around text-center mb-4">
                         <div>
-                            <h5 class="p-0 m-0">{{ $user->children->count() ?? 0 }}</h5>
+                            <h6 class="p-0 m-0">{{ $user->children->count() ?? 0 }}</h6>
                             <small class="text-muted">Reclutados</small>
                         </div>
                         <div>
-                            <h5 class="p-0 m-0">{{ $user->created_at->diffForHumans() }}</h5>
+                            <h6 class="p-0 m-0">{{ $user->created_at->diffForHumans() }}</h6>
                             <small class="text-muted">Registrado</small>
                         </div>
                         <div>
-                            <h5 class="p-0 m-0">
+                            <h6 class="p-0 m-0">
                                 {{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Nunca' }}
-                            </h5>
+                            </h6>
                             <small class="text-muted">Último acceso</small>
                         </div>
                     </div>

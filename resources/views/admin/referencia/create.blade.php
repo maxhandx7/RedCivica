@@ -5,13 +5,13 @@
     <div class="container mt-4   p-4 shadow-sm">
         <div class="page-header d-flex justify-content-between">
             <h3 class="page-title">
-                Nueva Campaña
+                Nuevo enlace de referencia
             </h3>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-custom">
                     <li class="breadcrumb-item"><a href="/home">Panel principal</a></li>
-                    <li class="breadcrumb-item"><a href="/referencias">Campañas</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Nueva campaña</li>
+                    <li class="breadcrumb-item"><a href="/referencias">Referencias</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Nueva referencia</li>
                 </ol>
             </nav>
         </div>
@@ -55,7 +55,7 @@
                     <input type="text" name="medio" class="form-control" placeholder="Redes, Impreso, etc">
                 </div>
             </div>
-            <button class="btn btn-primary w-100">Generar enlace de campaña</button>
+            <button class="btn btn-primary w-100">Generar enlace de referencia</button>
         </form>
     </div>
 @endsection
