@@ -15,7 +15,7 @@
                         <div class="text-center mb-4">
 
                             <a href="{{ url('/') }}">
-                                <img src="{{ asset('image/' . $referido->campaña->image) }}" alt="Logo" width="200">
+                                <img src="{{ asset('image/' . $referido->campaña->image)   }}" alt="Logo" width="200">
                             </a>
                             <h4 class="mt-3">{{ $referido->campaña->name }}</h4>
                             <small class="text-muted">

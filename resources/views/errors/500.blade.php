@@ -40,9 +40,10 @@
               </div>
             </div>
             <div class="row mt-5">
-              <div class="col-12 mt-xl-2">
-                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><i class="fa fa-code text-dark"></i>&nbsp;<b><a style="text-decoration: none; color:rgb(17, 15, 129);" href="https://afdeveloper.com/" target="_blank">&nbsp;AF</a> </b> </span>
-              </div>
+                   <div class="col-12 text-center mt-xl-2">
+                                <p class="text-white font-weight-light">Si el problema persiste, por favor contacta al administrador del sistema.</p>
+                            </div>
+                 
             </div>
           </div>
         </div>

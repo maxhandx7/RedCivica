@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container ">
+     <div class="row flex-center min-vh-100 py-6">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Reset Password') }}</div>

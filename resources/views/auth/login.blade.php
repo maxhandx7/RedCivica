@@ -84,9 +84,9 @@
 
                         <!-- Registro y login con Google -->
                         <div class="text-center mt-4">
-                            <p class="text-muted mb-3">¿No tienes una cuenta? 
+                            {{-- <p class="text-muted mb-3">¿No tienes una cuenta? 
                                 <a href="{{ route('register') }}" class="text-register">{{ __('Regístrate') }}</a>
-                            </p>
+                            </p> --}}
                             
                             <div class="divider my-4">o</div>
                             
