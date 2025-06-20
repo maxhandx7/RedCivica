@@ -92,7 +92,7 @@ class UserController extends Controller
             }
             return redirect()->back()->with('success', 'Usuario credado con éxito');
         } catch (\Exception $th) {
-            return redirect()->back()->with('error', 'Ocurrió un error al crear lel usuario '. $th->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario '. $th->getMessage());
         }
     }
 }
