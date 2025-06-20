@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Business\UpdateRequest;
 use App\Models\Business;
+use Illuminate\Http\Request;
 
 class BusinessController extends Controller
 {
@@ -18,9 +19,9 @@ class BusinessController extends Controller
         $business = Business::where('id', 1)->firstOrFail();
         return view('admin.business.index', compact('business'));
     }
-    public function update(UpdateRequest $request, Business $business)
+    public function update(Request $request, Business $business)
     {
-        $this->authorize('admin-only');
+        if (auth()->user()->hasRole('admin')) {
         try {
             if ($request->hasFile('picture')) {
                 $file = $request->file('picture');
@@ -55,7 +56,10 @@ class BusinessController extends Controller
             $business->update($request->all());
             return redirect()->route('business.index')->with('success', 'Se ha actualizado la empresa');
         } catch (\Exception $th) {
-            return redirect()->back()->with('error', 'Ocurrió un error al actualizar la empresa');
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar la empresa'. ' ' . $th->getMessage());
+        }
+        } else {
+            return redirect()->back()->with('error', 'No tienes permiso para realizar esta acción');
         }
     }
 }

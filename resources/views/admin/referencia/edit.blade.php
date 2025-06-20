@@ -5,13 +5,13 @@
     <div class="container mt-4  p-4 shadow-sm">
         <div class="page-header d-flex justify-content-between">
             <h3 class="page-title">
-                Editar Campaña
+                Editar Referencia
             </h3>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-custom">
                     <li class="breadcrumb-item"><a href="/home">Panel principal</a></li>
-                    <li class="breadcrumb-item"><a href="/referencias">Campañas</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Editar campaña</li>
+                    <li class="breadcrumb-item"><a href="/referencias">Referencias</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Editar referencia</li>
                 </ol>
             </nav>
         </div>
@@ -34,7 +34,12 @@
         <div class="row mb-3">
             <div class="col">
                 <label>Objetivo</label>
-                <textarea name="objetivo" class="form-control" placeholder="Ej: Inscripción votantes" rows="3">{{ old('objetivo', $referencia->objetivo ?? '') }}</textarea>
+                <textarea name="objetivo" class="form-control @error('objetivo') is-invalid @enderror" placeholder="Ej: Inscripción votantes" rows="3">{{ old('objetivo', $referencia->objetivo ?? '') }}</textarea>
+                 @error('objetivo')
+                                <div class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            @enderror
             </div>
         </div>
 
@@ -51,7 +56,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Actualizar enlace de campaña</button>
+        <button type="submit" class="btn btn-primary w-100">Actualizar enlace de la referencia</button>
         </form>
     </div>
 @endsection

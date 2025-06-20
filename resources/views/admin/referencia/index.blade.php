@@ -60,29 +60,30 @@
     <div class="container mt-5">
         <div class="page-header d-flex justify-content-between">
             <h3 class="page-title">
-                Mis Campañas
+                Mis Referencias
             </h3>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-custom">
                     <li class="breadcrumb-item"><a href="/home">Panel principal</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Campañas</li>
+                    <li class="breadcrumb-item active" aria-current="page">Referencias</li>
                 </ol>
             </nav>
         </div>
 
         <div class="d-flex justify-content-between">
-            <h4 class="card-title">lista de campañas</h4>
-            <div class="btn-group">
-                <a href="{{ route('referencias.create') }}" class="btn btn-primary me-1 mb-1" type="button">
-                    <span class="fas fa-plus ms-1" data-fa-transform="shrink-3"></span>
-                    Crear enlace de campaña</a>
-            </div>
+            <h4 class="card-title">lista de referencias</h4>
+            @hasrole('admin')
+                <div class="btn-group">
+                    <a href="{{ route('referencias.create') }}" class="btn btn-primary me-1 mb-1" type="button">
+                        <span class="fas fa-plus ms-1" data-fa-transform="shrink-3"></span>
+                        Crear enlace de referencia</a>
+                </div>
+            @endhasrole
         </div>
-
+        @include('alert.message')
         @if ($referencias->isEmpty())
-            <div class="alert alert-info">Aún no has generado ninguna campañas.</div>
+            <div class="alert alert-info">Aún no has generado ninguna referencia.</div>
         @else
-            @include('alert.message')
             <div class="table-responsive  pt-3">
                 <table id="order-listing" class="table mb-0 table-striped data-table fs-10">
                     <thead>
@@ -116,7 +117,7 @@
                                         data-reference-id="{{ $ref->id }}" data-campaign="{{ $ref->campaña->name }}"
                                         data-objective="{{ $ref->objetivo }}" data-source="{{ $ref->fuente }}"
                                         data-medium="{{ $ref->medio }}"
-                                        data-created="{{ $ref->created_at->format('d/m/Y H:i') }}"
+                                        data-created="{{ $ref->created_at->translatedFormat('d/m/Y H:i') }}"
                                         data-referral-url="{{ route('referidos.registro', [
                                             'usr' => auth()->id(),
                                             'fuente' => $ref->fuente,
@@ -126,16 +127,17 @@
                                         title="Ver enlace de campaña">
                                         <span class="fas fa-link ms-1" data-fa-transform="shrink-3"></span>
                                     </a>
+                                    @hasrole('admin')
+                                        <a class="btn btn-outline-success me-1 mb-1 btn-sm"
+                                            href="{{ route('referencias.edit', $ref) }}" type="button" title="Editar">
+                                            <span class="fas fa-pen ms-1" data-fa-transform="shrink-3"></span>
+                                        </a>
 
-                                    <a class="btn btn-outline-success me-1 mb-1 btn-sm"
-                                        href="{{ route('referencias.edit', $ref) }}" type="button" title="Editar">
-                                        <span class="fas fa-pen ms-1" data-fa-transform="shrink-3"></span>
-                                    </a>
-
-                                    <button class="btn btn-outline-danger me-1 mb-1 delete-confirm btn-sm" type="submit"
-                                        title="Eliminar" onclick="return confirmDelete()">
-                                        <span class="fas fa-trash ms-1" data-fa-transform="shrink-3"></span>
-                                    </button>
+                                        <button class="btn btn-outline-danger me-1 mb-1 delete-confirm btn-sm" type="submit"
+                                            title="Eliminar" onclick="return confirmDelete()">
+                                            <span class="fas fa-trash ms-1" data-fa-transform="shrink-3"></span>
+                                        </button>
+                                    @endhasrole
                                     {!! Form::close() !!}
 
                                 </td>
@@ -160,7 +162,7 @@
     @if (session('show_modal'))
         <script>
             var toastEl = document.getElementById('liveToast');
-        var toast = new bootstrap.Toast(toastEl);
+            var toast = new bootstrap.Toast(toastEl);
             document.addEventListener('DOMContentLoaded', function() {
                 // Configuración del modal
                 const modalConfig = {
@@ -207,6 +209,11 @@
                     document.execCommand("copy");
                     toast.show();
                 };
+
+                const link = document.getElementById("modalp");
+                if (link && modalConfig && modalConfig.formUrl) {
+                    link.href = modalConfig.formUrl;
+                }
 
                 // Compartir en WhatsApp
                 window.shareOnWhatsApp = function() {
@@ -319,7 +326,7 @@
                     // Fallback para navegadores que no soportan Web Share API
                     copyReferenceLink();
                     toast.show();
-                  
+
                 }
             };
         });

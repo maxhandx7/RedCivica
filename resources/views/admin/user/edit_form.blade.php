@@ -132,9 +132,9 @@
 
             <div class="col-md-12">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="active" id="active" 
-                           {{ old('active', $user->active) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="active">
+                    <input class="form-check-input" type="checkbox" name="estado" id="estado" 
+                           {{ old('estado', $user->estado()['estado']) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="estado">
                         Usuario activo
                     </label>
                 </div>

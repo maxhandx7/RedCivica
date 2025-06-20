@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('campañas', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('slug')->unique();
+            $table->string('estado')->default('activo'); // Default state is 'activo'
+            $table->string('tipo')->default('publica'); // Default type is 'publica'
+            $table->string('fecha_inicio')->nullable();
+            $table->string('fecha_fin')->nullable();
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-primary">
-                        <i class="fas fa    -download me-1"></i> Exportar Reporte
+                        <i class="fas fa-download me-1"></i> Exportar Reporte
                     </button>
                 </div>
             </div>

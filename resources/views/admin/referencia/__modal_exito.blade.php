@@ -56,7 +56,7 @@
                                             <li class="mb-2">Puedes hacer seguimiento en tu panel</li>
                                         </ul>
                                         <hr class="my-4" />
-                                        <a :href="modalConfig.formUrl" class="btn btn-success w-100">
+                                        <a :href="modalConfig.formUrl" id="modalp" target="_blank" class="btn btn-success w-100">
                                             <i class="fas fa-external-link-alt me-2"></i> Ir al formulario
                                         </a>
                                     </div>

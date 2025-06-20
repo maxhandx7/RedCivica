@@ -6,6 +6,8 @@ use App\Models\Campaña;
 use App\Models\Referencia;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\ActividadService;
+use App\Constants\ActividadPlantillas;
 
 class ReferenciaController extends Controller
 {
@@ -17,7 +19,13 @@ class ReferenciaController extends Controller
 
     public function create()
     {
-        $campañas = Campaña::get();
+        $campañas = Campaña::where('estado', 'activo')
+            ->where('tipo', 'publica')
+            ->get();
+        if ($campañas->isEmpty()) {
+            return back()->with('error', 'No hay campañas activas para crear una referencia');
+        }
+
         return view('admin.referencia.create', compact('campañas'));
     }
 
@@ -39,6 +47,9 @@ class ReferenciaController extends Controller
         if (!$nuevareferencia) {
             return back()->with('error', 'Ocurrió un error al crear la referencia');
         }
+        if ($nuevareferencia) {
+            $this->notified(auth()->id());
+        } 
         return redirect()->route('referencias.index')
             ->with('show_modal', true)
             ->with('modal_config', [
@@ -61,7 +72,7 @@ class ReferenciaController extends Controller
             'medio' => 'nullable|string|max:100',
         ]);
 
-
+        
         try {
 
             $referencia->update($request->all());
@@ -93,16 +104,24 @@ class ReferenciaController extends Controller
             'medio' => 'nullable|string',
             'ref_id' => 'nullable',
         ]);
-
+        
         $referidor = User::find($request->usr);
-        $referido = Referencia::find($request->ref_id)->first();
-
+        $referido = Referencia::find($request->ref_id);
         return view('admin.form.index', [
             'referidor' => $referidor,
             'referido' => $referido,
             'fuente' => $request->fuente,
-            'medio' => $request->medio
+            'medio' => $request->medio,
+            'referencia_id' => $request->ref_id,
         ]);
+    }
+
+
+    public function notified($id)
+    {
+        ActividadService::registrar(
+            ActividadPlantillas::NUEVA_REFERENCIA  
+        );
     }
 
 }

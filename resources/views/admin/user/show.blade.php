@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+    @extends('layouts.admin')
 @section('title', 'Información del Usuario')
 @section('styles')
 <style>
@@ -56,29 +56,24 @@
                         </p>
                         
                         <div class="d-flex justify-content-center gap-2 mb-3">
-                            <span class="badge bg-soft-primary">{{ $user->referencia->campaña->name ?? 'Sin campaña' }}</span>
-                            <span class="badge bg-soft-{{ $user->active ? 'success' : 'danger' }}">
-                                {{ $user->active ? 'Activo' : 'Inactivo' }}
+                            <span class="badge bg-{{ $user->estado()['estado'] ? 'success' : 'danger' }}">
+                                {{ $user->estado()['text'] }}
                             </span>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-around text-center mb-4">
                         <div>
-                            <h5 class="mb-0">{{ $user->children->count() ?? 0 }}</h5>
+                            <h5 class="p-0 m-0">{{ $user->children->count() ?? 0 }}</h5>
                             <small class="text-muted">Reclutados</small>
                         </div>
                         <div>
-                            <h5 class="mb-0">{{ $user->created_at->diffForHumans() }}</h5>
+                            <h5 class="p-0 m-0">{{ $user->created_at->diffForHumans() }}</h5>
                             <small class="text-muted">Registrado</small>
                         </div>
                         <div>
-                            <h5 class="mb-0">
-                                @if($user->last_login_at)
-                                    {{ $user->last_login_at->diffForHumans() }}
-                                @else
-                                    Nunca
-                                @endif
+                            <h5 class="p-0 m-0">
+                                {{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Nunca' }}
                             </h5>
                             <small class="text-muted">Último acceso</small>
                         </div>
@@ -122,13 +117,13 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Fecha de Registro</label>
-                                        <p class="form-control-static">{{ $user->created_at->format('d/m/Y H:i') }}</p>
+                                        <p class="form-control-static">{{ $user->created_at->translatedFormat('d/m/Y H:i') }}</p>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Último Acceso</label>
                                         <p class="form-control-static">
                                             @if($user->last_login_at)
-                                                {{ $user->last_login_at->format('d/m/Y H:i') }}
+                                                {{ $user->last_login_at->translatedFormat('d/m/Y H:i') }}
                                                 <small class="text-muted">({{ $user->last_login_ip }})</small>
                                             @else
                                                 Nunca ha accedido
@@ -146,8 +141,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Estado</label>
                                         <p class="form-control-static">
-                                            <span class="badge bg-soft-{{ $user->active ? 'success' : 'danger' }}">
-                                                {{ $user->active ? 'Activo' : 'Inactivo' }}
+                                            <span class="badge bg-soft-{{ $user->estado()['estado'] ? 'success' : 'danger' }}">
+                                                {{ $user->estado()['text'] }}
                                             </span>
                                         </p>
                                     </div>
@@ -182,7 +177,7 @@
                                                         <i class="bi-people fs-2 text-primary"></i>
                                                     </div>
                                                     <div>
-                                                        <h5 class="mb-0">{{ $user->parent->children_count ?? 0 }}</h5>
+                                                        <h5 class="mb-0">{{ $user->parent->children->count() ?? 0 }}</h5>
                                                         <small class="text-muted">Personas reclutadas</small>
                                                     </div>
                                                 </div>
@@ -197,7 +192,7 @@
                                                         <i class="bi-calendar-check fs-2 text-success"></i>
                                                     </div>
                                                     <div>
-                                                        <h5 class="mb-0">{{ $user->parent->created_at->format('d/m/Y') }}</h5>
+                                                        <h5 class="mb-0">{{ $user->parent->created_at->translatedFormat('d/m/Y') }}</h5>
                                                         <small class="text-muted">Fecha de registro</small>
                                                     </div>
                                                 </div>
@@ -218,7 +213,7 @@
                         <div class="tab-pane fade" id="recruits" role="tabpanel" aria-labelledby="recruits-tab">
                             @if($user->children && $user->children->count() > 0)
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table id="order-listing" class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>Nombre</th>
@@ -241,7 +236,7 @@
                                                         <div>{{ $child->email }}</div>
                                                         <small class="text-muted">{{ $child->telefono }}</small>
                                                     </td>
-                                                    <td>{{ $child->created_at->format('d/m/Y') }}</td>
+                                                    <td>{{ $child->created_at->translatedFormat('d/m/Y') }}</td>
                                                    
                                                 </tr>
                                             @endforeach
@@ -311,6 +306,7 @@
 @endsection
 
 @section('scripts')
+{!! Html::script('melody/js/data-table.js') !!}
 <script>
     // Activar los tabs de Bootstrap
     document.addEventListener('DOMContentLoaded', function() {

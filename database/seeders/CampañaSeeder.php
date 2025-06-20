@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use App\Models\Campaña;
 
@@ -16,8 +17,9 @@ class CampañaSeeder extends Seeder
     public function run(): void
     {
         Campaña::create([
-            'name' => "Campaña presidencial 2026",
-            'description' => "Esto es un ejemplo",
+            'name' => "Sitio web",
+            'slug' => Str::slug('campaña', '_'), 
+            'description' => "Usuarios ingresados por el sistema",
             'image' => "system/default.jpg",
         ]);
     }

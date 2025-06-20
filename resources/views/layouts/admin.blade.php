@@ -39,7 +39,7 @@
     {!! Html::style('/falcon/public/assets/css/theme.css', ['id' => 'style-default']) !!}
     {!! Html::style('/falcon/public/assets/css/user-rtl.css', ['id' => 'user-style-rtl']) !!}
     {!! Html::style('/falcon/public/assets/css/user.css', ['id' => 'user-style-default']) !!}
-    
+
     <script>
         var isRTL = JSON.parse(localStorage.getItem('isRTL'));
         if (isRTL) {
@@ -87,8 +87,9 @@
                             data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation"><span
                                 class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
 
-                    </div><a class="navbar-brand" href="{{url('/')}}">
-                        <div class="d-flex align-items-center py-3"><h2><span style="color: #D25252;">Red</span>Civica</h2>
+                    </div><a class="navbar-brand" href="{{ url('/') }}">
+                        <div class="d-flex align-items-center py-3">
+                            <h2><span style="color: #D25252;">Red</span>Civica</h2>
                         </div>
                     </a>
                 </div>
@@ -97,6 +98,31 @@
                         <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                             <li class="nav-item">
                                 <!-- label-->
+                                <div class="user-profile-card mb-4 d-none d-lg-block ">
+                                    <div class="d-flex align-items-center ">
+                                        <!-- Información del usuario -->
+                                        <div class="flex-grow-1 col-auto navbar-vertical-label">
+                                            <h6 class="mb-0 fw-semi-bold text-800">
+                                                {{ $saludo }} {{ Auth::user()->name }}
+                                                <span class="verified-badge ms-1" data-bs-toggle="tooltip"
+                                                    title="Usuario verificado">
+                                                    <i class="fas fa-check-circle text-success fs--2"></i>
+                                                </span>
+                                            </h6>
+                                            <p class="mb-0 text-600 fs--1">
+                                                {{ Auth::user()->email }}
+                                                @if (Auth::user()->created_at)
+                                                    <span class="d-block mt-0 fs--2 text-400">
+                                                        {{-- Formatear la fecha de creación del usuario --}}
+                                                        Miembro desde
+                                                        {{ Auth::user()->created_at->translatedFormat('F Y') }}
+                                                    </span>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- label-->
                                 <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                                     <div class="col-auto navbar-vertical-label">Menu
                                     </div>
@@ -104,38 +130,58 @@
                                         <hr class="mb-0 navbar-vertical-divider" />
                                     </div>
                                 </div>
-                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'home' ? 'active' : '' }}" href="{{url('/')}}"
-                                    role="button">
+
+                                <!-- parent pages--><a
+                                    class="nav-link {{ Request::segment(1) === 'home' ? 'active' : '' }}"
+                                    href="{{ url('/') }}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                 class="fas fa-home"></span></span><span
                                             class="nav-link-text ps-1">Home</span>
                                     </div>
                                 </a>
-                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}" href="{{route('referencias.index')}}"
-                                    role="button">
+                                @hasrole('admin')
+                                    <!-- parent pages--><a
+                                        class="nav-link {{ Request::segment(1) === 'campañas' ? 'active' : '' }}"
+                                        href="{{ route('campañas.index') }}" role="button">
+                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-bullhorn"></span></span><span
+                                                class="nav-link-text ps-1">Campañas</span>
+                                        </div>
+                                    </a>
+                                @endhasrole
+                                <!-- parent pages--><a
+                                    class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}"
+                                    href="{{ route('referencias.index') }}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                class="fas fa-bullhorn"></span></span><span
-                                            class="nav-link-text ps-1">Campañas</span>
+                                                class="fas fa-link"></span></span><span
+                                            class="nav-link-text ps-1">Referencias</span>
                                     </div>
                                 </a>
-                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'red' ? 'active' : '' }}" href="{{route('red.index')}}" role="button">
+                                <!-- parent pages--><a
+                                    class="nav-link {{ Request::segment(1) === 'red' ? 'active' : '' }}"
+                                    href="{{ route('red.index') }}" role="button">
                                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                 class="fas fa-network-wired"></span></span><span
                                             class="nav-link-text ps-1">Red</span>
                                     </div>
                                 </a>
-                                <!-- parent pages--><a class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}" href="{{route('analitica.index')}}" role="button">
-                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                class="fas fa-chart-bar"></span></span><span
-                                            class="nav-link-text ps-1">Analítica </span>
-                                    </div>
-                                </a>
-                                <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}" href="{{route('users.index')}}" role="button">
-                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                class="fas fa-user"></span></span><span
-                                            class="nav-link-text ps-1">Usuarios </span>
-                                    </div>
-                                </a>
+                                @hasrole('admin')
+                                    <!-- parent pages--><a
+                                        class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
+                                        href="{{ route('analitica.index') }}" role="button">
+                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-chart-bar"></span></span><span
+                                                class="nav-link-text ps-1">Analítica </span>
+                                        </div>
+                                    </a>
+                                    <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}"
+                                        href="{{ route('users.index') }}" role="button">
+                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-user"></span></span><span
+                                                class="nav-link-text ps-1">Usuarios </span>
+                                        </div>
+                                    </a>
+                                @endhasrole
                             </li>
                         </ul>
                         <div class="settings my-3">
@@ -148,9 +194,8 @@
                                     <div class="text-center"><img
                                             src="/falcon/public/assets/img/icons/spot-illustrations/navbar-vertical.png"
                                             alt="" width="80" />
-                                        <p class="fs-11 mt-2">Invita a personas a tu red 
-                                        <div class="d-grid"><a class="btn btn-sm btn-primary"
-                                                href="#"
+                                        <p class="fs-11 mt-2">Invita a personas a tu red
+                                        <div class="d-grid"><a class="btn btn-sm btn-primary" href="#"
                                                 target="_blank"><i class="fas fa-user-plus"></i> Invitar</a></div>
                                     </div>
                                 </div>
@@ -167,13 +212,15 @@
                         aria-controls="navbarVerticalCollapse" aria-expanded="false"
                         aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span
                                 class="toggle-line"></span></span></button>
-                    <a class="navbar-brand me-1 me-sm-3" href="{{url('/')}}">
-                        <div class="d-flex align-items-center"><h2><span style="color: red !important;" class="font-sans-serif text-primary">Red</span>Civica</h2>
+                    <a class="navbar-brand me-1 me-sm-3" href="{{ url('/') }}">
+                        <div class="d-flex align-items-center">
+                            <h2><span style="color: red !important;"
+                                    class="font-sans-serif text-primary">Red</span>Civica</h2>
                         </div>
                     </a>
                     <ul class="navbar-nav align-items-center d-none d-lg-block">
                         <li class="nav-item">
-                            <div class="search-box" >
+                            <div class="search-box">
                                 <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
                                     <input class="form-control search-input fuzzy-search" type="search"
                                         placeholder="Buscar..." aria-label="Search" />
@@ -220,7 +267,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             {{-- las notificaciones se activan y desactivan con las clases notification-indicator y notification-indicator-primary --}}
-                            <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait"
+                            <a class="nav-link {{ $hayNotificacionesNoLeidas ? 'notification-indicator notification-indicator-primary' : '' }} px-0 fa-icon-wait"
                                 id="navbarDropdownNotification" role="button" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"
                                 data-hide-on-body-scroll="data-hide-on-body-scroll"><span class="fas fa-bell"
@@ -233,43 +280,59 @@
                                             <div class="col-auto">
                                                 <h6 class="card-header-title mb-0">Notificaciones</h6>
                                             </div>
+                                            <div class="col-auto">
+                                                <a href="{{ route('actividades.leer') }}"> <span
+                                                        class="fas fa-eye"></span> </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="scrollbar-overlay" style="max-height:19rem">
                                         <div class="list-group list-group-flush fw-normal fs-10">
-                                            {{-- <div class="list-group-title border-bottom">Nuevos</div>
-                                            <div class="list-group-item">
-                                                <a class="notification notification-flush notification-unread"
-                                                    href="#!">
-                                                    <div class="notification-avatar">
-                                                        <div class="avatar avatar-2xl me-3">
-                                                            <i class="fas fa-user-plus text-green-600 text-sm"></i>
+                                            <div class="list-group-title border-bottom">Actividad de referencia
+                                                reciente</div>
+                                            @forelse($notificacionesRecientes as $actividad)
+                                                <div class="list-group-item">
+
+                                                    <a class="notification notification-flush notification-unread"
+                                                        href="#!">
+                                                        <div class="notification-avatar m-3">
+                                                            <div
+                                                                class="avatar avatar-md bg-soft-primary text-primary rounded-circle d-flex align-items-center justify-content-center">
+                                                                <i class="{{ $actividad->icono }} fs-4"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="notification-body">
+                                                            <p class="mb-1">{{ $actividad->titulo }} <br>
+                                                                @if (!$actividad->afectado)
+                                                                    {{ $actividad->actor->name }}
+                                                                    {{ $actividad->accion }}
+                                                                @else
+                                                                    <strong>{{ $actividad->afectado->name }}</strong>
+                                                                    {{ $actividad->accion }}
+                                                                    {{ $actividad->actor->name }}
+                                                                @endif
+                                                            </p>
+                                                            <span class="notification-time"><span class="me-2"
+                                                                    role="img" aria-label="Emoji">✨</span>
+                                                                {{ $actividad->created_at->diffForHumans() }}</span>
 
                                                         </div>
-                                                    </div>
-                                                    <div class="notification-body">
-                                                        <p class="mb-1"><strong>Emma Watson</strong> replied to your
-                                                            comment : "Hello world 😍"</p>
-                                                        <span class="notification-time"><span class="me-2"
-                                                                role="img" aria-label="Emoji">💬</span>Just
-                                                            now</span>
+                                                    </a>
+                                                </div>
+                                            @empty
+                                                <div class="text-center p-3">
+                                                    <small class="text-muted">Sin actividad reciente</small>
+                                                </div>
+                                            @endforelse
 
-                                                    </div>
-                                                </a>
-
-                                            </div> --}}
-                                            <div class="notification-body">
-                                                       
-                                                        <span style="margin-left: 20px;">Vacio</span>
-
-                                                    </div>
-                                            
                                         </div>
                                     </div>
                                     <div class="card-footer text-center border-top"><a class="card-link d-block"
-                                            href="app/social/notifications.html">Mostrar más</a></div>
+                                            href="{{ route('actividades.index') }}">Mostrar más</a></div>
                                 </div>
                             </div>
+
 
                         </li>{{-- 
                         <li class="nav-item dropdown px-1">
@@ -476,7 +539,8 @@
                             <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0"
                                 aria-labelledby="navbarDropdownUser">
                                 <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                                    <a class="dropdown-item fw-bold text-warning" href="{{route('business.index')}}"><span
+                                    <a class="dropdown-item fw-bold text-warning"
+                                        href="{{ route('business.index') }}"><span
                                             class="fas fa-crown me-1"></span><span>{{ $business->name }}</span></a>
 
                                     <div class="dropdown-divider"></div>
@@ -484,7 +548,8 @@
 
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="">Ajustes</a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}" ata-original-title="Logout"
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        ata-original-title="Logout"
                                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">Salir</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -504,8 +569,8 @@
                 <footer class="footer">
                     <div class="row g-0 justify-content-between fs-10 mt-4 mb-3">
                         <div class="col-12 col-sm-auto text-center">
-                            <p class="mb-0 text-600">Copyright <span
-                                    class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2025 &copy;
+                            <p class="mb-0 text-600">Copyright <span class="d-none d-sm-inline-block">| </span><br
+                                    class="d-sm-none" /> 2025 &copy;
                                 <a href="https://www.afdeveloper.com/">AF</a>
                             </p>
                         </div>
@@ -515,7 +580,7 @@
                     </div>
                 </footer>
             </div>
-            
+
             {{-- Modal futuro --}}
 
         </div>
@@ -523,8 +588,6 @@
     <!-- ===============================================-->
     <!--    End of Main Content-->
     <!-- ===============================================-->
-
-
 
 
 

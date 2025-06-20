@@ -22,16 +22,22 @@
         <form method="POST" action="{{ route('referencias.store') }}">
             @csrf
             <div class="mb-3">
-                <label for="campaña_id">Campaña</label>
-                <select name="campaña_id" id="campaña_id" class="form-select">
-                    <option value="" selected disabled>Seleccione una campaña...</option>
-                    @foreach ($campañas as $campaña)
-                        <option value="{{ $campaña->id }}" {{ old('campaña_id') == $campaña->id ? 'selected' : '' }}>
-                            {{ $campaña->name }}
-                        </option>
-                    @endforeach
-                </select>
+    <label for="campaña_id">Campaña</label>
+    <div class="row g-2"> <div class="col"> <select name="campaña_id" id="campaña_id" class="form-select">
+                <option value="" selected disabled>Seleccione una campaña...</option>
+                @foreach ($campañas as $campaña)
+                    <option value="{{ $campaña->id }}" {{ old('campaña_id') == $campaña->id ? 'selected' : '' }}>
+                        {{ $campaña->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-auto"> <a href="{{route('campañas.create')}}" type="button" class="btn btn-primary h-100">
+                <span class="fas fa-plus"></span> Añadir
+            </a>
             </div>
+    </div>
+</div>
             <div class="row mb-3">
                 <div class="col">
                     <label>Objetivo</label>

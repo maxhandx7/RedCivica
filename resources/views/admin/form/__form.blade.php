@@ -1,11 +1,12 @@
-@include('alert.message')
-{!! Form::open(['route' => 'users.store', 'method' => 'POST', 'files' => true]) !!}
+
+{!! Form::open(['route' => 'users.form', 'method' => 'POST', 'files' => true]) !!}
                         @csrf
 
                         <!-- Campos ocultos para tracking -->
                         <input type="hidden" name="parent_id" value="{{ $referidor->id ??  null}}">
                         <input type="hidden" name="fuente" value="{{ $fuente ?? 'web' }}">
                         <input type="hidden" name="medio" value="{{ $medio ?? 'web' }}">
+                        <input type="hidden" name="referencia_id" value="{{ $referencia_id ?? null }}">
 
                         <div class="mb-3">
                             <label class="form-label" for="name">Nombres</label>
@@ -91,6 +92,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
 
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="terms" id="terms" required>

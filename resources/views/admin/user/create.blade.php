@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12 grid-margin stretch-card">
-                                @include('admin.form.__form')
+                                @include('admin.user.__form')
                             </div>
                             
                             <a href="{{ route('users.index') }}" class="btn btn-light">

@@ -7,16 +7,27 @@ use App\Http\Requests\User\StoreRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+ 
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::get();
+        $query = User::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('surname', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('cedula', 'like', "%{$search}%")
+                    ->orWhere('mesa', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
         return view('admin.user.index', compact('users'));
     }
 
@@ -30,17 +41,17 @@ class UserController extends Controller
 
     public function store(Request $request, User $user)
     {
-
         try {
-            $user->my_store($request);
+            $user->my_store_log($request);
             return redirect()->back()->with('success', 'Usuario credado con éxito');
         } catch (\Exception $th) {
-            return redirect()->back()->with('error', 'Ocurrió un error al crear lel usuario');
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario '. $th->getMessage());
         }
     }
 
     public function show(User $user)
     {
+
         return view('admin.user.show', compact('user'));
     }
 
@@ -56,7 +67,7 @@ class UserController extends Controller
             $user->my_update($request, $user);
             return redirect()->route('users.index')->with('success', 'Usuario modificado');
         } catch (\Exception $th) {
-            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el usuario'.$th->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el usuario ' . $th->getMessage());
         }
     }
 
@@ -71,8 +82,17 @@ class UserController extends Controller
         }
     }
 
-    public function showChangePasswordForm()
+    public function form(Request $request, User $user)
     {
-        return view('admin.config.change-password');
+        try {
+            if ($request->has('terms')) {
+                $user->my_store($request);
+            } else {
+                return redirect()->back()->with('error', 'Debe aceptar los términos y condiciones para continuar');
+            }
+            return redirect()->back()->with('success', 'Usuario credado con éxito');
+        } catch (\Exception $th) {
+            return redirect()->back()->with('error', 'Ocurrió un error al crear lel usuario '. $th->getMessage());
+        }
     }
 }

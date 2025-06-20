@@ -12,9 +12,12 @@ return new class extends Migration {
     {
         Schema::create('actividads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('actor_id')->constrained('users');
-            $table->foreignId('afectado_id')->nullable()->constrained('users');
+            $table->string('titulo');
+            $table->string('icono')->nullable();
+            $table->foreignId('actor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('afectado_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('accion');
+            $table->boolean('leida')->default(false);
             $table->timestamps();
         });
     }

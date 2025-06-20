@@ -1054,6 +1054,9 @@ var bottomBarInit = function bottomBarInit() {
           }
         }
       };
+
+
+
       window.addEventListener('scroll', toggleBottomBar);
       var toggleBottomBarOnNavbarCollapse = function toggleBottomBarOnNavbarCollapse(el) {
         if (!utils.hasClass(el, 'collapsed')) {
@@ -1064,6 +1067,7 @@ var bottomBarInit = function bottomBarInit() {
       };
       navbarButtons.forEach(function (btn) {
         return btn && btn.addEventListener('click', function () {
+
           return toggleBottomBarOnNavbarCollapse(btn);
         });
       });

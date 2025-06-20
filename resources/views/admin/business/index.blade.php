@@ -7,262 +7,229 @@
 @section('preference')
 @endsection
 @section('content')
-    <div class="content-wrapper">
-        <div class="page-header">
-            <h3 class="page-title">
-                Gestión de empresa
-            </h3>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb breadcrumb-custom">
-                    <li class="breadcrumb-item"><a href="/home">Panel administrador</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Gestión de empresa</li>
-                </ol>
-            </nav>
-        </div>
+    <div class="content">
         <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="d-flex justify-content-between">
-                            <h4 class="card-title">Gestión de empresa</h4>
-                        </div>
-                        @include('alert.message')
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <strong><i class="fas fa-file-signature mr-1"></i> Nombre </strong>
-
-                                <p class="text-muted">
-                                    {{ $business->name }}
-                                </p>
-                                <hr>
-
-                                <strong><i class="fab fa-adn mr-1"></i> Titulo del encabezado </strong>
-
-                                <p class="text-muted">
-                                    {!! $business->configurations['thead'] ?? 'sin titulo' !!}
-                                </p>
-                                <hr>
-
-                                <strong><i class="fas fa-align-left mr-1"></i> Descripción</strong>
-
-                                <p class="text-muted">
-                                    {{ $business->description }}
-                                </p>
-                                <hr>
-                                <strong><i class="fas fa-map-marked-alt mr-1"></i> Dirección</strong>
-
-                                <p class="text-muted">
-                                    {{ $business->address }}
-                                </p>
-                                <hr>
-                                <strong><i class="fas fa-mobile-alt mr-1"></i> Teléfono</strong>
-
-                                <p class="text-muted">{{ $business->phone }}</p>
-                                <hr>
-
-                                <strong><i class="fas fa-align-left mr-1"></i> Misión</strong>
-
-                                <p class="text-muted">
-                                    {{ $business->mision  }}
-                                </p>
-                                <hr>
+            <div class="col-lg-12">
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="mb-0">Gestión de empresa</h5>
                             </div>
-                            <div class="form-group col-md-6">
-                                <strong><i class="far fa-address-card mr-1"></i> NIT</strong>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @include('alert.message')
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fas fa-file-signature mr-2"></span>Nombre</h6>
+                                    <p class="text-800">{{ $business->name }}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <p class="text-muted">{{ $business->nit }}</p>
-                                <hr>
-                                <strong><i class="far fa-envelope mr-1"></i> Correo electrónico</strong>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fab fa-adn mr-2"></span>Titulo del encabezado</h6>
+                                    <p class="text-800">{!! $business->configurations['thead'] ?? 'sin titulo' !!}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <p class="text-muted">{{ $business->mail }}</p>
-                                <hr>
-                                <strong><i class="far fa-calendar-check mr-1"></i> Fecha de alta</strong>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fas fa-align-left mr-2"></span>Descripción</h6>
+                                    <p class="text-800">{{ $business->description }}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <p class="text-muted">{{ $business->created_at }}</p>
-                                <hr>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fas fa-map-marked-alt mr-2"></span>Dirección</h6>
+                                    <p class="text-800">{{ $business->address }}</p>
+                                </div>
+                                <hr class="my-3">
 
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fas fa-mobile-alt mr-2"></span>Teléfono</h6>
+                                    <p class="text-800">{{ $business->phone }}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <strong><i class="fas fa-exclamation-circle mr-1"></i> Logo</strong><br>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <img style="width:50px ; height:50px ;"
-                                            src="{{ asset('image/' . $business->logo) }}" class="rounded float-left"
-                                            alt="logo">
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fas fa-align-left mr-2"></span>Misión</h6>
+                                    <p class="text-800">{{ $business->mision }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="far fa-address-card mr-2"></span>NIT</h6>
+                                    <p class="text-800">{{ $business->nit }}</p>
+                                </div>
+                                <hr class="my-3">
+
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="far fa-envelope mr-2"></span>Correo electrónico</h6>
+                                    <p class="text-800">{{ $business->mail }}</p>
+                                </div>
+                                <hr class="my-3">
+
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="far fa-calendar-check mr-2"></span>Fecha de alta</h6>
+                                    <p class="text-800">{{ $business->created_at }}</p>
+                                </div>
+                                <hr class="my-3">
+
+                                <div class="mb-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6 class="fs-0 mb-1"><span class="fas fa-exclamation-circle mr-2"></span>Logo</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <img style="width:50px; height:50px;" src="{{ asset('image/' . $business->logo) }}" class="rounded" alt="logo">
+                                        </div>
                                     </div>
                                 </div>
-                                <hr>
+                                <hr class="my-3">
 
-                                <strong><i class="fas fa-align-left mr-1"></i> Visión</strong>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fas fa-align-left mr-2"></span>Visión</h6>
+                                    <p class="text-800">{{ $business->vision }}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <p class="text-muted">
-                                    {{ $business->vision }}
-                                </p>
-                                <hr>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fab fa-facebook mr-2"></span>Facebook</h6>
+                                    <p class="text-800">{{ $business->configurations['facebook'] ?? 'sin datos' }}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <strong><i class="fab fa-facebook mr-1"></i></strong>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fab fa-twitter mr-2"></span>Twitter</h6>
+                                    <p class="text-800">{{ $business->configurations['twitter'] ?? 'sin datos' }}</p>
+                                </div>
+                                <hr class="my-3">
 
-                                <p class="text-muted">
-                                    {{ $business->configurations['facebook'] ?? 'sin datos' }}
-                                </p>
-                                <hr>
-
-                                <strong><i class="fab fa-twitter mr-1"></i></strong>
-
-                                <p class="text-muted">
-                                    {{ $business->configurations['twitter'] ?? 'sin datos' }}
-                                </p>
-                                <hr>
-
-                                <strong><i class="fab fa-instagram mr-1"></i></strong>
-
-                                <p class="text-muted">
-                                    {{ $business->configurations['instagram'] ?? 'sin datos' }}
-                                </p>
-                                <hr>
+                                <div class="mb-4">
+                                    <h6 class="fs-0 mb-1"><span class="fab fa-instagram mr-2"></span>Instagram</h6>
+                                    <p class="text-800">{{ $business->configurations['instagram'] ?? 'sin datos' }}</p>
+                                </div>
                             </div>
                         </div>
-
                     </div>
-                    <div class="card-footer text-muted">
-
-                        <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
-                            data-target="#exampleModal-2">Actualizar</button>
-
+                    <div class="card-footer bg-light">
+                        <button class="btn btn-primary btn-sm float-right" type="button" data-bs-toggle="modal" data-bs-target="#updateBusinessModal">
+                            Actualizar
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-2"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal -->
+    <div class="modal fade" id="updateBusinessModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-2">Actualizar datos de empresa</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <h5 class="modal-title">Actualizar datos de empresa</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times fs--1"></span>
                     </button>
                 </div>
-
-
                 {!! Form::model($business, ['route' => ['business.update', $business], 'method' => 'PUT', 'files' => true]) !!}
-
-
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Nombre</label>
-                        <input type="text" class="form-control" name="name" id="name"
-                            value="{{ $business->name }}" aria-describedby="helpId">
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Nombre</label>
+                        <input class="form-control" type="text" name="name" id="name" value="{{ $business->name }}">
                     </div>
 
-
-                    <div class="form-group">
-                        <label for="ruc">NIT</label>
-                        <input type="text" class="form-control" name="nit" id="nit"
-                            value="{{ $business->nit }}" aria-describedby="helpId">
+                    <div class="mb-3">
+                        <label class="form-label" for="nit">NIT</label>
+                        <input class="form-control" type="text" name="nit" id="nit" value="{{ $business->nit }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="description">Descripción</label>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Descripción</label>
                         <textarea class="form-control" name="description" id="description" rows="3">{{ $business->description }}</textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="mision">Misión</label>
+                    <div class="mb-3">
+                        <label class="form-label" for="mision">Misión</label>
                         <textarea class="form-control" name="mision" id="mision" rows="3">{{ $business->mision }}</textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="vision">Visión</label>
+                    <div class="mb-3">
+                        <label class="form-label" for="vision">Visión</label>
                         <textarea class="form-control" name="vision" id="vision" rows="3">{{ $business->vision }}</textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="mail">Correo electrónico</label>
-                        <input type="email" class="form-control" name="mail" id="mail"
-                            value="{{ $business->mail }}" aria-describedby="helpId">
+                    <div class="mb-3">
+                        <label class="form-label" for="mail">Correo electrónico</label>
+                        <input class="form-control" type="email" name="mail" id="mail" value="{{ $business->mail }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="address">Dirección</label>
-                        <input type="text" class="form-control" name="address" id="address"
-                            value="{{ $business->address }}" aria-describedby="helpId">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Telefono</label>
-                        <input type="text" class="form-control" name="phone" id="phone"
-                            value="{{ $business->phone }}" aria-describedby="helpId">
-                    </div>
-                    <hr>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input name="show_letter" id="show_letter" type="checkbox" class="form-check-input"
-                                {{ isset($business->configurations['show_letter']) && $business->configurations['show_letter'] ? 'checked' : '' }}>
-                            Mostrar titulo del encabezado
-                        </label>
-                    </div>
-                    <hr>
-                    <div class="form-group" id="theadCheck">
-                        <label for="Thead">Titulo de encabezado</label>
-                        <input type="text" class="form-control" name="thead" id="thead"
-                            value="{{ $business->configurations['thead'] ?? '' }}" aria-describedby="thead">
+                    <div class="mb-3">
+                        <label class="form-label" for="address">Dirección</label>
+                        <input class="form-control" type="text" name="address" id="address" value="{{ $business->address }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="facebook">facebook</label>
-                        <input type="url" class="form-control" name="facebook" id="facebook"
-                            value="{{ $business->configurations['facebook'] ?? '' }}"
-                            placeholder="https://facebook.com/pagina" aria-describedby="facebookHelp">
+                    <div class="mb-3">
+                        <label class="form-label" for="phone">Teléfono</label>
+                        <input class="form-control" type="text" name="phone" id="phone" value="{{ $business->phone }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="twitter">twitter</label>
-                        <input type="url" class="form-control" name="twitter" id="twitter"
-                            value="{{ $business->configurations['twitter'] ?? '' }}"
-                            placeholder="https://twitter.com/pagina" aria-describedby="twitterHelp">
+                    <hr class="my-3">
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" name="show_letter" id="show_letter" type="checkbox" 
+                            {{ isset($business->configurations['show_letter']) && $business->configurations['show_letter'] ? 'checked' : '' }}>
+                        <label class="form-check-label" for="show_letter">Mostrar titulo del encabezado</label>
                     </div>
 
-                    <div class="form-group">
-                        <label for="instagram">instagram</label>
-                        <input type="url" class="form-control" name="instagram" id="instagram"
-                            value="{{ $business->configurations['instagram'] ?? '' }}"
-                            placeholder="https://instagram.com/pagina" aria-describedby="instagramHelp">
+                    <div class="mb-3" id="theadCheck">
+                        <label class="form-label" for="thead">Titulo de encabezado</label>
+                        <input class="form-control" type="text" name="thead" id="thead" 
+                            value="{{ $business->configurations['thead'] ?? '' }}">
                     </div>
 
-
-                    <div class="card-body">
-                        <h5 class="card-title d-flex">Logo
-                            <small class="ml-auto align-self-end">
-                                <a href="{{ asset('image/' . $business->logo) }}" class="font-weight-light"
-                                    target="_blank">Ver actual</a>
-                            </small>
-                        </h5>
-                        <input type="file" name="picture" id="picture" class="dropify" />
+                    <div class="mb-3">
+                        <label class="form-label" for="facebook">Facebook</label>
+                        <input class="form-control" type="url" name="facebook" id="facebook" 
+                            value="{{ $business->configurations['facebook'] ?? '' }}" placeholder="https://facebook.com/pagina">
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label" for="twitter">Twitter</label>
+                        <input class="form-control" type="url" name="twitter" id="twitter" 
+                            value="{{ $business->configurations['twitter'] ?? '' }}" placeholder="https://twitter.com/pagina">
+                    </div>
 
+                    <div class="mb-3">
+                        <label class="form-label" for="instagram">Instagram</label>
+                        <input class="form-control" type="url" name="instagram" id="instagram" 
+                            value="{{ $business->configurations['instagram'] ?? '' }}" placeholder="https://instagram.com/pagina">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Logo</label>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <img style="width:50px; height:50px;" src="{{ asset('image/' . $business->logo) }}" class="rounded" alt="logo">
+                            </div>
+                            <div class="flex-1">
+                                <input class="form-control" type="file" name="picture" id="picture">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Actualizar</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Actualizar</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancelar</button>
                 </div>
-
                 {!! Form::close() !!}
-
             </div>
         </div>
     </div>
-
 @endsection
+
 @section('scripts')
-    {!! Html::script('melody/js/data-table.js') !!}
-    {!! Html::script('melody/js/dropify.js') !!}
     <script>
         $(document).ready(function() {
             $("#show_letter").on("change", function() {

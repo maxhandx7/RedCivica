@@ -10,6 +10,8 @@ class Actividad extends Model
     use HasFactory;
 
      protected $fillable = [
+        'titulo',
+        'icono',
         'actor_id',
         'accion',
         'afectado_id',
@@ -24,4 +26,5 @@ class Actividad extends Model
     {
         return $this->belongsTo(User::class, 'afectado_id');
     }
+    
 }
