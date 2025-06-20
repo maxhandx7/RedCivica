@@ -47,16 +47,16 @@ Route::middleware(['auth'])->group(function () {
         'mostrarFormularioRegistro'
     ]);
 
-    
+
 
     Route::resource('users', UserController::class)->names('users');
-    
+
     Route::resource('campañas', CampañaController::class)->names('campañas');
 
     Route::get('/analitica', [AnaliticaController::class, 'index'])->name('analitica.index');
 });
 Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
-        ->name('referidos.registro');
+    ->name('referidos.registro');
 Route::post('/referidos/create', [UserController::class, 'form'])->name('users.form');
 Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);

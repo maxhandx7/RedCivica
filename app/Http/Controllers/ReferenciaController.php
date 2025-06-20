@@ -49,7 +49,7 @@ class ReferenciaController extends Controller
         }
         if ($nuevareferencia) {
             $this->notified(auth()->id());
-        } 
+        }
         return redirect()->route('referencias.index')
             ->with('show_modal', true)
             ->with('modal_config', [
@@ -72,7 +72,7 @@ class ReferenciaController extends Controller
             'medio' => 'nullable|string|max:100',
         ]);
 
-        
+
         try {
 
             $referencia->update($request->all());
@@ -104,9 +104,29 @@ class ReferenciaController extends Controller
             'medio' => 'nullable|string',
             'ref_id' => 'nullable',
         ]);
-        
+
         $referidor = User::find($request->usr);
         $referido = Referencia::find($request->ref_id);
+
+        
+        
+        if (!$referidor || !$referido) {
+            return redirect('login')->with('error', 'El referidor o la referencia no existen');
+        }
+        if (!$referido->campaña->fecha_fin || $referido->campaña->fecha_fin < now()) {
+            return redirect('login')->with('error', 'La campaña asociada a la referencia ha finalizado');
+        }
+        if (!$referido->campaña) {
+            return redirect('login')->with('error', 'La referencia no tiene una campaña asociada');
+        }
+        if ($referido->campaña->estado !== 'activo') {
+            return redirect('login')->with('error', 'La campaña asociada a la referencia no está activa');
+        }
+        if ($referido->campaña->tipo !== 'publica' && $referido->user->id !== auth()->id()) {
+            return back()->with('error', 'La campaña asociada a la referencia no es pública');
+        }
+
+
         return view('admin.form.index', [
             'referidor' => $referidor,
             'referido' => $referido,
@@ -120,7 +140,7 @@ class ReferenciaController extends Controller
     public function notified($id)
     {
         ActividadService::registrar(
-            ActividadPlantillas::NUEVA_REFERENCIA  
+            ActividadPlantillas::NUEVA_REFERENCIA
         );
     }
 

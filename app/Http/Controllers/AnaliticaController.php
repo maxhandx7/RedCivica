@@ -35,12 +35,12 @@ class AnaliticaController extends Controller
         $referenciasConUsuarios = Referencia::has('usuariosRegistrados')->count();
 
         $conversion = $referenciasConUsuarios > 0
-    ? round($usuariosDesdeReferencias / $referenciasConUsuarios, 2)
-    : 0;
-       
-       /*  $conversion = $totalReferencias > 0
-            ? round(($referenciasConUsuarios / $totalReferencias) * 100, 2)
-            : 0; */
+            ? round($usuariosDesdeReferencias / $referenciasConUsuarios, 2)
+            : 0;
+
+        /*  $conversion = $totalReferencias > 0
+             ? round(($referenciasConUsuarios / $totalReferencias) * 100, 2)
+             : 0; */
 
 
         $usuariosPorReferencia = $descendientes

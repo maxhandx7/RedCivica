@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </div>
-
+            @include('alert.message')
             <!-- Formulario para crear enlaces -->
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white">Crear Enlace de campaña</div>
