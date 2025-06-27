@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->mediumText('mision')->nullable();
             $table->mediumText('vision')->nullable();
-            $table->string('logo')->nullable();
+            $table->string('logo')->default('system/default.jpg');
             $table->string('mail')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();

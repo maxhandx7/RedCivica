@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('ciudad')->nullable();
             $table->string('barrio')->nullable();
             $table->enum('estado',['activo', 'inactivo'])->default('activo'); 
+            $table->string('image')->default('/image/system/default.jpg');
             /* $table->string('departamento')->nullable();
             $table->string('pais')->default('Colombia');
             $table->string('codigo_postal')->nullable();

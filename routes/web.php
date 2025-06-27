@@ -4,6 +4,7 @@ use App\Http\Controllers\ActividadController;
 use App\Http\Controllers\AnaliticaController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CampañaController;
+use App\Http\Controllers\ConfigController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RedController;
@@ -48,6 +49,10 @@ Route::middleware(['auth'])->group(function () {
     ]);
 
 
+    Route::resource('configs', ConfigController::class)->only(['edit', 'update']);
+    Route::post('/profile/image', [ConfigController::class, 'updateProfileImage'])->name('update_profile_image');
+    Route::post('cambiarContrasena', [ConfigController::class, 'updatePassword'])->name('update_password');
+    Route::get('/cambiar-contrasena', [ConfigController::class, 'showChangePasswordForm'])->name('password.change');
 
     Route::resource('users', UserController::class)->names('users');
 

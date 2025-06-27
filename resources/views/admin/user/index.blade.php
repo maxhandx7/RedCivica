@@ -29,7 +29,14 @@
 
         .table-responsive {
             min-height: 300px;
+            table-layout: fixed !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            background-color: #fff;
         }
+       
     </style>
 @endsection
 
@@ -63,7 +70,7 @@
                 </div>
             @else
                 @include('alert.message')
-                <div id="users-table" class="table-responsive scrollbar">
+                <div id="users-table" class="table table-responsive scrollbar">
                     <form method="GET" action="{{ route('users.index') }}" class="mb-3">
                         <div class="input-group input-group-sm search-box">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>

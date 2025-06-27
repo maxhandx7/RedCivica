@@ -544,10 +544,10 @@
                                             class="fas fa-crown me-1"></span><span>{{ $business->name }}</span></a>
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="">Tu perfil</a>
+                                    <a class="dropdown-item" href="{{ route('configs.edit', Auth::user()->id) }}">Tu perfil</a>
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="">Ajustes</a>
+                                    {{-- <a class="dropdown-item" href="">Ajustes</a> --}}
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         ata-original-title="Logout"
                                         onclick="event.preventDefault();

@@ -88,7 +88,7 @@
         <div class="col-lg-8">
             <!-- Tab Navigation -->
             <div class="card card-borderless shadow-sm mb-4">
-                <div class="card-header bg-soft-primary">
+                <div class="card-header bg-primary">
                     <ul class="nav nav-tabs card-header-tabs" id="userTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
@@ -141,9 +141,10 @@
                                     <div class="mb-3">
                                         <label class="form-label">Estado</label>
                                         <p class="form-control-static">
-                                            <span class="badge bg-soft-{{ $user->estado()['estado'] ? 'success' : 'danger' }}">
+                                            <span class="badge bg-{{ $user->estado()['estado'] ? 'success' : 'danger' }}">
                                                 {{ $user->estado()['text'] }}
                                             </span>
+                                            
                                         </p>
                                     </div>
                                 </div>
@@ -173,7 +174,7 @@
                                         <div class="card stat-card mb-3">
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0 bg-soft-primary rounded p-3 me-3">
+                                                    <div class="flex-shrink-0 bg-primary rounded p-3 me-3">
                                                         <i class="bi-people fs-2 text-primary"></i>
                                                     </div>
                                                     <div>
@@ -188,7 +189,7 @@
                                         <div class="card stat-card mb-3">
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0 bg-soft-success rounded p-3 me-3">
+                                                    <div class="flex-shrink-0 bg-success rounded p-3 me-3">
                                                         <i class="bi-calendar-check fs-2 text-success"></i>
                                                     </div>
                                                     <div>
@@ -212,7 +213,7 @@
                         <!-- Reclutados Tab -->
                         <div class="tab-pane fade" id="recruits" role="tabpanel" aria-labelledby="recruits-tab">
                             @if($user->children && $user->children->count() > 0)
-                                <div class="table-responsive">
+                                <div class="table table-responsive">
                                     <table id="order-listing" class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -262,7 +263,7 @@
         <div class="col-lg-12">
                   <!-- Quick Stats -->
             <div class="card card-borderless shadow-sm mb-4">
-                <div class="card-header bg-soft-primary">
+                <div class="card-header bg-primary">
                     <h5 class="card-header-title">Datos de Contacto</h5>
                 </div>
                 <div class="card-body text-center">

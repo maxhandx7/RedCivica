@@ -88,7 +88,7 @@
 </div>
 
 <div class="card card-borderless shadow-sm mb-4">
-    <div class="card-header bg-soft-primary">
+    <div class="card-header bg-primary">
         <h5 class="card-header-title">Configuración Adicional</h5>
     </div>
     <div class="card-body">

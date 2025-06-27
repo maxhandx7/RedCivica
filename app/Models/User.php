@@ -39,6 +39,7 @@ class User extends Authenticatable
         'direccion',
         'ciudad',
         'estado',
+        'image',
         /* 'departamento',
         'pais',
         'codigo_postal',
