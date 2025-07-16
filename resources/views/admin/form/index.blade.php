@@ -3,7 +3,7 @@
 @section('content')
     <a href="{{ url('/') }}" class="d-inline-block" id="title-logo">
         <div class="d-flex align-items-center justify-content-center">
-            <h1 class="logo-text"><span>Red</span>Cívica</h1>
+            <h1 class="logo-text"><span>Poli</span>Friends</h1>
         </div>
     </a>
 

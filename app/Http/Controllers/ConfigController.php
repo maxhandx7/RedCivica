@@ -20,6 +20,7 @@ class ConfigController extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'Usuario no encontrado');
         }
+        
         $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
         $referido = $referidos->first();
         $referidos->each(function ($referido) {

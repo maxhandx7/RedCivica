@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Need;
 use Carbon\Carbon;
 
 class RedController extends Controller
@@ -99,10 +100,20 @@ class RedController extends Controller
             ->take(3)
             ->get();
 
+
+        $needs = Need::where('referido_id', auth()->id())->get();
+
+    
+       
+        
+
+
+
         return view('admin.red.index', [
             'referidos' => $referidos,
             'networkData' => $networkData,
             'topReferidores' => $topReferidores, // 👈 lo pasamos a la vista
+            'needs' => $needs,
         ]);
     }
 

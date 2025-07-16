@@ -7,6 +7,7 @@ use App\Http\Controllers\CampañaController;
 use App\Http\Controllers\ConfigController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NeedController;
 use App\Http\Controllers\RedController;
 use App\Http\Controllers\ReferenciaController;
 use App\Http\Controllers\UserController;
@@ -59,6 +60,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('campañas', CampañaController::class)->names('campañas');
 
     Route::get('/analitica', [AnaliticaController::class, 'index'])->name('analitica.index');
+
+    Route::get('/needs', [NeedController::class, 'index'])->name('needs.index');
+    Route::post('/needs', [NeedController::class, 'store'])->name('needs.store');
+    Route::put('/needs/{id}', [NeedController::class, 'update'])->name('needs.update');
+    Route::delete('/needs/{id}', [NeedController::class, 'destroy'])->name('needs.destroy');
+    Route::patch('/needs/{id}/complete', [NeedController::class, 'toggleComplete'])->name('needs.toggle');
 });
 Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
     ->name('referidos.registro');

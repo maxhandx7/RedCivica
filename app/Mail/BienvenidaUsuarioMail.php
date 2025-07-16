@@ -21,7 +21,7 @@ class BienvenidaUsuarioMail extends Mailable
 
     public function build()
     {
-        return $this->subject('¡Bienvenido a RedCívica!')
+        return $this->subject('¡Bienvenido a PoliFriends!')
                     ->view('emails.bienvenida');
     }
 }

@@ -22,13 +22,12 @@ return new class extends Migration {
             $table->string('barrio')->nullable();
             $table->enum('estado',['activo', 'inactivo'])->default('activo'); 
             $table->string('image')->default('/image/system/default.jpg');
-            /* $table->string('departamento')->nullable();
+           $table->string('departamento')->nullable();
             $table->string('pais')->default('Colombia');
-            $table->string('codigo_postal')->nullable();
+            /*$table->string('codigo_postal')->nullable();
             $table->string('genero')->nullable();
             $table->date('fecha_nacimiento')->nullable();
              // Default state is 'activo'
-            $table->string('foto')->nullable();
             $table->string('firma')->nullable(); */
             $table->string('mesa')->nullable();
             $table->timestamp('email_verified_at')->nullable();

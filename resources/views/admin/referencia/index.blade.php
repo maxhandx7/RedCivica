@@ -237,7 +237,7 @@
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
         <div class="toast fade" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-primary text-white"><strong class="me-auto">RedCivica</strong><small>11 mins
+            <div class="toast-header bg-primary text-white"><strong class="me-auto">PoliFriends</strong><small>11 mins
                     ago</small>
                 <div data-bs-theme="dark">
                     <button class="btn-close" type="button" data-bs-dismiss="toast" aria-label="Close"></button>

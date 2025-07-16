@@ -40,9 +40,9 @@ class User extends Authenticatable
         'ciudad',
         'estado',
         'image',
-        /* 'departamento',
+        'departamento',
         'pais',
-        'codigo_postal',
+        /* 'codigo_postal',
         'genero',
         'fecha_nacimiento',
         'estado',
@@ -109,6 +109,19 @@ class User extends Authenticatable
     public function getDepthName()
     {
         return 'depth';
+    }
+
+    // El "hijo" que crea necesidades
+    // Necesidades reportadas por este usuario
+    public function necesidadesReportadas()
+    {
+        return $this->hasMany(Need::class, 'registrado_por');
+    }
+
+    // Necesidades donde él es el beneficiario (el que las necesita)
+    public function necesidades()
+    {
+        return $this->hasMany(Need::class, 'referido_id');
     }
 
 

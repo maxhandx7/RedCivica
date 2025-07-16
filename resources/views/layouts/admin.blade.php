@@ -84,12 +84,12 @@
                     <div class="toggle-icon-wrapper">
 
                         <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle"
-                            data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation"><span
+                            data-bs-toggle="tooltip" data-bs-placement="left" title="Menu de navegación"><span
                                 class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
 
                     </div><a class="navbar-brand" href="{{ url('/') }}">
                         <div class="d-flex align-items-center py-3">
-                            <h2><span style="color: #D25252;">Red</span>Civica</h2>
+                            <h2><span style="color: #D25252;">Poli</span>Friends</h2>
                         </div>
                     </a>
                 </div>

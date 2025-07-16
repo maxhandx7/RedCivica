@@ -89,6 +89,50 @@
                         </div>
                     @endif
                 </div>
+
+                <div class="card h-50 mt-3">
+  <div class="card-header border-bottom">
+    <h6 class="mb-0">Mis Necesidades</h6>
+  </div>
+  <div class="card-body p-0 overflow-hidden">
+    
+    @forelse($needs as $need)
+    <div class="d-flex justify-content-between hover-actions-trigger btn-reveal-trigger px-x1 hover-bg-100">
+      <div class="form-check mb-0 d-flex align-items-center">
+        <input 
+          class="form-check-input rounded-3 form-check-line-through p-2 mt-0"
+          type="checkbox"
+          id="need-{{ $need->id }}"
+          {{ $need->is_completed ? 'checked' : '' }}
+          onchange="toggleNeedCompleted({{ $need->id }}, this.checked)"
+        >
+        <label class="form-check-label mb-0 p-3" for="need-{{ $need->id }}">
+          {{ $need->title }}
+        </label>
+      </div>
+      <div class="d-flex align-items-center">
+        <div class="dropdown font-sans-serif btn-reveal-trigger">
+          <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" data-bs-toggle="dropdown">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end border py-2">
+            <a class="dropdown-item" href="#" onclick="editNeed({{ $need->id }}, '{{ $need->title }}')">Editar</a>
+            <a class="dropdown-item text-danger" href="#" onclick="deleteNeed({{ $need->id }})">Eliminar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    @empty
+    <div class="p-3 text-center text-muted">No tienes necesidades registradas. ¡Agrega una nueva!</div>
+    @endforelse
+  </div>
+  <div class="card-footer bg-body-tertiary p-0">
+    <a class="btn btn-sm btn-link d-block py-2" href="#" onclick="addNeed()">
+      <i class="fas fa-plus me-1 fs-11"></i>Agregar nueva necesidad
+    </a>
+  </div>
+</div>
+
             </div>
         </div>
 
@@ -266,6 +310,60 @@
             });
         });
     </script>
+
+    <script>
+  function toggleNeedCompleted(id, completed) {
+    fetch(`/needs/${id}/complete`, {
+      method: 'PATCH',
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ is_completed: completed })
+    }).then(response => {
+      if (!response.ok) alert("Error al actualizar la necesidad.");
+    });
+  }
+
+  function deleteNeed(id) {
+    if (!confirm("¿Eliminar esta necesidad?")) return;
+    fetch(`/needs/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      }
+    }).then(() => location.reload());
+  }
+
+  function addNeed() {
+    const title = prompt("Describe la nueva necesidad:");
+    if (title) {
+      fetch(`/needs`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title })
+      }).then(() => location.reload());
+    }
+  }
+
+  function editNeed(id, currentTitle) {
+    const newTitle = prompt("Edita la necesidad:", currentTitle);
+    if (newTitle && newTitle !== currentTitle) {
+      fetch(`/needs/${id}`, {
+        method: 'PUT',
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title: newTitle })
+      }).then(() => location.reload());
+    }
+  }
+</script>
+
 @endsection
 @section('scripts')
     {!! Html::script('melody/js/data-table.js') !!}

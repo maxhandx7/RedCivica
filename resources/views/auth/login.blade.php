@@ -7,7 +7,7 @@
         <div class="col-lg-6 d-none d-lg-block login-bg">
             <div class="login-overlay"></div>
             <div class="login-hero-text">
-                <h2>Bienvenido a <span>RedCívica</span></h2>
+                <h2>Bienvenido a <span>PoliFriends</span></h2>
                 <p class="mt-3">Plataforma de participación ciudadana y gestión comunitaria</p>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     <div class="text-center mb-5">
                         <a href="{{ url('/') }}" class="d-inline-block">
                             <div class="d-flex align-items-center justify-content-center">
-                                <h1 class="logo-text"><span>Red</span>Cívica</h1>
+                                <h1 class="logo-text"><span>Poli</span>Friends</h1>
                             </div>
                         </a>
                         @include('alert.message')
@@ -83,10 +83,10 @@
                         </button>
 
                         <!-- Registro y login con Google -->
-                        <div class="text-center mt-4">
-                            {{-- <p class="text-muted mb-3">¿No tienes una cuenta? 
+                        {{-- <div class="text-center mt-4">
+                            <p class="text-muted mb-3">¿No tienes una cuenta? 
                                 <a href="{{ route('register') }}" class="text-register">{{ __('Regístrate') }}</a>
-                            </p> --}}
+                            </p>
                             
                             <div class="divider my-4">o</div>
                             
@@ -94,7 +94,7 @@
                                 <img src="/falcon/public/assets/img/gallery/Google__G__logo.svg" alt="Google" class="google-icon">
                                 {{ __('Iniciar sesión con Google') }}
                             </a>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
             </div>

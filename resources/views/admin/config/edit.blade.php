@@ -30,7 +30,7 @@
         <div class="card card-borderless shadow-sm mb-4">
             <div class="card-body text-center">
                 <div class="avatar avatar-xxl mb-3">
-                    <img id="profileImage" src="{{ asset('image/'.Auth::user()->image) ?? asset(Auth::user()->image) }}" 
+                    <img style="object-fit: contain;" id="profileImage" src="{{ asset('image/'.Auth::user()->image) ?? asset(Auth::user()->image) }}" 
                          alt="profile" class="rounded-circle">
                 </div>
                 <div class="d-flex justify-content-center">

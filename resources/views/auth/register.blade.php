@@ -7,7 +7,7 @@
         <div class="col-lg-6 d-none d-lg-block register-bg">
             <div class="register-overlay"></div>
             <div class="register-hero-text">
-                <h2>Únete a <span>RedCívica</span></h2>
+                <h2>Únete a <span>PoliFriends</span></h2>
                 <p class="mt-3">Forma parte de nuestra comunidad y participa en la construcción colectiva</p>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     <div class="text-center mb-5">
                         <a href="{{ url('/') }}" class="d-inline-block">
                             <div class="d-flex align-items-center justify-content-center">
-                                <h1 class="logo-text"><span>Red</span>Cívica</h1>
+                                <h1 class="logo-text"><span>Poli</span>Friends</h1>
                             </div>
                         </a>
                         <h4 class="mt-3">Crear una cuenta</h4>

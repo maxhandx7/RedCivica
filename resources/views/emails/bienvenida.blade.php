@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido a RedCívica</title>
+    <title>Bienvenido a PoliFriends</title>
     <style type="text/css">
         /* Estilos base */
         body, html {
@@ -91,7 +91,7 @@
         <div class="header">
             <!-- Reemplaza con tu logo real -->
             {{-- <img src="https://ejemplo.com/logo-redcivica.png" alt="RedCívica" class="logo"> --}}
-            <h1>¡Bienvenido a RedCívica!</h1>
+            <h1>¡Bienvenido a PoliFriends!</h1>
         </div>
         
         <div class="content">
@@ -113,18 +113,18 @@
             
             <!-- Botón de acción principal -->
             <div style="text-align: center;">
-                <a href="https://redcivica.co/login" class="btn">Iniciar Sesión</a>
+                <a href="https://PoliFriends.co/login" class="btn">Iniciar Sesión</a>
             </div>
             
             <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactar a nuestro equipo de soporte.</p>
         </div>
         
         <div class="footer">
-            <p>Saludos cordiales,<br><strong>Equipo RedCívica</strong></p>
+            <p>Saludos cordiales,<br><strong>Equipo PoliFriends</strong></p>
             <p>
                 <small>
-                    © 2025 RedCívica. Todos los derechos reservados.<br>
-                    <a href="https://redcivica.co" style="color: #D25252;">Visita nuestro sitio web</a>
+                    © 2025 PoliFriends. Todos los derechos reservados.<br>
+                    <a href="https://PoliFriends.co" style="color: #D25252;">Visita nuestro sitio web</a>
                 </small>
             </p>
         </div>
