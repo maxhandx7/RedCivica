@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('*', function ($view) {
+        /* view()->composer('*', function ($view) {
             $notificacionesRecientes = Actividad::where('actor_id', auth()->id())
                 ->orWhere('afectado_id', auth()->id())
                 ->latest()
@@ -34,6 +34,6 @@ class AppServiceProvider extends ServiceProvider
                 'notificacionesRecientes' => $notificacionesRecientes,
                 'hayNotificacionesNoLeidas' => $hayNoLeidas
             ]);
-        });
-    }
+        });*/
+    } 
 }

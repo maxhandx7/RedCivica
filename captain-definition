@@ -1,4 +1,33 @@
- {
+{
   "schemaVersion": 2,
-  "dockerfilePath": "./Dockerfile"
- }
+  "dockerfilePath": "Dockerfile",
+  "templateId": "laravel",
+  "webService": {
+    "containerHttpPort": 9000,
+    "notExposeAsWebApp": false
+  },
+  "services": {
+    "main": {
+      "imageName": "php",
+      "imageTag": "8.2-fpm",
+      "containerHttpPort": 9000,
+      "volumes": [
+        {
+          "containerPath": "/var/www/storage",
+          "hostPath": "/storage"
+        },
+        {
+          "containerPath": "/var/www/bootstrap/cache",
+          "hostPath": "/bootstrap_cache"
+        }
+      ],
+      "envVars": [
+        {
+          "key": "APP_ENV",
+          "value": "production"
+        }
+      ]
+    }
+  },
+  "hasPersistentData": true
+}
