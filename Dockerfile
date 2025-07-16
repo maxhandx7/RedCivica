@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Instalar extensiones necesarias
+# Instala dependencias
 RUN apt-get update && apt-get install -y \
     nginx \
     git \
@@ -14,27 +14,28 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Instalar Composer
+# Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Crear directorio de la app
+# Crea carpeta del proyecto
 WORKDIR /var/www
 
-# Copiar todo el proyecto
+# Copia el contenido del proyecto Laravel
 COPY . .
 
-# Instalar dependencias
+# Instala dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Copiar configuración de nginx
-COPY deploy/nginx.conf /etc/nginx/sites-available/default
-
-# Copiar supervisord config
+# Copia archivos de configuración de Nginx y Supervisor
+COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Dar permisos a Laravel
-RUN chown -R www-data:www-data /var/www && chmod -R 775 storage bootstrap/cache
+# Da permisos
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage
 
+# Expone el puerto que NGINX usará
 EXPOSE 80
 
+# Usa supervisor para correr nginx y php-fpm
 CMD ["/usr/bin/supervisord"]
