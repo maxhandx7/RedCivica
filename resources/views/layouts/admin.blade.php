@@ -544,7 +544,8 @@
                                             class="fas fa-crown me-1"></span><span>{{ $business->name }}</span></a>
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('configs.edit', Auth::user()->id) }}">Tu perfil</a>
+                                    <a class="dropdown-item" href="{{ route('configs.edit', Auth::user()->id) }}">Tu
+                                        perfil</a>
 
                                     <div class="dropdown-divider"></div>
                                     {{-- <a class="dropdown-item" href="">Ajustes</a> --}}
@@ -575,7 +576,7 @@
                             </p>
                         </div>
                         <div class="col-12 col-sm-auto text-center">
-                            <p class="mb-0 text-600">v1.0.0</p>
+                            <p class="mb-0 text-600">{{ \App\Helpers\GitHelper::lastCommit() }}</p>
                         </div>
                     </div>
                 </footer>

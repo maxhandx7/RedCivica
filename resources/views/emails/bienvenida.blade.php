@@ -90,7 +90,7 @@
     <div class="container">
         <div class="header">
             <!-- Reemplaza con tu logo real -->
-            {{-- <img src="https://ejemplo.com/logo-redcivica.png" alt="RedCívica" class="logo"> --}}
+            <img src="https://ejemplo.com/logo-redcivica.png" alt="RedCívica" class="logo">
             <h1>¡Bienvenido a PoliFriends!</h1>
         </div>
         
@@ -113,7 +113,7 @@
             
             <!-- Botón de acción principal -->
             <div style="text-align: center;">
-                <a href="https://PoliFriends.co/login" class="btn">Iniciar Sesión</a>
+                <a href="https://PoliticFriends.com/login" class="btn">Iniciar Sesión</a>
             </div>
             
             <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactar a nuestro equipo de soporte.</p>
@@ -124,7 +124,7 @@
             <p>
                 <small>
                     © 2025 PoliFriends. Todos los derechos reservados.<br>
-                    <a href="https://PoliFriends.co" style="color: #D25252;">Visita nuestro sitio web</a>
+                    <a href="https://PoliticFriends.com" style="color: #D25252;">Visita nuestro sitio web</a>
                 </small>
             </p>
         </div>
