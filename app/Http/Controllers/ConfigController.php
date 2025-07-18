@@ -6,12 +6,17 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ConfigController extends Controller
 {
     public function edit($id)
     {
         $validate = Auth::user()->id;
+        $image = Str::startsWith(Auth::user()->image, ['http', '/'])
+            ? Auth::user()->image
+            : asset("image/".Auth::user()->image ?? 'image/system/default.jpg');
+
         if ($validate != $id) {
             return back()->with('error', 'No esta permitido hacer eso');
         }
@@ -20,7 +25,7 @@ class ConfigController extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'Usuario no encontrado');
         }
-        
+
         $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
         $referido = $referidos->first();
         $referidos->each(function ($referido) {
@@ -31,6 +36,7 @@ class ConfigController extends Controller
 
         return view('admin.config.edit', [
             'user' => $user,
+            'image' => $image,
             'referidos' => $referido
         ]);
     }
@@ -81,7 +87,7 @@ class ConfigController extends Controller
 
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
-            $name = time().'.'.$image->getClientOriginalExtension();
+            $name = time() . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/image');
             $image->move($destinationPath, $name);
 

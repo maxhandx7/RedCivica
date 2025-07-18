@@ -7,7 +7,7 @@
         <div class="col-lg-6 d-none d-lg-block register-bg">
             <div class="register-overlay"></div>
             <div class="register-hero-text">
-                <h2>Únete a <span>PoliFriends</span></h2>
+                <h2>Únete a <span>PoliticFriends</span></h2>
                 <p class="mt-3">Forma parte de nuestra comunidad y participa en la construcción colectiva</p>
             </div>
         </div>

@@ -210,26 +210,29 @@
                     toast.show();
                 };
 
+                window.shareReference1 = function() {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Únete a nuestra campaña',
+                            text: 'Por favor regístrate usando este enlace de campaña',
+                            url: modalConfig.formUrl,
+                        }).catch(err => {
+                            console.log('Error al compartir:', err);
+                        });
+                    } else {
+                        copyToClipboard();
+                        toast.show();
+
+                    }
+                };
+
                 const link = document.getElementById("modalp");
                 if (link && modalConfig && modalConfig.formUrl) {
                     link.href = modalConfig.formUrl;
-                }
-
-                // Compartir en WhatsApp
-                window.shareOnWhatsApp = function() {
-                    const message = `Únete a nuestra plataforma usando este enlace: ${modalConfig.formUrl}`;
-                    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-                };
-
-                // Compartir por Email
-                window.shareOnEmail = function() {
-                    const subject = "Invitación a unirse a nuestra plataforma";
-                    const body =
-                        `Hola,\n\nTe invito a registrarte en nuestra plataforma usando este enlace:\n${modalConfig.formUrl}\n\nSaludos`;
-                    window.location.href =
-                        `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                };
+                } 
             });
+
+            
         </script>
     @endif
 
@@ -237,7 +240,7 @@
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
         <div class="toast fade" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-primary text-white"><strong class="me-auto">PoliFriends</strong><small>11 mins
+            <div class="toast-header bg-primary text-white"><strong class="me-auto">PoliticFriends</strong><small>11 mins
                     ago</small>
                 <div data-bs-theme="dark">
                     <button class="btn-close" type="button" data-bs-dismiss="toast" aria-label="Close"></button>

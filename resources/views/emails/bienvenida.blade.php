@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido a PoliFriends</title>
+    <title>Bienvenido a PoliticFriends</title>
     <style type="text/css">
         /* Estilos base */
         body, html {
@@ -89,9 +89,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <!-- Reemplaza con tu logo real -->
-            <img src="https://ejemplo.com/logo-redcivica.png" alt="RedCívica" class="logo">
-            <h1>¡Bienvenido a PoliFriends!</h1>
+            <h1><span style="color: #D25252;">Politic</span>Friends</h1>
+            <h3>¡Bienvenido a PoliticFriends!</h3>
         </div>
         
         <div class="content">
@@ -120,10 +119,10 @@
         </div>
         
         <div class="footer">
-            <p>Saludos cordiales,<br><strong>Equipo PoliFriends</strong></p>
+            <p>Saludos cordiales,<br><strong>Equipo PoliticFriends</strong></p>
             <p>
                 <small>
-                    © 2025 PoliFriends. Todos los derechos reservados.<br>
+                    © 2025 PoliticFriends. Todos los derechos reservados.<br>
                     <a href="https://PoliticFriends.com" style="color: #D25252;">Visita nuestro sitio web</a>
                 </small>
             </p>

@@ -89,7 +89,7 @@
 
                     </div><a class="navbar-brand" href="{{ url('/') }}">
                         <div class="d-flex align-items-center py-3">
-                            <h2><span style="color: #D25252;">Poli</span>Friends</h2>
+                            <h3><span style="color: #D25252;">Politic</span>Friends</h3>
                         </div>
                     </a>
                 </div>

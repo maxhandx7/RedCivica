@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
- 
+
 
     public function index(Request $request)
     {
@@ -45,7 +45,7 @@ class UserController extends Controller
             $user->my_store_log($request);
             return redirect()->back()->with('success', 'Usuario credado con éxito');
         } catch (\Exception $th) {
-            return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario '. $th->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario ' . $th->getMessage());
         }
     }
 
@@ -85,14 +85,47 @@ class UserController extends Controller
     public function form(Request $request, User $user)
     {
         try {
-            if ($request->has('terms')) {
-                $user->my_store($request);
-            } else {
-                return redirect()->back()->with('error', 'Debe aceptar los términos y condiciones para continuar');
+            // Ejecutar el almacenamiento
+            $user->my_store($request);
+
+            // Determinar el tipo de respuesta basado en la solicitud
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Usuario creado con éxito',
+                    'redirect' => url()->previous() // Opcional: redirección para AJAX
+                ]);
             }
-            return redirect()->back()->with('success', 'Usuario credado con éxito');
+
+            return redirect()->back()->with('success', 'Usuario creado con éxito');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Manejo especial para errores de validación
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error de validación',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+
         } catch (\Exception $th) {
-            return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario '. $th->getMessage());
+            // Manejo de otros errores
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ocurrió un error al crear el usuario',
+                    'error' => $th->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Ocurrió un error al crear el usuario: ' . $th->getMessage())
+                ->withInput();
         }
     }
 }

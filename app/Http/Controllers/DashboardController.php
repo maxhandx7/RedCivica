@@ -30,7 +30,7 @@ class DashboardController extends Controller
         //noticias
 
         $noticias = [];
-        if ($user->hasRole('cliente')) {
+        /* if ($user->hasRole('cliente')) {
             $client = new Client();
             $res = $client->get('https://api.mediastack.com/v1/news', [
                 'query' => [
@@ -54,7 +54,7 @@ class DashboardController extends Controller
                 'razonpublica.com',
                 'semana.com',
                 'enter.co'
-                
+
             ];
 
 
@@ -70,7 +70,7 @@ class DashboardController extends Controller
                 }
             }
 
-        }
+        } */
         return view('home', compact(
             'referidosTotales',
             'probabilidadVoto',

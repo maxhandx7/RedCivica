@@ -17,6 +17,8 @@ class BusinessSeeder extends Seeder
         Business::create([
             'name'=>'AF',
             'description'=>'No description',
+            'mision' => 'To provide the best services to our clients',
+            'vision' => 'To be the leading company in our sector',
             'logo'=>'system/default.jpg',
             'mail'=>'contacto@afdeveloper.com',
             'address'=>' Cali, Colombia',

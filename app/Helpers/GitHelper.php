@@ -6,6 +6,7 @@ class GitHelper
 {
     public static function lastCommit()
     {
-        return trim(shell_exec('git log -1 --pretty="%h - %s"'));
+        $version = trim(shell_exec('git log -1 --pretty="%s"'));
+        return $version ? $version : 'Pruebas';
     }
 }

@@ -42,17 +42,14 @@ class User extends Authenticatable
         'image',
         'departamento',
         'pais',
-        /* 'codigo_postal',
-        'genero',
-        'fecha_nacimiento',
-        'estado',
-        'foto',
-        'mesa', */
+        'mesa',
         'password',
         'parent_id',
         'google_id',
         'referencia_id',
+        'business_id',
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -124,6 +121,11 @@ class User extends Authenticatable
         return $this->hasMany(Need::class, 'referido_id');
     }
 
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
+
 
     public function my_store($request)
     {
@@ -132,7 +134,6 @@ class User extends Authenticatable
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
-            'telefono' => 'nullable|digits_between:10,15',
             'email' => 'required|email|unique:users,email',
             'direccion' => 'nullable|string|max:255',
             'barrio' => 'nullable|string|max:255',
@@ -142,7 +143,6 @@ class User extends Authenticatable
             'parent_id' => 'nullable|exists:users,id',
             'fuente' => 'nullable|string|max:50',
             'medio' => 'nullable|string|max:50',
-            'terms' => 'accepted',
             'referencia_id' => 'nullable|exists:referencias,id',
         ]);
 

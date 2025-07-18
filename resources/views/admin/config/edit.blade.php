@@ -29,9 +29,9 @@
         <!-- Profile Card -->
         <div class="card card-borderless shadow-sm mb-4">
             <div class="card-body text-center">
-                <div class="avatar avatar-xxl mb-3">
-                    <img style="object-fit: contain;" id="profileImage" src="{{ asset('image/'.Auth::user()->image) ?? asset(Auth::user()->image) }}" 
-                         alt="profile" class="rounded-circle">
+                <div class="avatar avatar-5xl mb-3">
+                    <img  class="rounded-circle img-thumbnail shadow-sm"  src="{{  $image }}" 
+                         alt="profile" >
                 </div>
                 <div class="d-flex justify-content-center">
                     <input type="file" id="profile_image" name="profile_image" class="d-none" />

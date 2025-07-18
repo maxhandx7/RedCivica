@@ -6,9 +6,9 @@
         <!-- Columna izquierda con imagen decorativa (solo en pantallas grandes) -->
         <div class="col-lg-6 d-none d-lg-block login-bg">
             <div class="login-overlay"></div>
-            <div class="login-hero-text">
-                <h2>Bienvenido a <span>PoliFriends</span></h2>
-                <p class="mt-3">Plataforma de participación ciudadana y gestión comunitaria</p>
+            <div class="login-hero-text p-5" >
+                {{-- <h2>Bienvenido a <span>PoliticFriends</span></h2>
+                <p class="mt-3">Plataforma de participación ciudadana y gestión comunitaria</p> --}}
             </div>
         </div>
 
@@ -20,7 +20,7 @@
                     <div class="text-center mb-5">
                         <a href="{{ url('/') }}" class="d-inline-block">
                             <div class="d-flex align-items-center justify-content-center">
-                                <h1 class="logo-text"><span>Poli</span>Friends</h1>
+                                <h1 class="logo-text"><span>Politic</span>Friends</h1>
                             </div>
                         </a>
                         @include('alert.message')
@@ -110,10 +110,11 @@
     
     /* Panel izquierdo con imagen */
     .login-bg {
-        background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-image: url('{{ asset('image/Horacio1.jpg') }}');
         background-size: cover;
         background-position: center;
         position: relative;
+        border-radius: 15px;
     }
     
     .login-overlay {
@@ -122,7 +123,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(211, 82, 82, 0.8);
+        /* background: rgba(211, 82, 82, 0.8); */
     }
     
     .login-hero-text {
@@ -131,7 +132,7 @@
         color: white;
         padding: 2rem;
         max-width: 80%;
-        margin: 0 auto;
+        margin: 100px auto;
         height: 100%;
         display: flex;
         flex-direction: column;

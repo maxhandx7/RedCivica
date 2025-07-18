@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'PoliFriends – Dashboard')
+@section('title', 'PoliticFriends – Dashboard')
 
 @section('content')
     <div class="container py-4">

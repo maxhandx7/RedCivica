@@ -20,15 +20,10 @@ return new class extends Migration {
             $table->string('direccion')->nullable();
             $table->string('ciudad')->nullable();
             $table->string('barrio')->nullable();
-            $table->enum('estado',['activo', 'inactivo'])->default('activo'); 
+            $table->enum('estado', ['activo', 'inactivo'])->default('activo');
             $table->string('image')->default('/image/system/default.jpg');
-           $table->string('departamento')->nullable();
+            $table->string('departamento')->nullable();
             $table->string('pais')->default('Colombia');
-            /*$table->string('codigo_postal')->nullable();
-            $table->string('genero')->nullable();
-            $table->date('fecha_nacimiento')->nullable();
-             // Default state is 'activo'
-            $table->string('firma')->nullable(); */
             $table->string('mesa')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -37,7 +32,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
-
+            $table->unsignedBigInteger('business_id')->nullable();
+            $table->foreign('business_id')->references('id')->on('businesses')->nullOnDelete();
             $table->foreign('parent_id')->references('id')->on('users')->nullOnDelete();
         });
     }

@@ -22,15 +22,21 @@ class UserSeeder extends Seeder
             'cedula' => "1143982071",
             'telefono' => "3145561727",
             'barrio' => "puertas del sol",
+            'direccion' => "calle 1 # 2-3",
             'ciudad' => "Cali",
+            'estado' => "Activo",
+            'image' => "https://unsplash.it/400/200",
+            'departamento' => "Valle del Cauca",
+            'pais' => "Colombia",
             'mesa' => "A117",
             'email_verified_at' => now(),
-            'password' => Hash::make('17964290'), 
-            'parent_id' => null, 
+            'password' => Hash::make('17964290'),
+            'parent_id' => null,
+            'business_id' => 1,
         ]);
 
-         $user->assignRole("admin");
+        $user->assignRole("admin");
     }
 
-    
+
 }

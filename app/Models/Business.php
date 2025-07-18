@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    use HasFactory;
+   use HasFactory;
 
-     protected $casts = [
+   protected $casts = [
       'configurations' => 'json',
    ];
 
@@ -24,4 +24,16 @@ class Business extends Model
       'phone',
       'nit',
    ];
+
+   public function users()
+   {
+      return $this->hasMany(User::class);
+   }
+   public function needs()
+   {
+      return $this->hasMany(Need::class);
+   }
+
+
+
 }
