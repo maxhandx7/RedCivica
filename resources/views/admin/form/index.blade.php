@@ -16,17 +16,17 @@
                         <small>Invitado por: {{ $referidor->name }} {{ $referidor->surname }}</small>
                     </div>
 
-                   
-                        @include('alert.message')
-                        @if (session('success'))
-                            <div class="text-center mb-4">
-                                <a href="{{ route('login') }}" class="btn btn-primary">
-                                    <i class="fas fa-arrow-left me-2"></i>Iniciar sesión
-                                </a>
-                            </div>
-                        @endif
-                        @include('admin.form.form_body')
-                    
+
+                    @include('alert.message')
+                    @if (session('success'))
+                        <div class="text-center mb-4">
+                            <a href="{{ route('login') }}" class="btn btn-primary">
+                                <i class="fas fa-arrow-left me-2"></i>Iniciar sesión
+                            </a>
+                        </div>
+                    @endif
+                    @include('admin.form.form_body')
+
                 </div>
             </div>
         </div>
@@ -56,7 +56,8 @@
     <style>
         .form-container {
             background: url('{{ asset('image/' . $referido->campaña->image) }}') no-repeat center center;
-            background-size: cover;
+            background-size: 500px;
+            background-repeat: repeat;
             position: relative;
         }
 
@@ -89,9 +90,9 @@
             transform: translateY(-50%);
         }
 
-       
 
-    
+
+
 
         #title-logo {
             text-decoration: none;
