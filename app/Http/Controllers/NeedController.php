@@ -12,8 +12,7 @@ class NeedController extends Controller
     public function index()
     {
         // Obtener las necesidades registradas por el usuario autenticado
-        $needs = Need::where('registrado_por', auth()->id())
-            ->orderBy('created_at', 'desc')
+        $needs = Need::orderBy('created_at', 'desc')
             ->get();
 
         return view('admin.need.index', compact('needs'));
@@ -46,7 +45,6 @@ class NeedController extends Controller
         ]);
 
         $need = Need::where('id', $id)
-            ->where('registrado_por', auth()->id())
             ->firstOrFail();
 
         $need->update($request->only(['titulo', 'descripcion', 'estado']));
@@ -57,7 +55,6 @@ class NeedController extends Controller
     public function destroy($id)
     {
         $need = Need::where('id', $id)
-            ->where('registrado_por', auth()->id())
             ->firstOrFail();
 
         $need->delete();

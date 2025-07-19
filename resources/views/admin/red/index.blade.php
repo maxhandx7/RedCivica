@@ -98,15 +98,18 @@
 
                         @forelse($needs as $need)
                             <div
-                                class="d-flex justify-content-between hover-actions-trigger btn-reveal-trigger px-x1 hover-bg-100">
-                                <div class="form-check mb-0 d-flex align-items-center">
+                                class="d-flex justify-content-between hover-actions-trigger btn-reveal-trigger px-x1 hover-bg-100 ">
+                                <div class="form-check mb-0 d-flex align-items-center ">
                                     <input class="form-check-input rounded-3 form-check-line-through p-2 mt-0"
-                                        type="checkbox" id="need-{{ $need->id }}" {{$need->is_process()  ? '' : 'disabled' }}
+                                        type="checkbox" id="need-{{ $need->id }}" {{ $need->estado == 'resuelta' ? 'disabled' : ($need->estado == 'en proceso' ? 'disabled' : '') }}
                                         {{ $need->is_completed() ? 'checked' : '' }} 
                                         onchange="toggleNeedCompleted({{ $need->id }}, this.checked)">
                                     <label class="form-check-label mb-0 p-3" for="need-{{ $need->id }}">
                                         {{ $need->titulo }} - {{ Str::limit($need->descripcion, 60) }}
                                     </label>
+                                    <span class="badge bg-{{ $need->estado == 'resuelta' ? 'success' : ($need->estado == 'en proceso' ? 'warning' : 'secondary') }}">
+                                    {{ ucfirst($need->estado) }}
+                                </span>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <div class="dropdown font-sans-serif btn-reveal-trigger">
@@ -115,7 +118,7 @@
                                             type="button" data-bs-toggle="dropdown">
                                             <i class="fas fa-ellipsis-h"></i>
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-end border py-2">
+                                        <div class="dropdown-menu dropdown-menu-end border py-2 {{ $need->estado == 'resuelta' ? 'd-none' : ($need->estado == 'en proceso' ? 'd-none' : '') }}">
                                             <a class="dropdown-item text-danger" href="#"
                                                 onclick="deleteNeed({{ $need->id }})">Eliminar</a>
                                         </div>
