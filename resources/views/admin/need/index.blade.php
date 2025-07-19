@@ -14,8 +14,9 @@
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table mb-0 table-hover align-middle">
-                    <thead class="table-light">
+                    <thead class="table">
                         <tr>
+                            <th>Referido</th>
                             <th>Título</th>
                             <th>Descripción</th>
                             <th>Estado</th>
@@ -26,6 +27,10 @@
                     <tbody>
                         @forelse($needs as $need)
                         <tr>
+                            <td>
+                                <a href="{{ route('users.show', $need->registrado_por) }}" class="text-decoration-none">
+                                    {{ $need->registradoPor->name ?? 'Desconocido' }}
+                                </a>
                             <td>{{ $need->titulo }}</td>
                             <td>{{ Str::limit($need->descripcion, 60) }}</td>
                             <td>
@@ -91,6 +96,8 @@
         </form>
     </div>
 </div>
+
+
 
 {{-- Modal para editar necesidad --}}
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">

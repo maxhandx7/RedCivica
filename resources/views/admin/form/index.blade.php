@@ -135,5 +135,10 @@
         .card-header>* {
             position: relative;
         }
+
+        .spinner-grow {
+            --falcon-spinner-width: 8rem !important;
+            --falcon-spinner-height: 8rem !important;
+        }
     </style>
 @endsection

@@ -22,20 +22,19 @@ class NeedController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'referido_id' => 'required|exists:users,id',
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string'
         ]);
 
         Need::create([
-            'referido_id' => $request->referido_id,
             'registrado_por' => auth()->id(),
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'estado' => 'pendiente'
         ]);
 
-        return response()->json(['message' => 'Necesidad registrada con éxito']);
+        return redirect()->back()->with('success', 'Necesidad registrada con éxito');
+
     }
 
     public function update(Request $request, $id)
@@ -52,7 +51,7 @@ class NeedController extends Controller
 
         $need->update($request->only(['titulo', 'descripcion', 'estado']));
 
-        return response()->json(['message' => 'Necesidad actualizada']);
+          return redirect()->back()->with('success', 'Necesidad actualizada');
     }
 
     public function destroy($id)
@@ -63,6 +62,6 @@ class NeedController extends Controller
 
         $need->delete();
 
-        return response()->json(['message' => 'Necesidad eliminada']);
+          return redirect()->back()->with('success', 'Necesidad eliminada con éxito');
     }
 }

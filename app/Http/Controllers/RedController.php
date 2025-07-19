@@ -101,10 +101,9 @@ class RedController extends Controller
             ->get();
 
 
-        $needs = Need::where('referido_id', auth()->id())->get();
+        $needs = Need::where('registrado_por', auth()->id())->get();
 
     
-       
         
 
 
@@ -112,7 +111,7 @@ class RedController extends Controller
         return view('admin.red.index', [
             'referidos' => $referidos,
             'networkData' => $networkData,
-            'topReferidores' => $topReferidores, // 👈 lo pasamos a la vista
+            'topReferidores' => $topReferidores, 
             'needs' => $needs,
         ]);
     }

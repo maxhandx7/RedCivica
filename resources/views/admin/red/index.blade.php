@@ -91,47 +91,49 @@
                 </div>
 
                 <div class="card h-50 mt-3">
-  <div class="card-header border-bottom">
-    <h6 class="mb-0">Mis Necesidades</h6>
-  </div>
-  <div class="card-body p-0 overflow-hidden">
-    
-    @forelse($needs as $need)
-    <div class="d-flex justify-content-between hover-actions-trigger btn-reveal-trigger px-x1 hover-bg-100">
-      <div class="form-check mb-0 d-flex align-items-center">
-        <input 
-          class="form-check-input rounded-3 form-check-line-through p-2 mt-0"
-          type="checkbox"
-          id="need-{{ $need->id }}"
-          {{ $need->is_completed ? 'checked' : '' }}
-          onchange="toggleNeedCompleted({{ $need->id }}, this.checked)"
-        >
-        <label class="form-check-label mb-0 p-3" for="need-{{ $need->id }}">
-          {{ $need->title }}
-        </label>
-      </div>
-      <div class="d-flex align-items-center">
-        <div class="dropdown font-sans-serif btn-reveal-trigger">
-          <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" data-bs-toggle="dropdown">
-            <i class="fas fa-ellipsis-h"></i>
-          </button>
-          <div class="dropdown-menu dropdown-menu-end border py-2">
-            <a class="dropdown-item" href="#" onclick="editNeed({{ $need->id }}, '{{ $need->title }}')">Editar</a>
-            <a class="dropdown-item text-danger" href="#" onclick="deleteNeed({{ $need->id }})">Eliminar</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    @empty
-    <div class="p-3 text-center text-muted">No tienes necesidades registradas. ¡Agrega una nueva!</div>
-    @endforelse
-  </div>
-  <div class="card-footer bg-body-tertiary p-0">
-    <a class="btn btn-sm btn-link d-block py-2" href="#" onclick="addNeed()">
-      <i class="fas fa-plus me-1 fs-11"></i>Agregar nueva necesidad
-    </a>
-  </div>
-</div>
+                    <div class="card-header border-bottom">
+                        <h6 class="mb-0">Mis Necesidades</h6>
+                    </div>
+                    <div class="card-body p-0 overflow-hidden">
+
+                        @forelse($needs as $need)
+                            <div
+                                class="d-flex justify-content-between hover-actions-trigger btn-reveal-trigger px-x1 hover-bg-100">
+                                <div class="form-check mb-0 d-flex align-items-center">
+                                    <input class="form-check-input rounded-3 form-check-line-through p-2 mt-0"
+                                        type="checkbox" id="need-{{ $need->id }}" {{$need->is_process()  ? '' : 'disabled' }}
+                                        {{ $need->is_completed() ? 'checked' : '' }} 
+                                        onchange="toggleNeedCompleted({{ $need->id }}, this.checked)">
+                                    <label class="form-check-label mb-0 p-3" for="need-{{ $need->id }}">
+                                        {{ $need->titulo }} - {{ Str::limit($need->descripcion, 60) }}
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="dropdown font-sans-serif btn-reveal-trigger">
+                                        <button
+                                            class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none"
+                                            type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end border py-2">
+                                            <a class="dropdown-item text-danger" href="#"
+                                                onclick="deleteNeed({{ $need->id }})">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-3 text-center text-muted">No tienes necesidades registradas. ¡Agrega una nueva!
+                            </div>
+                        @endforelse
+                    </div>
+                    <div class="card-footer bg-body-tertiary p-0">
+                        <button class="btn btn-sm btn-link d-block py-2" data-bs-toggle="modal"
+                            data-bs-target="#createModal">
+                            <i class="fas fa-plus me-1 fs-11"></i>Agregar nueva necesidad
+                        </button>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -188,6 +190,53 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('needs.store') }}" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">Registrar necesidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" name="titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (session('success'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+            <div class="toast fade" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-primary text-white"><strong class="me-auto">PoliticFriends</strong><small>11
+                        mins
+                        ago</small>
+                    <div data-bs-theme="dark">
+                        <button class="btn-close" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="toast-body">Enlace copiado al portapapeles. Puedes compartirlo manualmente.</div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                let mensaje = @json(session('success'));
+                $('#toast-body').text(mensaje);
+            });
+        </script>
+    @endif
 
     {!! Html::script('/falcon/public/assets/js/vis-network.min.js') !!}
 
@@ -312,57 +361,17 @@
     </script>
 
     <script>
-  function toggleNeedCompleted(id, completed) {
-    fetch(`/needs/${id}/complete`, {
-      method: 'PATCH',
-      headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ is_completed: completed })
-    }).then(response => {
-      if (!response.ok) alert("Error al actualizar la necesidad.");
-    });
-  }
+        function deleteNeed(id) {
+            if (!confirm("¿Eliminar esta necesidad?")) return;
+            fetch(`/needs/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(() => location.reload());
+        }
 
-  function deleteNeed(id) {
-    if (!confirm("¿Eliminar esta necesidad?")) return;
-    fetch(`/needs/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      }
-    }).then(() => location.reload());
-  }
-
-  function addNeed() {
-    const title = prompt("Describe la nueva necesidad:");
-    if (title) {
-      fetch(`/needs`, {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': '{{ csrf_token() }}',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title })
-      }).then(() => location.reload());
-    }
-  }
-
-  function editNeed(id, currentTitle) {
-    const newTitle = prompt("Edita la necesidad:", currentTitle);
-    if (newTitle && newTitle !== currentTitle) {
-      fetch(`/needs/${id}`, {
-        method: 'PUT',
-        headers: {
-          'X-CSRF-TOKEN': '{{ csrf_token() }}',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title: newTitle })
-      }).then(() => location.reload());
-    }
-  }
-</script>
+    </script>
 
 @endsection
 @section('scripts')

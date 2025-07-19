@@ -109,7 +109,7 @@
                 referencia_id: $('#referencia_id').val(),
             };
 
-            const $btn = $(this);
+            const $btn = $('#login-link');
             const originalHtml = $btn.html();
             $btn.prop('disabled', true).html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...'
@@ -125,7 +125,8 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        window.location.href = "{{ route('login') }}";
+                      //  $('#loading-spinner').prop('disabled', true).prop('hidden', true);
+                        $('#exito').prop('disabled', false).removeAttr('hidden');
                     } else {
                         showErrorModal(response.message ||
                             'Error al procesar el formulario.');

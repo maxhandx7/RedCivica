@@ -184,12 +184,12 @@
             <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel" aria-labelledby="bootstrap-wizard-tab3"
                 id="bootstrap-wizard-tab3">
                 <div class="wizard-lottie-wrapper">
-                    <div class="lottie wizard-lottie mx-auto my-3"
+                    <div class="lottie wizard-lottie mx-auto my-3" id="exito" hidden
                         data-options='{"path":"../falcon/public/assets/img/animated-icons/celebration.json"}'>
                     </div>
                 </div>
                 <h4 class="mb-1">¡Tu cuenta está lista!</h4>
-                <p>a tu correo se envio información para iniciar sesion</p><a class="btn btn-primary px-5 my-3"
+                <p>Revisa tu correo para poder iniciar sesion</p><a class="btn btn-primary px-5 my-3" id="login-link"
                     href="{{ route('login') }}">Iniciar</a>
             </div>
         </div>

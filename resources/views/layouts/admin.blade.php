@@ -166,7 +166,17 @@
                                     </div>
                                 </a>
                                 @hasrole('admin')
-                                    <!-- parent pages--><a
+                                    <!-- parent pages-->
+                                    <a
+                                        class="nav-link {{ Request::segment(1) === 'needs' ? 'active' : '' }}"
+                                        href="{{ route('needs.index') }}" role="button">
+                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-hands-helping"></span></span><span
+                                                class="nav-link-text ps-1">Necesidades </span>
+                                        </div>
+                                    </a>
+                                    
+                                    <a
                                         class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
                                         href="{{ route('analitica.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
@@ -174,6 +184,8 @@
                                                 class="nav-link-text ps-1">Analítica </span>
                                         </div>
                                     </a>
+
+                                    
                                     <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}"
                                         href="{{ route('users.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span

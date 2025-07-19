@@ -18,13 +18,20 @@ class Need extends Model
         'estado',
     ];
 
-    public function referido()
-    {
-        return $this->belongsTo(User::class, 'referido_id');
-    }
 
     public function registradoPor()
     {
         return $this->belongsTo(User::class, 'registrado_por');
+    }
+
+    public function is_completed()
+    {
+        return $this->estado === 'resuelta';
+    }
+
+
+    public function is_process()
+    {
+        return $this->estado === 'en proceso';
     }
 }

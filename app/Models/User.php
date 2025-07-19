@@ -115,11 +115,7 @@ class User extends Authenticatable
         return $this->hasMany(Need::class, 'registrado_por');
     }
 
-    // Necesidades donde él es el beneficiario (el que las necesita)
-    public function necesidades()
-    {
-        return $this->hasMany(Need::class, 'referido_id');
-    }
+ 
 
     public function business()
     {
