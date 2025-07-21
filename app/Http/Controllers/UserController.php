@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Especialidad;
-use App\Http\Requests\User\StoreRequest;
+
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -58,7 +57,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('admin.user.edit', compact('user'));
+        $roles = Role::all();
+        return view('admin.user.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)

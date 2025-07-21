@@ -182,7 +182,7 @@ class User extends Authenticatable
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula,' . $user->id,
-            'telefono' => 'nullable|digits_between:10,15',
+            'telefono' => 'nullable',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'direccion' => 'nullable|string|max:255',
             'barrio' => 'nullable|string|max:255',
@@ -192,10 +192,10 @@ class User extends Authenticatable
             'fuente' => 'nullable|string|max:50',
             'medio' => 'nullable|string|max:50',
             'password' => 'nullable|string|min:8|confirmed',
-            'estado' => 'nullable|string|in:activo,inactivo',
+            'estado' => 'nullable',
             'referencia_id' => 'nullable|exists:referencias,id',
         ]);
-
+     
         // Preparar datos para actualización
         $updateData = [
             'name' => $validatedData['name'],
@@ -207,7 +207,7 @@ class User extends Authenticatable
             'barrio' => $validatedData['barrio'],
             'ciudad' => $validatedData['ciudad'],
             'mesa' => $validatedData['mesa'],
-            'estado' => $validatedData['estado'] ?? $user->estado,
+            'estado' =>  $user->estado,
             'parent_id' => $validatedData['parent_id'] ?? $user->parent_id,
             'fuente' => $validatedData['fuente'] ?? $user->fuente,
             'medio' => $validatedData['medio'] ?? $user->medio,

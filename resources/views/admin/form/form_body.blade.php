@@ -166,7 +166,7 @@
 
                             <!-- Numero de documento -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="bootstrap-wizard-num_doc">Barrio</label>
+                                <label class="form-label" for="bootstrap-wizard-num_doc">Barrio/Localidad</label>
                                 <input class="form-control" id="barrio" name="barrio" type="text"
                                     placeholder="Centro" required />
                                 <div class="invalid-feedback">
