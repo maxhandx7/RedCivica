@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.38 41.4">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d44848;
+        letter-spacing: -.02em;
+      }
+
+      .cls-1, .cls-2 {
+        font-family: ArialMT, Arial;
+        font-size: 35px;
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        fill: #343f4b;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(0 30.04)"><tspan x="0" y="0">P</tspan></text>
+  <text class="cls-2" transform="translate(22 30.04)"><tspan x="0" y="0">F</tspan></text>
+</svg>

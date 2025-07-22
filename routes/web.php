@@ -12,6 +12,8 @@ use App\Http\Controllers\RedController;
 use App\Http\Controllers\ReferenciaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +74,14 @@ Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormular
 Route::post('/referidos/create', [UserController::class, 'form'])->name('users.form');
 Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
+
+Route::get('/generate-sitemap', function () {
+    Sitemap::create()
+        ->add(Url::create('/'))
+        ->writeToFile(public_path('sitemap.xml'));
+
+    return 'Sitemap generado ✅';
+});
 
 Auth::routes();
 

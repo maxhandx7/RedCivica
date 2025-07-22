@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="">
+    <meta name="description" content="{{ $business->description }}">
     <meta name="keywords" content="">
 
 
@@ -19,9 +19,9 @@
     <!-- ===============================================-->
     <!-- Favicons-->
     <!-- ===============================================-->
-    <link rel="shortcut icon" type="image/x-icon" href="/image/default.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('image/' . $business->logo) }}">
 
-    <meta name="msapplication-TileImage" content="/image/default.svg">
+    <meta name="msapplication-TileImage" content="{{ asset('image/' . $business->logo) }}">
     <meta name="theme-color" content="#ffffff">
     {!! Html::script('/falcon/public/assets/js/config.js') !!}
     {!! Html::script('/falcon/public/vendors/simplebar/simplebar.min.js') !!}
@@ -111,13 +111,10 @@
                                             </h6>
                                             <p class="mb-0 text-600 fs--1">
                                                 {{ Auth::user()->email }}
-                                                @if (Auth::user()->created_at)
                                                     <span class="d-block mt-0 fs--2 text-400">
-                                                        {{-- Formatear la fecha de creación del usuario --}}
                                                         Miembro desde
                                                         {{ Auth::user()->created_at->translatedFormat('F Y') }}
                                                     </span>
-                                                @endif
                                             </p>
                                         </div>
                                     </div>
@@ -226,8 +223,8 @@
                                 class="toggle-line"></span></span></button>
                     <a class="navbar-brand me-1 me-sm-3" href="{{ url('/') }}">
                         <div class="d-flex align-items-center">
-                            <h2><span style="color: red !important;"
-                                    class="font-sans-serif text-primary">Red</span>Civica</h2>
+                            <h4><span style="color: red !important;"
+                                    class="font-sans-serif text-primary">Politic</span>Friends</h4>
                         </div>
                     </a>
                     <ul class="navbar-nav align-items-center d-none d-lg-block">

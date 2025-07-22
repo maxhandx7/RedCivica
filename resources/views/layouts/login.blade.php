@@ -16,9 +16,9 @@
     <!-- ===============================================-->
     <!--    Favicons-->
     <!-- ===============================================-->
-        <link rel="shortcut icon" type="image/x-icon" href="/image/default.svg">
+        <link rel="shortcut icon" type="image/x-icon" href="/image/system/politicfriends_vectorized2.svg">
 
-    <meta name="msapplication-TileImage" content="/image/default.svg">
+    <meta name="msapplication-TileImage" content="/image/system/politicfriends_vectorized2.svg">
     <meta name="theme-color" content="#ffffff">
 
     {!! Html::script('falcon/public/assets/js/config.js') !!}
