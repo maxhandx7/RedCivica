@@ -52,7 +52,7 @@ class BusinessController extends Controller
             $configurations['facebook'] = $validatedData['facebook'] ? $validatedData['facebook'] : null;
             $configurations['twitter'] = $validatedData['twitter'] ? $validatedData['twitter'] : null;
             $configurations['instagram'] = $validatedData['instagram'] ? $validatedData['instagram'] : null;
-            $business->configurations = $configurations;
+            $business->configurations = $configurations ?? [];
             $business->update($request->all());
             return redirect()->route('business.index')->with('success', 'Se ha actualizado la empresa');
         } catch (\Exception $th) {

@@ -90,7 +90,7 @@
                     @endif
                 </div>
 
-                <div class="card h-50 mt-3">
+                <div class="card h-50 mt-3 mb-7">
                     <div class="card-header border-bottom">
                         <h6 class="mb-0">Mis Necesidades</h6>
                     </div>

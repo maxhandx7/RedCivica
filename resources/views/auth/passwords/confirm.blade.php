@@ -42,6 +42,13 @@
                         </div>
                     </form>
                 </div>
+                <div class="card-footer fixed-bottom ">
+                        <div class="container text-center py-5">
+                            <a href="{{ url('/?') }}" class="btn btn-outline-primary ">
+                                &#8592; Volver Atrás
+                            </a>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
