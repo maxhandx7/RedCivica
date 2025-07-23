@@ -2,16 +2,16 @@
     <div class="bg-body-tertiary">
         <ul class="nav justify-content-between nav-wizard">
             <li class="nav-item"><a class="nav-link active fw-semi-bold" href="#bootstrap-wizard-tab1" data-bs-toggle="tab"
-                    data-wizard-step="2"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span
+                    data-wizard-step="1"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span
                                 class="fas fa-user"></span></span></span><span
                         class="d-none d-md-block mt-1 fs-10">Personal</span></a></li>
             <li class="nav-item"><a class="nav-link fw-semi-bold" href="#bootstrap-wizard-tab2" data-bs-toggle="tab"
-                    data-wizard-step="3"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span
+                    data-wizard-step="2"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span
                                 class="fas fa-map-marker-alt"></span></span></span><span
                         class="d-none d-md-block mt-1 fs-10">Ubicación</span></a></li>
 
             <li class="nav-item"><a class="nav-link fw-semi-bold" href="#bootstrap-wizard-tab3" data-bs-toggle="tab"
-                    data-wizard-step="5"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span
+                    data-wizard-step="3"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span
                                 class="fas fa-thumbs-up"></span></span></span><span
                         class="d-none d-md-block mt-1 fs-10">Fin</span></a></li>
         </ul>
@@ -86,11 +86,9 @@
                             <!-- Teléfono -->
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" for="bootstrap-wizard-phone">Correo electronico*</label>
-                                <input class="form-control" type="email" name="phone"
-                                    placeholder="name@example.com" id="email" required />
-                                <div class="invalid-feedback">
-                                    Este campo es obligatorio.
-                                </div>
+                                <input class="form-control" type="email" name="email"
+                                    placeholder="name@example.com" id="email"  />
+                               
                             </div>
                         </div>
 
@@ -100,10 +98,8 @@
                                 <label class="form-label" for="bootstrap-wizard-phone">Telefono</label>
                                 <input class="form-control" type="tel" name="telefono"
                                     data-input-mask='{"mask":"+57 (999) 999-9999"}' placeholder="(XXX) XXX-XXXX"
-                                    id="telephoneInputmask" required />
-                                <div class="invalid-feedback">
-                                    Este campo es obligatorio.
-                                </div>
+                                    id="telephoneInputmask"  />
+                               
                             </div>
                         </div>
 
@@ -122,56 +118,50 @@
 
                         <div class="mb-3">
                             <label class="form-label" for="bootstrap-wizard-country">Pais</label>
-                            <select class="form-select " name="pais" id="pais" required>
+                            <select class="form-select " name="pais" id="pais" >
                                 <option disabled selected value="">Seleccione un país</option>
                                 <option value="3686110">Colombia</option>
                             </select>
-                            <div class="invalid-feedback">
-                                Este campo es obligatorio.
-                            </div>
+                           
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="bootstrap-wizard-state">Departamento/Estado</label>
-                            <select class="form-select " name="departamento" id="departamento" disabled required>
+                            <select class="form-select " name="departamento" id="departamento" disabled >
                                 <option selected disabled value="">Seleccione un estado</option>
                             </select>
-                            <div class="invalid-feedback">
-                                Este campo es obligatorio.
-                            </div>
+                            
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="bootstrap-wizard-city">Ciudad</label>
-                            <select class="form-select " name="ciudad" id="ciudad" disabled required>
+                            <select class="form-select " name="ciudad" id="ciudad" disabled >
                                 <option selected disabled value="">Seleccione una ciudad</option>
                             </select>
-                            <div class="invalid-feedback">
-                                Este campo es obligatorio.
-                            </div>
                         </div>
 
 
 
                         <div class="row">
                             <!-- Tipo de documento -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="bootstrap-wizard-id_type">Dirección</label>
                                 <input class="form-control" id="direccion" name="direccion" type="text"
-                                    placeholder="CLL. 11#21-54" required />
-                                <div class="invalid-feedback">
-                                    Este campo es obligatorio.
-                                </div>
+                                    placeholder="CLL. 11#21-54"  />
+                               
                             </div>
 
                             <!-- Numero de documento -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="bootstrap-wizard-num_doc">Barrio/Localidad</label>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="bootstrap-wizard-num_doc">Barrio</label>
                                 <input class="form-control" id="barrio" name="barrio" type="text"
-                                    placeholder="Centro" required />
-                                <div class="invalid-feedback">
-                                    Este campo es obligatorio.
-                                </div>
+                                    placeholder="Centro"  />
+                            </div>
+
+                             <div class="col-md-4 mb-3">
+                                <label class="form-label" for="bootstrap-wizard-id_type">Comuna/Localidad</label>
+                                <input class="form-control" id="" name="" type="text"
+                                    placeholder="Comuna 18/Chapinero"  />
                             </div>
                         </div>
                     </div>
@@ -189,7 +179,9 @@
                     </div>
                 </div>
                 <h4 class="mb-1">¡Tu cuenta está lista!</h4>
-                <p>Revisa tu correo para poder iniciar sesion</p><a class="btn btn-primary px-5 my-3" id="login-link"
+                <p>Revisa tu correo para poder iniciar sesion <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">términos y condiciones</a></p>
+                
+                <a class="btn btn-primary px-5 my-3" id="login-link"
                     href="{{ route('login') }}">Iniciar</a>
             </div>
         </div>

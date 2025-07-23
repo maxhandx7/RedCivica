@@ -60,7 +60,7 @@
                     success: function(response) {
                         const cities = response.geonames;
                         $('#ciudad').empty().append(new Option("Seleccione una ciudad",
-                        ""));
+                            ""));
                         cities.forEach(city => {
                             $('#ciudad').append(new Option(city.name, city
                                 .geonameId));
@@ -113,7 +113,7 @@
             const originalHtml = $btn.html();
             $btn.prop('disabled', true).html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...'
-                );
+            );
 
             $.ajax({
                 url: "{{ route('users.form') }}",
@@ -125,7 +125,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                      //  $('#loading-spinner').prop('disabled', true).prop('hidden', true);
+                        //  $('#loading-spinner').prop('disabled', true).prop('hidden', true);
                         $('#exito').prop('disabled', false).removeAttr('hidden');
                     } else {
                         showErrorModal(response.message ||
@@ -135,7 +135,20 @@
                 error: function(xhr) {
                     let errorMessage = 'Ocurrió un error al enviar el formulario';
                     if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
+                        errorMessage = xhr.responseJSON.message + " " + xhr.responseJSON
+                            .errors;
+                    }
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        errorMessage = xhr.responseJSON.message + ":<br>";
+
+                        for (const [field, messages] of Object.entries(xhr.responseJSON
+                                .errors)) {
+                            messages.forEach(msg => {
+                                errorMessage += `• ${msg}<br>`;
+                            });
+                        }
+
+                        showErrorModal(errorMessage);
                     }
                     showErrorModal(errorMessage);
                 },
@@ -146,8 +159,20 @@
         });
 
         function showErrorModal(message) {
-            $('#error-modal .flex-1 p').text(message);
+            $('#error-modal .flex-1 p').html(message);
             $('#error-modal').modal('show');
+            goToPreviousStep();
         }
+
+
+        function goToPreviousStep() {
+            const $activeTab = $('#wizard .nav-wizard .nav-link.active');
+            const $prevTab = $activeTab.closest('li').prev().find('.nav-link');
+
+            if ($prevTab.length) {
+                $prevTab.tab('show');
+            }
+        }
+
     });
 </script>
