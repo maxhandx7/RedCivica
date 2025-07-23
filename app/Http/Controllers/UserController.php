@@ -33,6 +33,7 @@ class UserController extends Controller
 
     public function create()
     {
+        
         $users = User::get();
         return view('admin.user.create', compact('users'));
     }
@@ -64,6 +65,10 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         try {
+            if ($user->id === 1) {
+                return redirect()->back()->with('error', 'No puedes modificar este usuario');
+            }
+
             $user->my_update($request, $user);
             return redirect()->route('users.index')->with('success', 'Usuario modificado');
         } catch (\Exception $th) {
@@ -75,6 +80,20 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
+
+            if ($user->id === 1) {
+                return redirect()->back()->with('error', 'No puedes eliminar a este usuario');
+            }
+
+            if ($user->id === auth()->id()) {
+                return redirect()->back()->with('error', 'No puedes eliminar tu propio usuario');
+            }
+
+            if ($user->hasRole('admin')) {
+                return redirect()->back()->with('error', 'No puedes eliminar un usuario con rol de administrador');
+            }
+
+
             $user->delete();
             return redirect()->route('users.index')->with('success', 'Usuario eliminado');
         } catch (\Exception $th) {
