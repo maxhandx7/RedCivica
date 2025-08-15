@@ -36,7 +36,6 @@
             border-radius: 0.375rem;
             background-color: #fff;
         }
-       
     </style>
 @endsection
 
@@ -49,16 +48,49 @@
                 </div>
 
                 <div class="col-auto">
-                    <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus me-1"></i> Nuevo Usuario
-                    </a>
+
+                    <div class="dropdown font-sans-serif btn-reveal-trigger">
+                        <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
+                            type="button" data-bs-toggle="dropdown" data-boundary="viewport">
+                            <span class="fas fa-ellipsis-h fs-11"></span>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end border py-2">
+                            <!-- Nuevo usuario -->
+                            <a href="{{ route('users.create') }}" class="dropdown-item">
+                                <i class="fas fa-plus me-1"></i> Nuevo Usuario
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <!-- Exportar usuarios -->
+                            <a href="{{ url('/exportar-usuarios') }}" class="dropdown-item">
+                                <i class="fas fa-file-export me-1"></i> Exportar
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <!-- Importar usuarios -->
+                            <form action="/importar-usuarios" method="POST" enctype="multipart/form-data"
+                                class="dropdown-item p-0 px-3">
+                                @csrf
+                                <label class="form-label mb-1" for="archivo_excel">
+                                    <i class="fas fa-file-import me-1"></i> Importar
+                                </label>
+                                <input type="file" name="archivo_excel" id="archivo_excel"
+                                    class="form-control form-control-sm mb-2" required>
+                                <button type="submit" class="btn btn-sm btn-primary w-100">Subir</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
         <div class="card-body p-0">
             @if ($users->isEmpty())
-                <div class="empty-state">
+                <div class="empty-state m-3">
                     <div class="empty-state-icon">
                         <i class="fas fa-users"></i>
                     </div>

@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class AnaliticaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+    }
     public function index()
     {
         $user = auth()->user();

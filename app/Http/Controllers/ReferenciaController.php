@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\ActividadService;
 use App\Constants\ActividadPlantillas;
+use Spatie\Permission\Traits\HasRoles;
 
 class ReferenciaController extends Controller
 {
@@ -111,16 +112,16 @@ class ReferenciaController extends Controller
 
 
         if (!$referidor || !$referido) {
-            return redirect('login')->with('error', 'El referidor o la referencia no existen');
+            return back()->with('error', 'El referidor o la referencia no existen');
         }
         if (!$referido->campaña->fecha_fin || $referido->campaña->fecha_fin < now()) {
-            return redirect('login')->with('error', 'La campaña asociada a la referencia ha finalizado');
+            return back()->with('error', 'La campaña asociada a la referencia ha finalizado');
         }
         if (!$referido->campaña) {
-            return redirect('login')->with('error', 'La referencia no tiene una campaña asociada');
+            return back()->with('error', 'La referencia no tiene una campaña asociada');
         }
         if ($referido->campaña->estado !== 'activo') {
-            return redirect('login')->with('error', 'La campaña asociada a la referencia no está activa');
+            return back()->with('error', 'La campaña asociada a la referencia no está activa');
         }
         if ($referido->campaña->tipo !== 'publica' && $referido->user->id !== auth()->id()) {
             return back()->with('error', 'La campaña asociada a la referencia no es pública');

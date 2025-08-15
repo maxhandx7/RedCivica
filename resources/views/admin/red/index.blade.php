@@ -144,7 +144,32 @@
         {{-- Tabla completa de referidos --}}
         <div class="card shadow-sm">
             <div class="card-header ">
-                <h5 class="mb-0">Listado completo de tus referidos</h5>
+                <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">Listado completo de tus referidos</h5>
+                </div>
+
+                <div class="col-auto">
+
+                    <div class="dropdown font-sans-serif btn-reveal-trigger">
+                        <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
+                            type="button" data-bs-toggle="dropdown" data-boundary="viewport">
+                            <span class="fas fa-ellipsis-h fs-11"></span>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end border py-2">
+                           
+
+                            <!-- Exportar usuarios -->
+                            <a href="{{ url('/exportar-clientes') }}" class="dropdown-item">
+                                <i class="fas fa-file-export me-1"></i> Exportar
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">

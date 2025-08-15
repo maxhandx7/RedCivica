@@ -45,7 +45,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="bootstrap-wizard-last-name">Apellido*</label>
                                 <input class="form-control" type="text" name="surname" placeholder="Gonzales"
-                                    id="last-name" required />
+                                    id="surname" required />
                                 <div class="invalid-feedback">
                                     Este campo es obligatorio.
                                 </div>
@@ -57,7 +57,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="bootstrap-wizard-id_type">Tipo de
                                     documento*</label>
-                                <select class="form-select" name="" id="" required>
+                                <select class="form-select" name="tipo_documento" id="tipo_documento" >
                                     <option selected disabled value="">Seleccione tipo de documento
                                     </option>
                                     <option value="cc">Cedula</option>
@@ -139,28 +139,26 @@
                                 <option selected disabled value="">Seleccione una ciudad</option>
                             </select>
                         </div>
-
-
-
-                        <div class="row">
-                            <!-- Tipo de documento -->
-                            <div class="col-md-4 mb-3">
+                    
+                          <div class="mb-3">
                                 <label class="form-label" for="bootstrap-wizard-id_type">Dirección</label>
                                 <input class="form-control" id="direccion" name="direccion" type="text"
-                                    placeholder="CLL. 11#21-54"  />
+                                    placeholder="Digite su dirección"  />
                                
                             </div>
 
+
+                        <div class="row">
                             <!-- Numero de documento -->
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label" for="bootstrap-wizard-num_doc">Barrio</label>
                                 <input class="form-control" id="barrio" name="barrio" type="text"
                                     placeholder="Centro"  />
                             </div>
 
-                             <div class="col-md-4 mb-3">
+                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="bootstrap-wizard-id_type">Comuna/Localidad</label>
-                                <input class="form-control" id="" name="" type="text"
+                                <input class="form-control" id="comuna" name="comuna" type="text"
                                     placeholder="Comuna 18/Chapinero"  />
                             </div>
                         </div>

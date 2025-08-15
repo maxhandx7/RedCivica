@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\ClientesExport;
 use App\Http\Controllers\ActividadController;
 use App\Http\Controllers\AnaliticaController;
 use App\Http\Controllers\BusinessController;
@@ -14,6 +15,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use App\Exports\UsuariosExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsuariosImport;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +73,19 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/needs/{id}', [NeedController::class, 'update'])->name('needs.update');
     Route::delete('/needs/{id}', [NeedController::class, 'destroy'])->name('needs.destroy');
     Route::patch('/needs/{id}/complete', [NeedController::class, 'toggleComplete'])->name('needs.toggle');
+
+
+    Route::get('/exportar-usuarios', function () {
+        return Excel::download(new UsuariosExport, 'usuarios.xlsx');
+    });
+
+    Route::get('/exportar-clientes', function () {
+        return Excel::download(new ClientesExport, 'clientes.xlsx');
+    });
+    Route::post('/importar-usuarios', function (Request $request) {
+        Excel::import(new UsuariosImport, $request->file('archivo_excel'));
+        return redirect()->back()->with('success', 'Los usuarios han sido importados correctamente.');
+    });
 });
 Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
     ->name('referidos.registro');

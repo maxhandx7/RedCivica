@@ -38,6 +38,7 @@ class User extends Authenticatable
         'barrio',
         'direccion',
         'ciudad',
+        'comuna',
         'estado',
         'image',
         'departamento',
@@ -115,7 +116,7 @@ class User extends Authenticatable
         return $this->hasMany(Need::class, 'registrado_por');
     }
 
- 
+
 
     public function business()
     {
@@ -126,25 +127,29 @@ class User extends Authenticatable
     public function my_store($request)
     {
 
-        $request->validate([
+        /* $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'direccion' => 'nullable|string|max:255',
             'barrio' => 'nullable|string|max:255',
-            'ciudad' => 'nullable|string|max:255',
+            'ciudad' => 'nullable',
+            'departamento' => 'nullable',
+            'comuna' => 'nullable|string|max:50',
+            'telefono' => 'nullable|string|max:50',
+            'pais' => 'nullable',
             'estado' => 'nullable|string|in:activo,inactivo',
             'mesa' => 'nullable|string|max:50',
             'parent_id' => 'nullable|exists:users,id',
             'fuente' => 'nullable|string|max:50',
             'medio' => 'nullable|string|max:50',
             'referencia_id' => 'nullable|exists:referencias,id',
-        ]);
+        ]); */
 
         $password = Str::random(8);
 
-        $user = self::create([
+        $user = self::firstOrNew([
             'name' => $request->name,
             'surname' => $request->surname,
             'cedula' => $request->cedula,
@@ -152,7 +157,10 @@ class User extends Authenticatable
             'email' => $request->email,
             'direccion' => $request->direccion,
             'barrio' => $request->barrio,
+            'departamento' => $request->departamento,
             'ciudad' => $request->ciudad,
+            'comuna' => $request->comuna,
+            'pais' => $request->pais ?? 'Colombia',
             'estado' => $request->estado ?? 'activo',
             'mesa' => $request->mesa,
             'parent_id' => $request->parent_id,
@@ -161,6 +169,9 @@ class User extends Authenticatable
             'password' => Hash::make($password),
             'referencia_id' => $request->referencia_id,
         ]);
+
+        $user->fill($request->all());
+        $user->save();
 
         if ($user) {
             $user->assignRole("cliente");
@@ -187,6 +198,9 @@ class User extends Authenticatable
             'direccion' => 'nullable|string|max:255',
             'barrio' => 'nullable|string|max:255',
             'ciudad' => 'nullable|string|max:255',
+            'departamento' => 'nullable|string|max:255',
+            'comuna' => 'nullable|string|max:50',
+            'pais' => 'nullable|string|max:50',
             'mesa' => 'nullable|string|max:50',
             'parent_id' => 'nullable|exists:users,id',
             'fuente' => 'nullable|string|max:50',
@@ -195,19 +209,22 @@ class User extends Authenticatable
             'estado' => 'nullable',
             'referencia_id' => 'nullable|exists:referencias,id',
         ]);
-     
+
         // Preparar datos para actualización
         $updateData = [
-            'name' => $validatedData['name'],
-            'surname' => $validatedData['surname'],
-            'cedula' => $validatedData['cedula'],
-            'telefono' => $validatedData['telefono'],
-            'email' => $validatedData['email'],
-            'direccion' => $validatedData['direccion'],
-            'barrio' => $validatedData['barrio'],
-            'ciudad' => $validatedData['ciudad'],
-            'mesa' => $validatedData['mesa'],
-            'estado' =>  $user->estado,
+            'name' => $validatedData['name'] ?? null,
+            'surname' => $validatedData['surname'] ?? null,
+            'cedula' => $validatedData['cedula'] ?? null,
+            'telefono' => $validatedData['telefono'] ?? null,
+            'email' => $validatedData['email'] ?? null,
+            'direccion' => $validatedData['direccion'] ?? null,
+            'barrio' => $validatedData['barrio'] ?? null,
+            'ciudad' => $validatedData['ciudad'] ?? null,
+            'departamento' => $validatedData['departamento'] ?? null,
+            'comuna' => $validatedData['comuna'] ?? null,
+            'pais' => $validatedData['pais'] ?? 'Colombia',
+            'mesa' => $validatedData['mesa'] ?? null,
+            'estado' => $user->estado ?? null,
             'parent_id' => $validatedData['parent_id'] ?? $user->parent_id,
             'fuente' => $validatedData['fuente'] ?? $user->fuente,
             'medio' => $validatedData['medio'] ?? $user->medio,

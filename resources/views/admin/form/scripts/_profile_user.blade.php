@@ -94,12 +94,13 @@
 
             const formData = {
                 name: $('#name').val(),
-                surname: $('#last-name').val(),
+                surname: $('#surname').val(),
                 cedula: $('#cedula').val(),
                 email: $('#email').val(),
                 telefono: $('#telephoneInputmask').val(),
                 pais: $('#pais').val(),
                 departamento: $('#departamento').val(),
+                comuna: $('#comuna').val(),
                 ciudad: $('#ciudad').val(),
                 direccion: $('#direccion').val(),
                 barrio: $('#barrio').val(),
@@ -175,4 +176,24 @@
         }
 
     });
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxc1s_F585VkZIt3IFS8eZVMosLrYHtD0&libraries=places"></script>
+<script>
+    function initAutocomplete() {
+        const input = document.getElementById("direccion");
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            componentRestrictions: { country: "co" }, // Colombia
+            fields: ["formatted_address", "geometry"]
+        });
+
+        autocomplete.addListener("place_changed", function() {
+            const place = autocomplete.getPlace();
+            console.log("Dirección seleccionada:", place.formatted_address);
+            // Si quieres guardar lat/lng también
+            // console.log(place.geometry.location.lat(), place.geometry.location.lng());
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", initAutocomplete);
 </script>

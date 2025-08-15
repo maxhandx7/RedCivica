@@ -6,10 +6,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+    }
 
     public function index(Request $request)
     {
@@ -33,7 +39,7 @@ class UserController extends Controller
 
     public function create()
     {
-        
+
         $users = User::get();
         return view('admin.user.create', compact('users'));
     }
@@ -51,7 +57,16 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-
+        if ($user->ciudad) {
+            $response = Http::get('https://secure.geonames.org/getJSON', [
+                'geonameId' => $user->ciudad,
+                'username' => 'Alan'
+            ]);
+        }
+        if ($response->successful()) {
+            $geoData = $response->json();
+            $user->ciudad = $geoData['name'] ?? $user->ciudad;
+        }
         return view('admin.user.show', compact('user'));
     }
 
@@ -59,6 +74,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
+        if ($user->id === 1) {
+            return redirect()->back()->with('error', 'No puedes modificar este usuario');
+        }
         return view('admin.user.edit', compact('user', 'roles'));
     }
 

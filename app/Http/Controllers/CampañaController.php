@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CampañaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+    }
     public function index()
     {
         $campañas = Campaña::paginate(10);
