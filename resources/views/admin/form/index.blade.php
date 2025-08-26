@@ -12,8 +12,8 @@
                 <div class="card shadow-lg">
                     <div class="card-header bg-primary text-center py-4 ">
                         <h2 class="text-white">{{ $referido->campaña->name }}</h2>
-                        <p class="mb-0">{{ $referido->campaña->description }}</p>
-                        <small>Invitado por: {{ $referidor->name }} {{ $referidor->surname }}</small>
+                        <p class="mb-0 text-white">{{ $referido->campaña->description }}</p>
+                        <small class="text-white">Invitado por: {{ $referidor->name }} {{ $referidor->surname }}</small>
                     </div>
 
 
