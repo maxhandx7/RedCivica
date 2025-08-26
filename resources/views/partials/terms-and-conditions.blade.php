@@ -5,11 +5,11 @@
     <p class="text-muted">Última actualización: 17/07/2025</p>
 
     <p>Bienvenido a <strong>PoliticFriends</strong>, una plataforma digital creada para fomentar la participación política, ciudadana y social a través de campañas, redes de apoyo y herramientas de gestión comunitaria.</p>
-    <p>Al registrarte, acceder o utilizar nuestra aplicación móvil o plataforma web, aceptas cumplir estos Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, por favor no utilices la plataforma.</p>
+    <p>Al registrarte, acceder o utilizar nuestra plataforma web, aceptas cumplir estos Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, por favor no utilices la plataforma.</p>
 
     <h4>1. Registro y Uso de la Cuenta</h4>
     <ul>
-        <li>Debes ser mayor de 14 años para crear una cuenta en PoliticFriends.</li>
+        <li>Debes ser mayor de 18 años para crear una cuenta en PoliticFriends.</li>
         <li>Es responsabilidad del usuario proporcionar información veraz, actualizada y completa.</li>
         <li>El usuario se compromete a mantener la confidencialidad de sus credenciales de acceso.</li>
         <li>Cada cuenta es personal e intransferible.</li>

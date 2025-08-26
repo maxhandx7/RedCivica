@@ -126,8 +126,7 @@ class User extends Authenticatable
 
     public function my_store($request)
     {
-
-        /* $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
@@ -145,44 +144,75 @@ class User extends Authenticatable
             'fuente' => 'nullable|string|max:50',
             'medio' => 'nullable|string|max:50',
             'referencia_id' => 'nullable|exists:referencias,id',
-        ]); */
-
-        $password = Str::random(8);
-
-        $user = self::firstOrNew([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'cedula' => $request->cedula,
-            'telefono' => $request->telefono,
-            'email' => $request->email,
-            'direccion' => $request->direccion,
-            'barrio' => $request->barrio,
-            'departamento' => $request->departamento,
-            'ciudad' => $request->ciudad,
-            'comuna' => $request->comuna,
-            'pais' => $request->pais ?? 'Colombia',
-            'estado' => $request->estado ?? 'activo',
-            'mesa' => $request->mesa,
-            'parent_id' => $request->parent_id,
-            'fuente' => $request->fuente,
-            'medio' => $request->medio,
-            'password' => Hash::make($password),
-            'referencia_id' => $request->referencia_id,
         ]);
 
-        $user->fill($request->all());
-        $user->save();
+        $password = Str::random(12);
+
+        // Buscar si ya existe un usuario con la misma cédula o email
+        $user = self::where('cedula', $request->cedula)
+            ->orWhere('email', $request->email)
+            ->first();
 
         if ($user) {
-            $user->assignRole("cliente");
-            if ($user->email) {
-                Mail::to($user->email)->send(new BienvenidaUsuarioMail($user, $password));
-            }
-            $this->notified_form($user->id, $request->parent_id);
+            // Si el usuario ya existe, actualizar sus datos
+            $user->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'telefono' => $request->telefono,
+                'direccion' => $request->direccion,
+                'barrio' => $request->barrio,
+                'departamento' => $request->departamento,
+                'ciudad' => $request->ciudad,
+                'comuna' => $request->comuna,
+                'pais' => $request->pais ?? 'Colombia',
+                'estado' => $request->estado ?? 'activo',
+                'mesa' => $request->mesa,
+                'parent_id' => $request->parent_id,
+                'fuente' => $request->fuente,
+                'medio' => $request->medio,
+                'referencia_id' => $request->referencia_id,
+            ]);
         } else {
-            throw new \Exception('Error al usuario');
+            // Si no existe, crear nuevo usuario
+            $user = self::create([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'cedula' => $request->cedula,
+                'telefono' => $request->telefono,
+                'email' => $request->email,
+                'direccion' => $request->direccion,
+                'barrio' => $request->barrio,
+                'departamento' => $request->departamento,
+                'ciudad' => $request->ciudad,
+                'comuna' => $request->comuna,
+                'pais' => $request->pais ?? 'Colombia',
+                'estado' => $request->estado ?? 'activo',
+                'mesa' => $request->mesa,
+                'parent_id' => $request->parent_id,
+                'fuente' => $request->fuente,
+                'medio' => $request->medio,
+                'password' => Hash::make($password),
+                'referencia_id' => $request->referencia_id,
+            ]);
         }
 
+        if ($user) {
+            // Asignar rol solo si es nuevo usuario o si no tiene roles
+            if (!$user->hasRole("cliente")) {
+                $user->assignRole("cliente");
+            }
+
+            // Enviar email solo para usuarios nuevos
+            if (!$user->wasRecentlyCreated && $user->email) {
+                Mail::to($user->email)->send(new BienvenidaUsuarioMail($user, $password));
+            }
+
+            $this->notified_form($user->id, $request->parent_id);
+
+            return $user;
+        } else {
+            throw new \Exception('Error al crear o actualizar el usuario');
+        }
     }
 
 
