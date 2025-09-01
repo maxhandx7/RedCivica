@@ -1,52 +1,63 @@
-<!DOCTYPE html>
-<html lang="es">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .theme-wizard .nav-wizard .nav-item {
+        flex: 1;
+        text-align: center;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Wizard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .theme-wizard .nav-wizard .nav-item {
-            flex: 1;
-            text-align: center;
-        }
+    .nav-item-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        margin: 0 auto;
+    }
 
-        .nav-item-circle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #e9ecef;
-            margin: 0 auto;
-        }
+    .nav-link.active .nav-item-circle {
+        background-color: #b33a3a;
+        color: white;
+    }
 
-        .nav-link.active .nav-item-circle {
-            background-color: #b33a3a;
-            color: white;
-        }
+    .wizard-lottie-wrapper {
+        height: 150px;
+    }
 
-        .wizard-lottie-wrapper {
-            height: 150px;
-        }
+    .form-label {
+        font-weight: 500;
+    }
 
-        .form-label {
-            font-weight: 500;
-        }
+    .wizard-lottie-wrapper {
+        display: none;
+    }
 
-        .wizard-lottie-wrapper {
-            display: none;
-        }
+    .btn-primary {
+        background-color: #b33a3a;
+        border-color: #b33a3a;
+    }
 
-        .btn-primary {
-            background-color: #b33a3a;
-            border-color: #b33a3a;
-        }
-    </style>
-</head>
+    .card-header {
+        background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+        color: white;
+    }
+
+    .data-item {
+        border-left: 3px solid #0dcaf0;
+        padding-left: 15px;
+        margin-bottom: 12px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .data-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+</style>
+
 
 <body>
     <div class="container my-5">
@@ -102,16 +113,16 @@
                                 <!-- Nombre -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="name">Nombre*</label>
-                                    <input class="form-control" type="text" name="name" placeholder="Juan"
-                                        id="name" required />
+                                    <input class="form-control" type="text" name="name"
+                                        placeholder="Dijite su nombre" id="name" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="surname">Apellido*</label>
-                                    <input class="form-control" type="text" name="surname" placeholder="Gonzales"
-                                        id="surname" required />
+                                    <input class="form-control" type="text" name="surname"
+                                        placeholder="Dijite su apellido" id="surname" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
                             </div>
@@ -226,7 +237,8 @@
                         </div>
 
                         <h4 class="mb-1" id="msg1">¡Revisa tus datos!</h4>
-                        <p class="mb-4" id="msg2">Confirma que toda la información sea correcta antes de enviar</p>
+                        <p class="mb-4" id="msg2">Confirma que toda la información sea correcta antes de enviar
+                        </p>
 
                         <div class="text-start mb-4" id="resumen-datos">
                             <!-- Los datos se llenarán con JavaScript -->
@@ -407,24 +419,65 @@
             // Mostrar resumen en el último paso
             function showResumen() {
                 const resumenHTML = `
-                    <h5>Datos Personales</h5>
-                    <p><strong>Nombre:</strong> ${$('#name').val()} ${$('#surname').val()}</p>
-                    <p><strong>Tipo de documento:</strong> ${$('#tipo_documento option:selected').text()}</p>
-                    <p><strong>Número de documento:</strong> ${$('#cedula').val()}</p>
-                    <p><strong>Email:</strong> ${$('#email').val()}</p>
-                    <p><strong>Teléfono:</strong> ${$('#telephoneInputmask').val() || 'No proporcionado'}</p>
-                    
-                    <h5 class="mt-4">Datos de Ubicación</h5>
-                    <p><strong>País:</strong> ${$('#pais option:selected').text()}</p>
-                    <p><strong>Departamento:</strong> ${$('#departamento option:selected').text()}</p>
-                    <p><strong>Ciudad:</strong> ${$('#ciudad option:selected').text()}</p>
-                    <p><strong>Dirección:</strong> ${$('#direccion').val() || 'No proporcionada'}</p>
-                    <p><strong>Barrio:</strong> ${$('#barrio').val() || 'No proporcionado'}</p>
-                    <p><strong>Comuna/Localidad:</strong> ${$('#comuna').val() || 'No proporcionada'}</p>
-                `;
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white py-2">
+                                <h5 class="m-0"><i class="fa-solid fa-person me-2"></i>Datos Personales</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fa-solid fa-circle-user me-1"></i> Nombre:</strong> ${$('#name').val()} ${$('#surname').val()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fa-solid fa-address-card me-1"></i> Tipo de documento:</strong> ${$('#tipo_documento option:selected').text()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-id-card me-1"></i> Número de documento:</strong> ${$('#cedula').val()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-envelope me-1"></i> Email:</strong> ${$('#email').val()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-phone me-1"></i> Teléfono:</strong> ${$('#telephoneInputmask').val() || 'No proporcionado'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-info text-white py-2">
+                                <h5 class="m-0"><i class="fa-solid fa-location-dot me-2"></i>Datos de Ubicación</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-globe-americas me-1"></i> País:</strong> ${$('#pais option:selected').text()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-map-marked-alt me-1"></i> Departamento:</strong> ${$('#departamento option:selected').text()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-city me-1"></i> Ciudad:</strong> ${$('#ciudad option:selected').text()}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-map-marker-alt me-1"></i> Dirección:</strong> ${$('#direccion').val() || 'No proporcionada'}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-home me-1"></i> Barrio:</strong> ${$('#barrio').val() || 'No proporcionado'}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-thumbtack me-1"></i> Comuna/Localidad:</strong> ${$('#comuna').val() || 'No proporcionada'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
 
                 $('#resumen-datos').html(resumenHTML);
             }
+
+
 
             // Enviar formulario
             function submitForm() {
@@ -457,18 +510,25 @@
                     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...'
                 );
 
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 $.ajax({
                     url: "{{ route('users.form') }}",
                     type: "POST",
                     data: {
-                        _token: '{{ csrf_token() }}',
                         ...formData
                     },
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
                             $('.wizard-lottie-wrapper').css('display', 'block');
-                             $('#resumen-datos, #terminos, #final-submit').hide();
+                            $('#msg1').css('display', 'none');
+                            $('#msg2').css('display', 'none');
+                            $('#resumen-datos, #terminos, #final-submit').hide();
                             $('#wizard-submit-text').text('¡Éxito!');
                             $('#exito').prop('disabled', false).removeAttr('hidden');
                             // Mostrar mensaje de éxito
@@ -489,7 +549,6 @@
 
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;
-
                             if (xhr.responseJSON.errors) {
                                 errorMessage += "<ul class='mt-2'>";
                                 for (const [field, messages] of Object.entries(xhr.responseJSON
@@ -591,7 +650,6 @@
 
                     autocomplete.addListener("place_changed", function() {
                         const place = autocomplete.getPlace();
-                        console.log("Dirección seleccionada:", place.formatted_address);
                     });
                 }
             }
@@ -613,5 +671,3 @@
         });
     </script>
 </body>
-
-</html>

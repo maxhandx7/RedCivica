@@ -13,8 +13,11 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('role:admin');
+       // $this->middleware('auth');
+       // $this->middleware('role:admin')->except(['form', 'store']);
+
+        $this->middleware('auth')->except(['form', 'store']);
+    $this->middleware('role:admin')->except(['form', 'store']);
     }
 
     public function index(Request $request)
@@ -155,7 +158,7 @@ class UserController extends Controller
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Ocurrió un error al crear el usuario',
+                    'message' => 'Ocurrió un error al crear el usuario ',
                     'error' => $th->getMessage()
                 ], 500);
             }
