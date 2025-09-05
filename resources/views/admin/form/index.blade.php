@@ -50,6 +50,24 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="politicsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white" style="background-color: var(--falcon-primary) !important;">
+                    <h5 class="modal-title">Politicas de privacidad</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @include('partials.privacy-policy')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('styles')

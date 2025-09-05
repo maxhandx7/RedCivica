@@ -16,7 +16,8 @@
     </ul>
 
     <h4>2. Privacidad de los Datos</h4>
-    <p>Tu privacidad es importante para nosotros. Toda la información personal será tratada conforme a nuestra <a href="#">Política de Privacidad</a>.</p>
+    <p>Tu privacidad es importante para nosotros. Toda la información personal será tratada conforme a nuestra <a href="#" data-bs-toggle="modal"
+                                    data-bs-target="#politicsModal" id="open2modal">Política de Privacidad</a>.</p>
     <ul>
         <li>Los datos recolectados serán utilizados únicamente con fines relacionados con el funcionamiento de la app: campañas, referidos, notificaciones y participación social.</li>
         <li>PoliticFriends no vende ni comparte tus datos con terceros sin tu consentimiento, salvo obligación legal.</li>

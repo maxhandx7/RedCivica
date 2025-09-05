@@ -1,5 +1,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
     .theme-wizard .nav-wizard .nav-item {
         flex: 1;
@@ -56,6 +57,28 @@
         background-color: #f8f9fa;
         transform: translateX(5px);
     }
+
+    .big-checkbox {
+        width: 1.5rem;
+        height: 1.5rem;
+        cursor: pointer;
+    }
+
+    .big-checkbox:checked {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .form-check-label {
+        font-size: 1.1rem;
+        cursor: pointer;
+    }
+
+    .form-check-label a {
+        font-weight: bold;
+        color: #0d6efd;
+        text-decoration: underline;
+    }
 </style>
 
 
@@ -89,6 +112,17 @@
                     <li class="nav-item">
                         <a class="nav-link fw-semi-bold" href="#bootstrap-wizard-tab3" data-bs-toggle="tab"
                             data-wizard-step="3">
+                            <span class="nav-item-circle-parent">
+                                <span class="nav-item-circle">
+                                    <span class="fas fa-clipboard-check"></span>
+                                </span>
+                            </span>
+                            <span class="d-none d-md-block mt-1 fs-10">Confirmación</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semi-bold" href="#bootstrap-wizard-tab4" data-bs-toggle="tab"
+                            data-wizard-step="4">
                             <span class="nav-item-circle-parent">
                                 <span class="nav-item-circle">
                                     <span class="fas fa-thumbs-up"></span>
@@ -133,43 +167,71 @@
                                     <label class="form-label" for="tipo_documento">Tipo de documento*</label>
                                     <select class="form-select" name="tipo_documento" id="tipo_documento" required>
                                         <option selected disabled value="">Seleccione tipo de documento</option>
-                                        <option value="cc">Cedula</option>
+                                        <option value="cc" selected>Cedula</option>
                                         <option value="ce">Cedula de extranjeria</option>
-                                        <option value="nit">Nit</option>
                                         <option value="rut">Rut</option>
+                                        <option value="ppt">Pasaporte</option>
                                     </select>
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
 
                                 <!-- Numero de documento -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="cedula">Numero de documento*</label>
+                                    <label class="form-label" for="cedula">Número de documento*</label>
                                     <input class="form-control" type="text" name="cedula" id="cedula"
-                                        pattern="[0-9]{6,10}" maxlength="10" placeholder="Cédula (6 a 10 dígitos)"
-                                        required />
-                                    <div class="invalid-feedback">Este campo es obligatorio.</div>
+                                        pattern="[0-9]{6,10}" maxlength="10" title="Solo números, entre 6 y 10 dígitos"
+                                        placeholder="Documento (6 a 10 dígitos)"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                                    <div class="invalid-feedback">Ingrese solo números (6-10 dígitos)</div>
                                 </div>
                             </div>
+
+                            
+
+                            <div class="row">
+                                 <!-- Fecha de Nacimiento -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="fecha_nacimiento">Fecha de Nacimiento*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-birthday-cake"></i>
+                                        </span>
+                                        <input class="form-control datepicker" type="text" name="fecha_nacimiento"
+                                            id="fecha_nacimiento" placeholder="DD/MM/AAAA" autocomplete="off"
+                                            required />
+                                    </div>
+                                    <div class="invalid-feedback">La fecha de nacimiento es obligatoria</div>
+                                </div>
+
+                                <!-- Fecha de Expedición -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="fecha_expedicion">Fecha de Expedición*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                        <input class="form-control datepicker" type="text" name="fecha_expedicion"
+                                            id="fecha_expedicion" placeholder="DD/MM/AAAA" autocomplete="off"
+                                            required />
+                                    </div>
+                                    <div class="invalid-feedback">La fecha de expedición es obligatoria</div>
+                                </div>
+
+                               
+                            </div>
+
 
                             <div class="row">
                                 <!-- Correo electrónico -->
                                 <div class="col-md-12 mb-3">
-                                    <label class="form-label" for="email">Correo electronico*</label>
+                                    <label class="form-label" for="email">Correo electronico</label>
                                     <input class="form-control" type="email" name="email"
-                                        placeholder="name@example.com" id="email" required />
+                                        placeholder="name@example.com" id="email" />
                                     <div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <!-- Teléfono -->
-                                <div class="col-md-12 mb-3">
-                                    <label class="form-label" for="telefono">Telefono</label>
-                                    <input class="form-control" type="tel" name="telefono"
-                                        data-input-mask='{"mask":"+57 (999) 999-9999"}' placeholder="(XXX) XXX-XXXX"
-                                        id="telephoneInputmask" />
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -224,17 +286,22 @@
                                         placeholder="Comuna 18/Chapinero" />
                                 </div>
                             </div>
+                            <div class="row">
+                                <!-- Teléfono -->
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label" for="telefono">Telefono</label>
+                                    <input class="form-control" type="tel" name="telefono"
+                                        data-input-mask='{"mask":"+57 (999) 999-9999"}' placeholder="(XXX) XXX-XXXX"
+                                        id="telephoneInputmask" />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Paso 3: Confirmación -->
                     <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel"
                         aria-labelledby="bootstrap-wizard-tab3" id="bootstrap-wizard-tab3">
-                        <div class="wizard-lottie-wrapper">
-                            <div class="lottie wizard-lottie mx-auto my-3" id="exito" hidden
-                                data-options='{"path":"../falcon/public/assets/img/animated-icons/celebration.json"}'>
-                            </div>
-                        </div>
+                      
 
                         <h4 class="mb-1" id="msg1">¡Revisa tus datos!</h4>
                         <p class="mb-4" id="msg2">Confirma que toda la información sea correcta antes de enviar
@@ -244,16 +311,33 @@
                             <!-- Los datos se llenarán con JavaScript -->
                         </div>
 
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="terminos" required>
-                            <label class="form-check-label" for="terminos">
+
+                    </div>
+
+                    <!-- Paso 4: Final -->
+                    <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel"
+                        aria-labelledby="bootstrap-wizard-tab4" id="bootstrap-wizard-tab4">
+
+                          <div class="wizard-lottie-wrapper">
+                            <div class="lottie wizard-lottie mx-auto my-3" id="exito" hidden
+                                data-options='{"path":"../falcon/public/assets/img/animated-icons/celebration.json"}'>
+                            </div>
+                        </div>
+
+                         <div class="text-start mb-4" id="redatos">
+                        </div>
+
+                        <div class="form-check mb-4" id="terminos-container">
+                            <input class="form-check-input big-checkbox" type="checkbox" id="terminos" required>
+                            <label class="form-check-label fw-bold" for="terminos">
                                 Acepto los <a href="#" data-bs-toggle="modal"
                                     data-bs-target="#termsModal">términos y condiciones</a>
                             </label>
                             <div class="invalid-feedback">Debes aceptar los términos y condiciones</div>
                         </div>
 
-                        <button class="btn btn-primary px-5 my-3" id="final-submit">Enviar formulario</button>
+                        <button class="btn btn-primary px-5 my-3" type="button" id="final-submit">Enviar
+                            formulario</button>
                     </div>
                 </div>
             </div>
@@ -296,10 +380,10 @@
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {!! Html::script('falcon/public/vendors/lottie/lottie.min.js') !!}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxc1s_F585VkZIt3IFS8eZVMosLrYHtD0&libraries=places&callback=initAutocomplete"
         async defer></script>
@@ -308,7 +392,7 @@
         $(document).ready(function() {
             const colombiaGeonameId = 3686110;
             let currentStep = 1;
-            const totalSteps = 3;
+            const totalSteps = 4;
 
             // Campos ocultos
             const hiddenFields = {
@@ -325,10 +409,8 @@
                 // Event listeners para botones
                 $('#next-btn').on('click', goToNextStep);
                 $('#prev-btn').on('click', goToPrevStep);
+                //$('#final-submit').on('click', submitForm);
                 $('#final-submit').on('click', submitForm);
-
-                // Inicializar autocompletado de dirección
-                initAutocomplete();
 
                 // Cargar departamentos cuando se selecciona Colombia
                 $('#pais').on('change', loadDepartamentos);
@@ -342,7 +424,7 @@
                 if (validateStep(currentStep)) {
                     if (currentStep < totalSteps) {
                         currentStep++;
-                        if (currentStep === totalSteps) {
+                        if (currentStep === 3) {
                             showResumen();
                         }
                         updateNavigation();
@@ -363,8 +445,13 @@
                 $(`#wizard .nav-link[data-wizard-step="${currentStep}"]`).addClass('active');
 
                 // Actualizar contenido visible
+                /* $(`#wizard .tab-pane`).removeClass('active');
+                $(`#bootstrap-wizard-tab${currentStep}`).addClass('active'); */
+
+                // Actualizar contenido visible
                 $(`#wizard .tab-pane`).removeClass('active');
                 $(`#bootstrap-wizard-tab${currentStep}`).addClass('active');
+
 
                 // Mostrar/ocultar botones
                 if (currentStep === 1) {
@@ -372,7 +459,6 @@
                 } else {
                     $('#prev-btn').show();
                 }
-
                 if (currentStep === totalSteps) {
                     $('#next-btn').hide();
                 } else {
@@ -386,7 +472,7 @@
 
                 if (step === 1) {
                     // Validar campos personales
-                    $('#name, #surname, #tipo_documento, #cedula, #email').each(function() {
+                    $('#name, #surname, #tipo_documento, #cedula').each(function() {
                         if (!$(this).val()) {
                             $(this).addClass('is-invalid');
                             isValid = false;
@@ -397,10 +483,7 @@
 
                     // Validar email
                     const email = $('#email').val();
-                    if (email && !isValidEmail(email)) {
-                        $('#email').addClass('is-invalid');
-                        isValid = false;
-                    }
+
                 } else if (step === 2) {
                     // Validar campos de ubicación
                     $('#pais, #departamento, #ciudad').each(function() {
@@ -411,6 +494,18 @@
                             $(this).removeClass('is-invalid');
                         }
                     });
+                } else if (step === 3) {
+                    showResumen();
+                }
+                
+                else if (step === 4) {
+                    // Validar aceptación de términos
+                    if (!$('#terminos').is(':checked')) {
+                        $('#terminos').addClass('is-invalid');
+                        isValid = false;
+                    } else {
+                        $('#terminos').removeClass('is-invalid');
+                    }
                 }
 
                 return isValid;
@@ -439,7 +534,10 @@
                                     <p class="m-0"><strong><i class="fas fa-envelope me-1"></i> Email:</strong> ${$('#email').val()}</p>
                                 </div>
                                 <div class="data-item">
-                                    <p class="m-0"><strong><i class="fas fa-phone me-1"></i> Teléfono:</strong> ${$('#telephoneInputmask').val() || 'No proporcionado'}</p>
+                                    <p class="m-0"><strong><i class="fas fa-calendar me-1"></i> Fecha de expedición:</strong> ${$('#fecha_expedicion').val() || 'No proporcionado'}</p>
+                                </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-birthday-cake me-1"></i> Fecha de nacimiento:</strong> ${$('#fecha_nacimiento').val() || 'No proporcionado'}</p>
                                 </div>
                             </div>
                         </div>
@@ -468,20 +566,28 @@
                                 <div class="data-item">
                                     <p class="m-0"><strong><i class="fas fa-thumbtack me-1"></i> Comuna/Localidad:</strong> ${$('#comuna').val() || 'No proporcionada'}</p>
                                 </div>
+                                <div class="data-item">
+                                    <p class="m-0"><strong><i class="fas fa-phone me-1"></i> Telefono:</strong> ${$('#telephoneInputmask').val() || 'No proporcionado'}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
 
-                $('#resumen-datos').html(resumenHTML);
+            console.log(resumenHTML);
+
+                if (resumenHTML && resumenHTML.trim() !== "") {
+                    $('#resumen-datos').html(resumenHTML);
+                } else {
+                    $('#resumen-datos').html('<p class="text-muted">⚠️ No se está enviando ningún dato</p>');
+                }
             }
 
 
 
             // Enviar formulario
             function submitForm() {
-                if (!validateStep(3)) return;
 
                 if (!$('#terminos').is(':checked')) {
                     $('#terminos').addClass('is-invalid');
@@ -493,6 +599,8 @@
                     surname: $('#surname').val(),
                     tipo_documento: $('#tipo_documento').val(),
                     cedula: $('#cedula').val(),
+                    fecha_expedicion: $('#fecha_expedicion').val(),
+                    fecha_nacimiento: $('#fecha_nacimiento').val(),
                     email: $('#email').val(),
                     telefono: $('#telephoneInputmask').val(),
                     pais: $('#pais').val(),
@@ -528,17 +636,19 @@
                             $('.wizard-lottie-wrapper').css('display', 'block');
                             $('#msg1').css('display', 'none');
                             $('#msg2').css('display', 'none');
-                            $('#resumen-datos, #terminos, #final-submit').hide();
+                            $('#redatos, #terminos, #final-submit').hide();
                             $('#wizard-submit-text').text('¡Éxito!');
                             $('#exito').prop('disabled', false).removeAttr('hidden');
+                             $('terminos-container').css('display', 'none');
                             // Mostrar mensaje de éxito
-                            $('#resumen-datos').after(`
+                            $('#redatos').after(`
                                 <div class="alert alert-success mt-3">
                                     <i class="fas fa-check-circle me-2"></i>
                                     ${'Formulario enviado con éxito. Revisa tu correo para poder iniciar sesión.'}
                                 </div>
                                 <a class="btn btn-primary px-5 my-3" href="{{ route('login') }}">Iniciar sesión</a>
                             `);
+                           
                         } else {
                             showErrorModal(response.message || 'Error al procesar el formulario.');
                             $btn.prop('disabled', false).html(originalHtml);
@@ -668,6 +778,50 @@
 
             // Inicializar wizard
             initWizard();
+
+
+
+            $('#open2modal').on('click', function() {
+                setTimeout(function() {
+                    $('#termsModal').modal('hide');
+                }, 1000);
+
+            });
+
+
+
+        });
+
+        $('#error-modal').on('hidden.bs.modal', function() {
+            document.querySelector('#next-btn')?.focus();
+        });
+
+        window.initAutocomplete = function() {
+            const input = document.getElementById("direccion");
+            if (input) {
+                const autocomplete = new google.maps.places.Autocomplete(input, {
+                    componentRestrictions: {
+                        country: "co"
+                    },
+                    fields: ["formatted_address", "geometry"]
+                });
+
+                autocomplete.addListener("place_changed", function() {
+                    const place = autocomplete.getPlace();
+                    console.log("Dirección seleccionada:", place.formatted_address);
+                });
+            }
+        };
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.datepicker', {
+                locale: 'es',
+                dateFormat: 'd/m/Y',
+                maxDate: 'today',
+                disableMobile: true
+            });
         });
     </script>
 </body>

@@ -16,6 +16,8 @@ use Illuminate\Support\Str;
 use App\Services\ActividadService;
 use App\Constants\ActividadPlantillas;
 use App\Mail\BienvenidaUsuarioMail;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -33,7 +35,10 @@ class User extends Authenticatable
         'name',
         'surname',
         'email',
+        'tipo_documento',
         'cedula',
+        'fecha_nacimiento',
+        'fecha_expedicion',
         'telefono',
         'barrio',
         'direccion',
@@ -126,10 +131,42 @@ class User extends Authenticatable
 
     public function my_store($request)
     {
+        
+        $request->merge([
+            'fecha_nacimiento' => Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->format('Y-m-d'),
+            'fecha_expedicion' => Carbon::createFromFormat('d/m/Y', $request->fecha_expedicion)->format('Y-m-d'),
+        ]);
+
+       
+
         $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
+            'tipo_documento' => 'required|string|max:50',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
+            'fecha_nacimiento' => [
+                'required',
+                'date',
+                'before_or_equal:' . now()->subYears(18)->format('Y-m-d')
+            ],
+            'fecha_expedicion' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $fechaNacimiento = Carbon::parse($request->fecha_nacimiento);
+                    $fechaExpedicion = Carbon::parse($value);
+
+                    $edadEnExpedicion = $fechaNacimiento->diffInYears($fechaExpedicion);
+
+                    if ($edadEnExpedicion < 18) {
+                        $fail('Debía ser mayor de edad al momento de expedir la cédula.');
+                    }
+
+                    if ($fechaExpedicion->lt($fechaNacimiento)) {
+                        $fail('La fecha de expedición no puede ser anterior a la fecha de nacimiento.');
+                    }
+                }
+            ],
             'email' => 'nullable|email|unique:users,email',
             'direccion' => 'nullable|string|max:255',
             'barrio' => 'nullable|string|max:255',
@@ -148,16 +185,19 @@ class User extends Authenticatable
 
         $password = Str::random(12);
 
-        // Buscar si ya existe un usuario con la misma cédula o email
         $user = self::where('cedula', $request->cedula)
-            ->orWhere('email', $request->email)
+            ->orWhere('referencia_id', $request->referencia_id)
             ->first();
+
+
 
         if ($user) {
             // Si el usuario ya existe, actualizar sus datos
             $user->update([
                 'name' => $request->name,
                 'surname' => $request->surname,
+                'fecha_nacimiento' => $request->fecha_nacimiento,
+                'fecha_expedicion' => $request->fecha_expedicion,
                 'telefono' => $request->telefono,
                 'direccion' => $request->direccion,
                 'barrio' => $request->barrio,
@@ -177,7 +217,10 @@ class User extends Authenticatable
             $user = self::create([
                 'name' => $request->name,
                 'surname' => $request->surname,
+                'tipo_documento' => $request->tipo_documento,
                 'cedula' => $request->cedula,
+                'fecha_nacimiento' => $request->fecha_nacimiento,
+                'fecha_expedicion' => $request->fecha_expedicion,
                 'telefono' => $request->telefono,
                 'email' => $request->email,
                 'direccion' => $request->direccion,
@@ -203,7 +246,7 @@ class User extends Authenticatable
             }
 
             // Enviar email solo para usuarios nuevos
-            if (/* !$user->wasRecentlyCreated &&  */$user->email) {
+            if (/* !$user->wasRecentlyCreated &&  */ $user->email) {
                 Mail::to($user->email)->send(new BienvenidaUsuarioMail($user, $password));
             }
 
@@ -245,6 +288,8 @@ class User extends Authenticatable
             'name' => $validatedData['name'] ?? null,
             'surname' => $validatedData['surname'] ?? null,
             'cedula' => $validatedData['cedula'] ?? null,
+            'fecha_nacimiento' => $validatedData['fecha_nacimiento'] ?? null,
+            'fecha_expedicion' => $validatedData['fecha_expedicion'] ?? null,
             'telefono' => $validatedData['telefono'] ?? null,
             'email' => $validatedData['email'] ?? null,
             'direccion' => $validatedData['direccion'] ?? null,

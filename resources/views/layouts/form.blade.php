@@ -47,10 +47,15 @@
     <!-- JavaScripts -->
     {!! Html::script('melody/vendors/js/vendor.bundle.base.js') !!}
     {!! Html::script('melody/vendors/js/vendor.bundle.addons.js') !!}
-    {!! Html::script('/falcon/public/vendors/popper/popper.min.js') !!}
+    {!! Html::script('/falcon/public/vendors/popper/popper.min.js') !!} 
     {!! Html::script('/falcon/public/vendors/bootstrap/bootstrap.min.js') !!}
     {!! Html::script('/falcon/public/vendors/anchorjs/anchor.min.js') !!}
     {!! Html::script('/falcon/public/vendors/is/is.min.js') !!}
+    {!! Html::script('/falcon/public/vendors/validator/validator.min.js') !!}
+    {!! Html::script('/falcon/public/vendors/prism/prism.js') !!}
+    {!! Html::script('falcon/public/vendors/lottie/lottie.min.js') !!}
+    {!! Html::script('/falcon/public/vendors/simplebar/simplebar.min.js') !!}
+    {!! Html::script('/falcon/public/assets/js/config.js') !!}  
     {!! Html::script('/falcon/public/vendors/fontawesome/all.min.js') !!}
     {!! Html::script('/falcon/public/vendors/lodash/lodash.min.js') !!}
     {!! Html::script('/falcon/public/vendors/list.js/list.min.js') !!}

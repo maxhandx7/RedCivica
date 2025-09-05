@@ -7,8 +7,8 @@
         <div class="col-lg-6 d-none d-lg-block login-bg">
             <div class="login-overlay"></div>
             <div class="login-hero-text p-5" >
-                {{-- <h2>Bienvenido a <span>PoliticFriends</span></h2>
-                <p class="mt-3">Plataforma de participación ciudadana y gestión comunitaria</p> --}}
+                 <h2>Bienvenido a <span>PoliticFriends</span></h2>
+                <p class="mt-3">Plataforma de participación ciudadana y gestión comunitaria</p>
             </div>
         </div>
 
@@ -110,7 +110,6 @@
     
     /* Panel izquierdo con imagen */
     .login-bg {
-        background-image: url('{{ asset('image/Horacio1.jpg') }}');
         background-size: cover;
         background-position: center;
         position: relative;
@@ -123,7 +122,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        /* background: rgba(211, 82, 82, 0.8); */
+         background: rgba(211, 82, 82, 0.8); 
     }
     
     .login-hero-text {
@@ -293,6 +292,15 @@
             passwordInput.type = 'password';
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
+    });
+
+    // imagen ramdon
+      document.addEventListener("DOMContentLoaded", function () {
+        const min = 1;
+        const max = 13;
+        const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+        const loginBg = document.querySelector('.login-bg');
+        loginBg.style.backgroundImage = `url('/falcon/public/assets/img/generic/${randomNum}.jpg')`;
     });
 </script>
 @endsection
