@@ -321,13 +321,13 @@
                                     <div class="d-flex align-items-center">
                                         <i class="bi-pin-map-fill text-primary me-2"></i>
                                         <span>{{ $user->barrio ?: 'Barrio no registrado' }},
-                                            {{ $user->ciudad ?: '' }}</span>
+                                            {{ $user->ciudad ?: 'Ciudad no registrada' }}</span>
                                     </div>
                                 </li>
                                 <li class="list-group-item px-0 py-2">
                                     <div class="d-flex align-items-center">
                                         <i class="bi-check2-square text-primary me-2"></i>
-                                        <span>{{ $user->mesa ? 'Mesa: ' . $user->mesa : 'Mesa no registrada' }}</span>
+                                        <span>{{ \Carbon\Carbon::parse($user->fecha_nacimiento)->translatedFormat('d F Y') }} - ({{ \Carbon\Carbon::parse($user->fecha_nacimiento)->age }} años)</span>
                                     </div>
                                 </li>
                             </ul>

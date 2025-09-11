@@ -575,7 +575,6 @@
                 </div>
             `;
 
-            console.log(resumenHTML);
 
                 if (resumenHTML && resumenHTML.trim() !== "") {
                     $('#resumen-datos').html(resumenHTML);
@@ -808,7 +807,6 @@
 
                 autocomplete.addListener("place_changed", function() {
                     const place = autocomplete.getPlace();
-                    console.log("Dirección seleccionada:", place.formatted_address);
                 });
             }
         };

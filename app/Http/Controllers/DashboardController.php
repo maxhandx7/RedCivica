@@ -6,7 +6,8 @@ use App\Models\Campaña;
 use Illuminate\Http\Request;
 use App\Models\User;
 use GuzzleHttp\Client;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class DashboardController extends Controller
 {
@@ -71,12 +72,75 @@ class DashboardController extends Controller
             }
 
         } */
+
+        // IDs de todos los descendientes (incluido el mismo user si quieres)
+        $descendantIds = $user->descendants()->pluck('id');
+
+        $dataDate = User::whereIn('id', $descendantIds)
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, COUNT(*) as total')
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
+        $dataDep = User::whereIn('id', $descendantIds)
+            ->select('departamento', DB::raw('COUNT(*) as total'))
+            ->groupBy('departamento')
+            ->orderByDesc('total')
+            ->take(5)
+            ->get();
+
+        $dataCity = User::whereIn('id', $descendantIds)
+            ->select('ciudad', DB::raw('COUNT(*) as total'))
+            ->groupBy('ciudad')
+            ->orderByDesc('total')
+            ->take(5)
+            ->get();
+
+        $labelsDate = $dataDate->pluck('mes');
+        $totalsDate = $dataDate->pluck('total');
+        $labelsDep = $this->getDepName($dataDep);
+        $totalsDep = $dataDep->pluck('total');
+        $totalsCity = $dataCity->pluck('total');
+        $labelsCity = $this->getCityName($dataCity);
+
+
         return view('home', compact(
             'referidosTotales',
             'probabilidadVoto',
             'campañas',
+            'labelsDate',
+            'totalsDate',
+            'labelsDep',
+            'totalsDep',
+            'labelsCity',
+            'totalsCity',
             'partidariosActivos',
             'noticias'
         ));
     }
+
+    public function getDepName($data)
+    {
+        return $data->pluck('departamento')->map(function ($code) {
+            $resp = Http::get('https://secure.geonames.org/getJSON', [
+                'geonameId' => $code,
+                'username' => 'Alan', // tu usuario de GeoNames
+            ]);
+
+            return $resp->json('name') ?? $code; // fallback por si no hay name
+        });
+    }
+
+    public function getCityName($data)
+    {
+        return $data->pluck('ciudad')->map(function ($code) {
+            $resp = Http::get('https://secure.geonames.org/getJSON', [
+                'geonameId' => $code,
+                'username' => 'Alan', 
+            ]);
+            return $resp->json('name') ?? $code; // fallback por si no hay name
+        });
+    }
+
+
 }
