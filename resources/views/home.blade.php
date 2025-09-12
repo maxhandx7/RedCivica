@@ -344,7 +344,7 @@
                 new Chart(ctxciudad, {
                     type: 'doughnut',
                     data: {
-                        labels: @json($labelsCity),
+                        labels:  @json($labelsCity) ,
                         datasets: [{
                             label: 'Usuarios por ciudad',
                             data: @json($totalsCity),

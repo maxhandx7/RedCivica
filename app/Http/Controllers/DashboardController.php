@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Campaña;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -83,18 +84,24 @@ class DashboardController extends Controller
             ->get();
 
         $dataDep = User::whereIn('id', $descendantIds)
-            ->select('departamento', DB::raw('COUNT(*) as total'))
+            ->select(
+                DB::raw("IFNULL(departamento, 'Sin datos') as departamento"),
+                DB::raw('COUNT(*) as total'))
             ->groupBy('departamento')
             ->orderByDesc('total')
             ->take(5)
             ->get();
 
         $dataCity = User::whereIn('id', $descendantIds)
-            ->select('ciudad', DB::raw('COUNT(*) as total'))
+            ->select(
+                DB::raw("IFNULL(ciudad, 'Sin datos') as ciudad"),
+                DB::raw('COUNT(*) as total')
+            )
             ->groupBy('ciudad')
             ->orderByDesc('total')
             ->take(5)
             ->get();
+
 
         $labelsDate = $dataDate->pluck('mes');
         $totalsDate = $dataDate->pluck('total');
@@ -102,6 +109,12 @@ class DashboardController extends Controller
         $totalsDep = $dataDep->pluck('total');
         $totalsCity = $dataCity->pluck('total');
         $labelsCity = $this->getCityName($dataCity);
+
+        $labelsDate = $labelsDate->map(function ($item) {
+            return Carbon::parse($item . '-01')
+                ->locale('es')
+                ->monthName;
+        });
 
 
         return view('home', compact(
@@ -136,8 +149,9 @@ class DashboardController extends Controller
         return $data->pluck('ciudad')->map(function ($code) {
             $resp = Http::get('https://secure.geonames.org/getJSON', [
                 'geonameId' => $code,
-                'username' => 'Alan', 
+                'username' => 'Alan',
             ]);
+
             return $resp->json('name') ?? $code; // fallback por si no hay name
         });
     }
