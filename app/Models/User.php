@@ -17,7 +17,6 @@ use App\Services\ActividadService;
 use App\Constants\ActividadPlantillas;
 use App\Mail\BienvenidaUsuarioMail;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Support\Facades\Mail;
 
 

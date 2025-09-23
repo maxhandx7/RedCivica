@@ -86,6 +86,8 @@ Route::middleware(['auth'])->group(function () {
         Excel::import(new UsuariosImport, $request->file('archivo_excel'));
         return redirect()->back()->with('success', 'Los usuarios han sido importados correctamente.');
     });
+
+    Route::resource('questions', App\Http\Controllers\QuestionController::class)->names('questions');
 });
 Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
     ->name('referidos.registro');
