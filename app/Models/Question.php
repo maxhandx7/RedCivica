@@ -12,7 +12,18 @@ class Question extends Model
     protected $fillable = [
         'city_id',
         'question_text',
+        'question_type',
+        'options',
+        'is_required',
+        'department_id' 
     ];
 
+    protected $casts = [
+        'options' => 'array',
+        'is_required' => 'boolean'
+    ];
+
+
    
+
 }

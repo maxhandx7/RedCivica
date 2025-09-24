@@ -13,8 +13,17 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('city_id');
-            $table->string('question_text');
+            
+            // Claves foráneas opcionales
+            $table->integer('city_id');
+
+            $table->integer('department_id');
+
+            // Campos propios
+            $table->string('question_text');               // texto de la pregunta
+            $table->string('question_type')->nullable();   // ej: multiple_choice, open, etc.
+            $table->json('options')->nullable();           // opciones si aplica
+            $table->boolean('is_required')->default(false);
             $table->timestamps();
         });
     }
