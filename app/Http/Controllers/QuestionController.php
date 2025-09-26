@@ -131,7 +131,7 @@ class QuestionController extends Controller
                 ->withErrors($e->validator)
                 ->with('error', 'Por favor corrige los errores en el formulario');
         } catch (\Exception $e) {
-        
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Error al actualizar la pregunta: ' . $e->getMessage());
@@ -291,20 +291,27 @@ class QuestionController extends Controller
         ];
     }
 
-public function byLocation(Request $request)
-{
-    
+    public function byLocation(Request $request)
+    {
+        $departmentId = $request->input('department_id');
+        $cityId = $request->input('city_id');
 
-    $questions = Question::where('department_id', $request->department_id)
-        ->where('city_id', $request->city_id)
-        ->get(['id','question_text','question_type','options','is_required']);
+        $questions = Question::where('department_id', $departmentId)
+            ->where('city_id', $cityId)
+            ->get();
 
-      
-    return response()->json([
-        'success'   => true,
-        'questions' => $questions
-    ]);
-}
- 
+        return response()->json([
+            'success' => true,
+            'questions' => $questions,
+        ]);
+    }
+
+    public function guardar(){
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+
 
 }

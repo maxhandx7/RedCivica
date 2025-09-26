@@ -148,14 +148,14 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="name">Nombre*</label>
                                     <input class="form-control" type="text" name="name"
-                                        placeholder="Dijite su nombre" id="name" required />
+                                        placeholder="Dijite su nombre" value="pablo" id="name" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="surname">Apellido*</label>
-                                    <input class="form-control" type="text" name="surname"
+                                    <input class="form-control" value="laserna" type="text" name="surname"
                                         placeholder="Dijite su apellido" id="surname" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
@@ -178,8 +178,9 @@
                                 <!-- Numero de documento -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="cedula">Número de documento*</label>
-                                    <input class="form-control" type="text" name="cedula" id="cedula"
-                                        pattern="[0-9]{6,10}" maxlength="10" title="Solo números, entre 6 y 10 dígitos"
+                                    <input class="form-control" value="87190002" type="text" name="cedula"
+                                        id="cedula" pattern="[0-9]{6,10}" maxlength="10"
+                                        title="Solo números, entre 6 y 10 dígitos"
                                         placeholder="Documento (6 a 10 dígitos)"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
                                     <div class="invalid-feedback">Ingrese solo números (6-10 dígitos)</div>
@@ -196,9 +197,9 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
                                         </span>
-                                        <input class="form-control datepicker" type="text" name="fecha_nacimiento"
-                                            id="fecha_nacimiento" placeholder="DD/MM/AAAA" autocomplete="off"
-                                            required />
+                                        <input class="form-control datepicker" value="17/07/1996" type="text"
+                                            name="fecha_nacimiento" id="fecha_nacimiento" placeholder="DD/MM/AAAA"
+                                            autocomplete="off" required />
                                     </div>
                                     <div class="invalid-feedback">La fecha de nacimiento es obligatoria</div>
                                 </div>
@@ -210,9 +211,9 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
-                                        <input class="form-control datepicker" type="text" name="fecha_expedicion"
-                                            id="fecha_expedicion" placeholder="DD/MM/AAAA" autocomplete="off"
-                                            required />
+                                        <input class="form-control datepicker" value="21/07/2014" type="text"
+                                            name="fecha_expedicion" id="fecha_expedicion" placeholder="DD/MM/AAAA"
+                                            autocomplete="off" required />
                                     </div>
                                     <div class="invalid-feedback">La fecha de expedición es obligatoria</div>
                                 </div>
@@ -226,7 +227,8 @@
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label" for="email">Correo electronico</label>
                                     <input class="form-control" type="email" name="email"
-                                        placeholder="name@example.com" id="email" />
+                                        placeholder="name@example.com" value="dijepo4467@hiepth.com"
+                                        id="email" />
                                     <div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
                                 </div>
                             </div>
@@ -780,34 +782,7 @@
             // Inicializar wizard
             initWizard();
 
-            function renderPreguntas(questions) {
-                let html = '';
-                questions.forEach(q => {
-                    html += `<div class="mb-3">
-                   <label class="form-label fw-bold">${q.question_text}
-                     ${q.is_required ? '<span class="text-danger">*</span>' : ''}
-                   </label>`;
 
-                    if (q.question_type === 'multiple_choice' && Array.isArray(q.options)) {
-                        q.options.forEach((opt, i) => {
-                            html += `
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" 
-                         name="q_${q.id}" value="${opt}">
-                  <label class="form-check-label">${opt}</label>
-                </div>`;
-                        });
-                    } else if (q.question_type === 'rating') {
-                        html +=
-                            `<input type="number" class="form-control" name="q_${q.id}" min="1" max="5">`;
-                    } else { // text
-                        html += `<textarea class="form-control" name="q_${q.id}" rows="2"></textarea>`;
-                    }
-
-                    html += '</div>';
-                });
-                $('#preguntasEncuesta').html(html);
-            }
 
 
             $('#guardarEncuesta').on('click', function() {
@@ -846,7 +821,7 @@
                 respuestas[`pregunta_${i}`] = $(el).val();
             });
 
-            $.post("", {
+            $.post("{{route('guardar.question')}}", {
                 departamento: $('#departamento').val(),
                 ciudad: $('#ciudad').val(),
                 respuestas: respuestas,
@@ -858,26 +833,65 @@
         });
 
         function abrirEncuestaModal() {
-    const dept = $('#departamento').val();
-    const city = $('#ciudad').val();
+            const dept = $('#departamento').val();
+            const city = $('#ciudad').val();
 
-    $.get("{{ route('questions.byLocation') }}", {
-        department_id: dept,
-        city_id: city
-    })
-    .done(function(res) {
-        if (res.success && res.questions.length) {
-            renderPreguntas(res.questions);
-            const modal = new bootstrap.Modal(document.getElementById('encuestaModal'));
-            modal.show();
-        } else {
-            alert("No hay preguntas para esta ubicación");
+            $.ajax({
+                url: "{{ route('questions.byLocation') }}", // la ruta de Laravel
+                type: "POST", // POST para evitar caché y permitir CSRF
+                data: {
+                    department_id: dept,
+                    city_id: city,
+                    _token: "{{ csrf_token() }}" // importante para Laravel
+                },
+                dataType: "json",
+                success: function(res) {
+                    if (res.success && res.questions.length) {
+                        renderPreguntas(res.questions);
+                        const modal = new bootstrap.Modal(
+                            document.getElementById('encuestaModal')
+                        );
+                        modal.show();
+                    } else {
+                        alert("No hay preguntas para esta ubicación");
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    alert("Error cargando las preguntas");
+                }
+            });
+
+
+            function renderPreguntas(questions) {
+                let html = '';
+                questions.forEach(q => {
+                    html += `<div class="mb-3">
+                   <label class="form-label fw-bold">${q.question_text}
+                     ${q.is_required ? '<span class="text-danger">*</span>' : ''}
+                   </label>`;
+
+                    if (q.question_type === 'multiple_choice' && Array.isArray(q.options)) {
+                        q.options.forEach((opt, i) => {
+                            html += `
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" 
+                         name="q_${q.id}" value="${opt}">
+                  <label class="form-check-label">${opt}</label>
+                </div>`;
+                        });
+                    } else if (q.question_type === 'rating') {
+                        html +=
+                            `<input type="number" class="form-control" name="q_${q.id}" min="1" max="5">`;
+                    } else { // text
+                        html += `<textarea class="form-control" name="q_${q.id}" rows="2"></textarea>`;
+                    }
+
+                    html += '</div>';
+                });
+                $('#preguntasEncuesta').html(html);
+            }
         }
-    })
-    .fail(function() {
-        alert("Error cargando las preguntas");
-    });
-}
 
 
 
