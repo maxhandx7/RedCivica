@@ -186,10 +186,10 @@
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="row">
-                                 <!-- Fecha de Nacimiento -->
+                                <!-- Fecha de Nacimiento -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="fecha_nacimiento">Fecha de Nacimiento*</label>
                                     <div class="input-group">
@@ -217,7 +217,7 @@
                                     <div class="invalid-feedback">La fecha de expedición es obligatoria</div>
                                 </div>
 
-                               
+
                             </div>
 
 
@@ -301,7 +301,7 @@
                     <!-- Paso 3: Confirmación -->
                     <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel"
                         aria-labelledby="bootstrap-wizard-tab3" id="bootstrap-wizard-tab3">
-                      
+
 
                         <h4 class="mb-1" id="msg1">¡Revisa tus datos!</h4>
                         <p class="mb-4" id="msg2">Confirma que toda la información sea correcta antes de enviar
@@ -318,13 +318,13 @@
                     <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel"
                         aria-labelledby="bootstrap-wizard-tab4" id="bootstrap-wizard-tab4">
 
-                          <div class="wizard-lottie-wrapper">
+                        <div class="wizard-lottie-wrapper">
                             <div class="lottie wizard-lottie mx-auto my-3" id="exito" hidden
                                 data-options='{"path":"../falcon/public/assets/img/animated-icons/celebration.json"}'>
                             </div>
                         </div>
 
-                         <div class="text-start mb-4" id="redatos">
+                        <div class="text-start mb-4" id="redatos">
                         </div>
 
                         <div class="form-check mb-4" id="terminos-container">
@@ -361,6 +361,9 @@
             </div>
         </div>
     </div>
+
+
+    @include('admin.form._form_survey')
 
     <!-- Modal de Error -->
     <div class="modal fade" id="error-modal" tabindex="-1" aria-hidden="true">
@@ -496,9 +499,7 @@
                     });
                 } else if (step === 3) {
                     showResumen();
-                }
-                
-                else if (step === 4) {
+                } else if (step === 4) {
                     // Validar aceptación de términos
                     if (!$('#terminos').is(':checked')) {
                         $('#terminos').addClass('is-invalid');
@@ -638,7 +639,8 @@
                             $('#redatos, #terminos, #final-submit').hide();
                             $('#wizard-submit-text').text('¡Éxito!');
                             $('#exito').prop('disabled', false).removeAttr('hidden');
-                             $('terminos-container').css('display', 'none');
+                            $('terminos-container').css('display', 'none');
+                            abrirEncuestaModal();
                             // Mostrar mensaje de éxito
                             $('#redatos').after(`
                                 <div class="alert alert-success mt-3">
@@ -647,7 +649,7 @@
                                 </div>
                                 <a class="btn btn-primary px-5 my-3" href="{{ route('login') }}">Iniciar sesión</a>
                             `);
-                           
+
                         } else {
                             showErrorModal(response.message || 'Error al procesar el formulario.');
                             $btn.prop('disabled', false).html(originalHtml);
@@ -778,6 +780,56 @@
             // Inicializar wizard
             initWizard();
 
+            function renderPreguntas(questions) {
+                let html = '';
+                questions.forEach(q => {
+                    html += `<div class="mb-3">
+                   <label class="form-label fw-bold">${q.question_text}
+                     ${q.is_required ? '<span class="text-danger">*</span>' : ''}
+                   </label>`;
+
+                    if (q.question_type === 'multiple_choice' && Array.isArray(q.options)) {
+                        q.options.forEach((opt, i) => {
+                            html += `
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" 
+                         name="q_${q.id}" value="${opt}">
+                  <label class="form-check-label">${opt}</label>
+                </div>`;
+                        });
+                    } else if (q.question_type === 'rating') {
+                        html +=
+                            `<input type="number" class="form-control" name="q_${q.id}" min="1" max="5">`;
+                    } else { // text
+                        html += `<textarea class="form-control" name="q_${q.id}" rows="2"></textarea>`;
+                    }
+
+                    html += '</div>';
+                });
+                $('#preguntasEncuesta').html(html);
+            }
+
+
+            $('#guardarEncuesta').on('click', function() {
+                const data = {};
+                $('#preguntasEncuesta').find('input, textarea').each(function() {
+                    const name = $(this).attr('name');
+                    if ($(this).is(':radio')) {
+                        if ($(this).is(':checked')) data[name] = $(this).val();
+                    } else {
+                        data[name] = $(this).val();
+                    }
+                });
+
+                $.post("", {
+                    respuestas: data,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                }).done(() => {
+                    alert('¡Gracias por participar!');
+                    $('#encuestaModal').modal('hide');
+                });
+            });
+
 
 
             $('#open2modal').on('click', function() {
@@ -786,10 +838,48 @@
                 }, 1000);
 
             });
-
-
-
         });
+
+        $('#guardarEncuesta').on('click', function() {
+            const respuestas = {};
+            $('#preguntasEncuesta textarea').each(function(i, el) {
+                respuestas[`pregunta_${i}`] = $(el).val();
+            });
+
+            $.post("", {
+                departamento: $('#departamento').val(),
+                ciudad: $('#ciudad').val(),
+                respuestas: respuestas,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }).done(() => {
+                alert('¡Gracias por tu tiempo!');
+                $('#encuestaModal').modal('hide');
+            });
+        });
+
+        function abrirEncuestaModal() {
+    const dept = $('#departamento').val();
+    const city = $('#ciudad').val();
+
+    $.get("{{ route('questions.byLocation') }}", {
+        department_id: dept,
+        city_id: city
+    })
+    .done(function(res) {
+        if (res.success && res.questions.length) {
+            renderPreguntas(res.questions);
+            const modal = new bootstrap.Modal(document.getElementById('encuestaModal'));
+            modal.show();
+        } else {
+            alert("No hay preguntas para esta ubicación");
+        }
+    })
+    .fail(function() {
+        alert("Error cargando las preguntas");
+    });
+}
+
+
 
         $('#error-modal').on('hidden.bs.modal', function() {
             document.querySelector('#next-btn')?.focus();

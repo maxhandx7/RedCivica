@@ -90,14 +90,14 @@
                                     </td>
                                     <td class="text-end">
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('questions.show', $question) }}" class="btn btn-sm btn-link"
+                                           {{--  <a href="{{ route('questions.show', $question) }}" class="btn btn-sm btn-link"
                                                 data-bs-toggle="tooltip" title="Ver">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="{{ route('questions.edit', $question) }}" class="btn btn-sm btn-link"
                                                 data-bs-toggle="tooltip" title="Editar">
                                                 <i class="fas fa-edit"></i>
-                                            </a>
+                                            </a> --}}
                                             {!! Form::open(['route' => ['questions.destroy', $question], 'method' => 'DELETE', 'class' => 'd-inline']) !!}
                                             <button type="submit" class="btn btn-sm btn-link text-danger"
                                                 data-bs-toggle="tooltip" title="Eliminar"
@@ -158,10 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`https://secure.geonames.org/getJSON?geonameId=${cityId}&username=${username}`)
             .then(r => r.json())
             .then(data => {
+                let cleanName = data?.adminName1.replace(' Department', '');
                 document.getElementById(`city-${questionId}`).textContent =
                     data?.name ?? `Ciudad ID: ${cityId}`;
                 document.getElementById(`department-${questionId}`).textContent =
-                    data?.adminName1 ?? 'No encontrado';
+                    cleanName ?? 'No encontrado';
             })
             .catch(err => {
                 console.error('Error cargando ciudad:', err);

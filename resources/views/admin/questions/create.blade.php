@@ -66,9 +66,10 @@
                     <div class="mb-3">
                         <label for="question_type" class="form-label">Tipo de Pregunta <span class="text-danger">*</span></label>
                         <select class="form-select" id="question_type" name="question_type" required>
+                            <option value="" selected disabled>Seleccione opcion</option>
                             <option value="multiple_choice">Opción Múltiple</option>
-                            <option value="text">Texto</option>
-                            <option value="rating">Calificación</option>
+                            {{-- <option value="text">Texto</option>
+                            <option value="rating">Calificación</option> --}}
                         </select>
                     </div>
                 </div>
@@ -148,9 +149,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     );
                     
                     departments.forEach(dept => {
+                        const cleanName = dept.name.replace(' Department', '');
                         const option = document.createElement('option');
                         option.value = dept.geonameId;
-                        option.textContent = dept.name;
+                        option.textContent = cleanName;
                         option.setAttribute('data-admin-code', dept.adminCode1);
                         departmentSelect.appendChild(option);
                     });

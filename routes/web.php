@@ -88,6 +88,10 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::resource('questions', App\Http\Controllers\QuestionController::class)->names('questions');
+    Route::get('/questions/departments', [App\Http\Controllers\QuestionController::class, 'getDepartments'])->name('questions.departments');
+    Route::get('/questions/cities/{department}', [App\Http\Controllers\QuestionController::class, 'getCities'])->name('questions.cities');
+    Route::get('/questions/by-location', [App\Http\Controllers\QuestionController::class, 'byLocation'])
+    ->name('questions.byLocation');
 });
 Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
     ->name('referidos.registro');
