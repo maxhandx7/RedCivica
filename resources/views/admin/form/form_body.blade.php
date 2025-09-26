@@ -817,11 +817,17 @@
 
         $('#guardarEncuesta').on('click', function() {
             const respuestas = {};
-            $('#preguntasEncuesta textarea').each(function(i, el) {
+            $('#preguntasEncuesta').each(function(i, el) {
                 respuestas[`pregunta_${i}`] = $(el).val();
             });
 
             $.post("{{route('guardar.question')}}", {
+                nombre: $('#name').val(),
+                apellido: $('#surname').val(),
+                tipo_documento: $('#tipo_documento').val(),
+                numero_documento: $('#cedula').val(),
+                email: $('#email').val(),
+                pais: $('#pais').val(),
                 departamento: $('#departamento').val(),
                 ciudad: $('#ciudad').val(),
                 respuestas: respuestas,
@@ -853,7 +859,7 @@
                         );
                         modal.show();
                     } else {
-                        alert("No hay preguntas para esta ubicación");
+                        console.log("No hay preguntas para esta ubicación");
                     }
                 },
                 error: function(xhr) {

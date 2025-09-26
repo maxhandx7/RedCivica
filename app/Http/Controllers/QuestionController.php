@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
-use App\Http\Requests\StoreQuestionRequest;
-use App\Http\Requests\UpdateQuestionRequest;
+use App\Models\Answer;
+use App\Models\Answers;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -306,10 +306,22 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function guardar(){
-        return response()->json([
-            'success' => true,
-        ]);
+    public function guardar(Request $request){
+        $validated = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'apellido' => 'nullable|string|max:255',
+        'tipo_documento' => 'nullable|string|max:50',
+        'numero_documento' => 'nullable|string|max:50',
+        'email' => 'nullable|email|max:255',
+        'pais' => 'nullable|string|max:255',
+        'departamento' => 'nullable|string|max:255',
+        'ciudad' => 'nullable|string|max:255',
+        'respuestas' => 'required|array',
+    ]);
+
+    Answers::create($validated);
+
+    return response()->json(['message' => 'Encuesta guardada correctamente']);
     }
 
 

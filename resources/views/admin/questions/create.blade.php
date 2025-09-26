@@ -124,7 +124,7 @@
 @endsection
 
 @section('scripts')
-<script>
+{{-- <script>
 document.addEventListener('DOMContentLoaded', function() {
     const colombiaGeonameId = 3686110;
     const username = 'Alan';
@@ -293,5 +293,147 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cargar departamentos al iniciar
     loadColombianDepartments();
 });
+</script> --}}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const colombiaGeonameId = 3686110; // ID fijo de Colombia en Geonames
+    const username = 'Alan';
+    const departmentSelect = document.getElementById('department_id');
+    const citySelect = document.getElementById('city_id');
+    const departmentsLoading = document.getElementById('departments-loading');
+    const citiesLoading = document.getElementById('cities-loading');
+
+    // Cargar departamentos de Colombia desde Geonames (sin filtros)
+    function loadColombianDepartments() {
+        departmentsLoading.style.display = 'block';
+
+        fetch(`https://secure.geonames.org/childrenJSON?geonameId=${colombiaGeonameId}&username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                departmentsLoading.style.display = 'none';
+                departmentSelect.innerHTML = '<option value="">-- Seleccionar departamento --</option>';
+
+                if (data.geonames && data.geonames.length > 0) {
+                    // usamos todos los hijos tal cual, sin filtrar ni limpiar
+                    data.geonames.forEach(dept => {
+                        const cleanName = dept.name.replace(' Department', '');
+                        const option = document.createElement('option');
+                        option.value = dept.geonameId;      // ID real de Geonames
+                        option.textContent = cleanName;     // Nombre tal cual
+                        departmentSelect.appendChild(option);
+                    });
+                } else {
+                    loadDefaultDepartments();
+                }
+            })
+            .catch(error => {
+                console.error('Error cargando departamentos:', error);
+                departmentsLoading.style.display = 'none';
+                loadDefaultDepartments();
+            });
+    }
+
+    // Cargar departamentos por defecto en caso de error
+    function loadDefaultDepartments() {
+        const defaultDepartments = [
+            { id: '3689770', name: 'Antioquia' },
+            { id: '3688649', name: 'Cundinamarca' },
+            { id: '3666304', name: 'Valle del Cauca' },
+            { id: '3689710', name: 'Atlántico' },
+            { id: '3688655', name: 'Bolívar' }
+        ];
+        defaultDepartments.forEach(dept => {
+            const option = document.createElement('option');
+            option.value = dept.id;
+            option.textContent = dept.name;
+            departmentSelect.appendChild(option);
+        });
+    }
+
+    // Cargar ciudades cuando se selecciona un departamento (consulta por geonameId del dpto)
+    departmentSelect.addEventListener('change', function() {
+        const deptId = this.value;
+        citySelect.disabled = true;
+        citySelect.innerHTML = '<option value="">-- Cargando ciudades --</option>';
+
+        if (deptId) {
+            citiesLoading.style.display = 'block';
+
+            // Se buscan los hijos directos (municipios/ciudades) de ese departamento
+            fetch(`https://secure.geonames.org/childrenJSON?geonameId=${deptId}&username=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    citiesLoading.style.display = 'none';
+                    citySelect.innerHTML = '<option value="">-- Seleccionar ciudad --</option>';
+
+                    if (data.geonames && data.geonames.length > 0) {
+                        data.geonames.forEach(city => {
+                            const option = document.createElement('option');
+                            option.value = city.geonameId;  // ID real de Geonames
+                            option.textContent = city.name; // Nombre tal cual
+                            citySelect.appendChild(option);
+                        });
+                        citySelect.disabled = false;
+                    } else {
+                        citySelect.innerHTML = '<option value="">-- No se encontraron ciudades --</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error cargando ciudades:', error);
+                    citiesLoading.style.display = 'none';
+                    citySelect.innerHTML = '<option value="">-- Error al cargar --</option>';
+                });
+        } else {
+            citySelect.innerHTML = '<option value="">-- Primero selecciona un departamento --</option>';
+            citySelect.disabled = true;
+        }
+    });
+
+    // Manejar la visibilidad de las opciones según el tipo de pregunta
+    document.getElementById('question_type').addEventListener('change', function() {
+        const optionsSection = document.getElementById('options-section');
+        optionsSection.style.display = this.value === 'multiple_choice' ? 'block' : 'none';
+    });
+
+    // Agregar nueva opción
+    document.getElementById('add-option').addEventListener('click', function() {
+        const template = document.getElementById('option-template');
+        const clone = template.content.cloneNode(true);
+        document.getElementById('options-container').appendChild(clone);
+    });
+
+    // Eliminar opción (evento delegado)
+    document.getElementById('options-container').addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-option')) {
+            e.target.closest('.input-group').remove();
+        }
+    });
+
+    // Validación del formulario
+    document.getElementById('surveyForm').addEventListener('submit', function(e) {
+        const questionType = document.getElementById('question_type').value;
+        const cityId = document.getElementById('city_id').value;
+
+        if (!cityId) {
+            e.preventDefault();
+            alert('Por favor selecciona una ciudad');
+            return;
+        }
+
+        if (questionType === 'multiple_choice') {
+            const options = document.querySelectorAll('input[name="options[]"]');
+            const valid = [...options].filter(o => o.value.trim()).length >= 2;
+            if (!valid) {
+                e.preventDefault();
+                alert('Las preguntas de opción múltiple deben tener al menos 2 opciones válidas');
+            }
+        }
+    });
+
+    // Cargar departamentos al iniciar
+    loadColombianDepartments();
+});
 </script>
+
 @endsection
