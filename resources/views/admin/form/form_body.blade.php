@@ -148,14 +148,14 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="name">Nombre*</label>
                                     <input class="form-control" type="text" name="name"
-                                        placeholder="Dijite su nombre" value="pablo" id="name" required />
+                                        placeholder="Dijite su nombre"  id="name" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="surname">Apellido*</label>
-                                    <input class="form-control" value="laserna" type="text" name="surname"
+                                    <input class="form-control"  type="text" name="surname"
                                         placeholder="Dijite su apellido" id="surname" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
@@ -178,7 +178,7 @@
                                 <!-- Numero de documento -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="cedula">Número de documento*</label>
-                                    <input class="form-control" value="87190002" type="text" name="cedula"
+                                    <input class="form-control"  type="text" name="cedula"
                                         id="cedula" pattern="[0-9]{6,10}" maxlength="10"
                                         title="Solo números, entre 6 y 10 dígitos"
                                         placeholder="Documento (6 a 10 dígitos)"
@@ -197,7 +197,7 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
                                         </span>
-                                        <input class="form-control datepicker" value="17/07/1996" type="text"
+                                        <input class="form-control datepicker"  type="text"
                                             name="fecha_nacimiento" id="fecha_nacimiento" placeholder="DD/MM/AAAA"
                                             autocomplete="off" required />
                                     </div>
@@ -211,7 +211,7 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
-                                        <input class="form-control datepicker" value="21/07/2014" type="text"
+                                        <input class="form-control datepicker"  type="text"
                                             name="fecha_expedicion" id="fecha_expedicion" placeholder="DD/MM/AAAA"
                                             autocomplete="off" required />
                                     </div>
@@ -227,7 +227,7 @@
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label" for="email">Correo electronico</label>
                                     <input class="form-control" type="email" name="email"
-                                        placeholder="name@example.com" value="dijepo4467@hiepth.com"
+                                        placeholder="name@example.com"
                                         id="email" />
                                     <div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
                                 </div>
