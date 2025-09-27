@@ -174,6 +174,15 @@
                                     </a>
                                     
                                     <a
+                                        class="nav-link {{ Request::segment(1) === 'questions' ? 'active' : '' }}"
+                                        href="{{ route('questions.index') }}" role="button">
+                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-question"></span></span><span
+                                                class="nav-link-text ps-1">Preguntas </span>
+                                        </div>
+                                    </a>
+
+                                    <a
                                         class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
                                         href="{{ route('analitica.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span

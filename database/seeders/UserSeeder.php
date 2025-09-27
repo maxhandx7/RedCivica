@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'name' => "Alan",
             'surname' => "Carabali",
             'email' => "Alancarabali@gmail.com",
+            'tipo_documento' => "cc",
             'cedula' => "1143982071",
             'telefono' => "3145561727",
             'barrio' => "puertas del sol",

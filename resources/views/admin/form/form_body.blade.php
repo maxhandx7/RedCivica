@@ -148,14 +148,14 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="name">Nombre*</label>
                                     <input class="form-control" type="text" name="name"
-                                        placeholder="Dijite su nombre" id="name" required />
+                                        placeholder="Dijite su nombre"  id="name" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="surname">Apellido*</label>
-                                    <input class="form-control" type="text" name="surname"
+                                    <input class="form-control"  type="text" name="surname"
                                         placeholder="Dijite su apellido" id="surname" required />
                                     <div class="invalid-feedback">Este campo es obligatorio.</div>
                                 </div>
@@ -178,27 +178,28 @@
                                 <!-- Numero de documento -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="cedula">Número de documento*</label>
-                                    <input class="form-control" type="text" name="cedula" id="cedula"
-                                        pattern="[0-9]{6,10}" maxlength="10" title="Solo números, entre 6 y 10 dígitos"
+                                    <input class="form-control"  type="text" name="cedula"
+                                        id="cedula" pattern="[0-9]{6,10}" maxlength="10"
+                                        title="Solo números, entre 6 y 10 dígitos"
                                         placeholder="Documento (6 a 10 dígitos)"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
                                     <div class="invalid-feedback">Ingrese solo números (6-10 dígitos)</div>
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="row">
-                                 <!-- Fecha de Nacimiento -->
+                                <!-- Fecha de Nacimiento -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="fecha_nacimiento">Fecha de Nacimiento*</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
                                         </span>
-                                        <input class="form-control datepicker" type="text" name="fecha_nacimiento"
-                                            id="fecha_nacimiento" placeholder="DD/MM/AAAA" autocomplete="off"
-                                            required />
+                                        <input class="form-control datepicker"  type="text"
+                                            name="fecha_nacimiento" id="fecha_nacimiento" placeholder="DD/MM/AAAA"
+                                            autocomplete="off" required />
                                     </div>
                                     <div class="invalid-feedback">La fecha de nacimiento es obligatoria</div>
                                 </div>
@@ -210,14 +211,14 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
-                                        <input class="form-control datepicker" type="text" name="fecha_expedicion"
-                                            id="fecha_expedicion" placeholder="DD/MM/AAAA" autocomplete="off"
-                                            required />
+                                        <input class="form-control datepicker"  type="text"
+                                            name="fecha_expedicion" id="fecha_expedicion" placeholder="DD/MM/AAAA"
+                                            autocomplete="off" required />
                                     </div>
                                     <div class="invalid-feedback">La fecha de expedición es obligatoria</div>
                                 </div>
 
-                               
+
                             </div>
 
 
@@ -226,7 +227,8 @@
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label" for="email">Correo electronico</label>
                                     <input class="form-control" type="email" name="email"
-                                        placeholder="name@example.com" id="email" />
+                                        placeholder="name@example.com"
+                                        id="email" />
                                     <div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
                                 </div>
                             </div>
@@ -301,7 +303,7 @@
                     <!-- Paso 3: Confirmación -->
                     <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel"
                         aria-labelledby="bootstrap-wizard-tab3" id="bootstrap-wizard-tab3">
-                      
+
 
                         <h4 class="mb-1" id="msg1">¡Revisa tus datos!</h4>
                         <p class="mb-4" id="msg2">Confirma que toda la información sea correcta antes de enviar
@@ -318,13 +320,13 @@
                     <div class="tab-pane text-center px-sm-3 px-md-5" role="tabpanel"
                         aria-labelledby="bootstrap-wizard-tab4" id="bootstrap-wizard-tab4">
 
-                          <div class="wizard-lottie-wrapper">
+                        <div class="wizard-lottie-wrapper">
                             <div class="lottie wizard-lottie mx-auto my-3" id="exito" hidden
                                 data-options='{"path":"../falcon/public/assets/img/animated-icons/celebration.json"}'>
                             </div>
                         </div>
 
-                         <div class="text-start mb-4" id="redatos">
+                        <div class="text-start mb-4" id="redatos">
                         </div>
 
                         <div class="form-check mb-4" id="terminos-container">
@@ -361,6 +363,9 @@
             </div>
         </div>
     </div>
+
+
+    @include('admin.form._form_survey')
 
     <!-- Modal de Error -->
     <div class="modal fade" id="error-modal" tabindex="-1" aria-hidden="true">
@@ -496,9 +501,7 @@
                     });
                 } else if (step === 3) {
                     showResumen();
-                }
-                
-                else if (step === 4) {
+                } else if (step === 4) {
                     // Validar aceptación de términos
                     if (!$('#terminos').is(':checked')) {
                         $('#terminos').addClass('is-invalid');
@@ -638,7 +641,8 @@
                             $('#redatos, #terminos, #final-submit').hide();
                             $('#wizard-submit-text').text('¡Éxito!');
                             $('#exito').prop('disabled', false).removeAttr('hidden');
-                             $('terminos-container').css('display', 'none');
+                            $('terminos-container').css('display', 'none');
+                            abrirEncuestaModal();
                             // Mostrar mensaje de éxito
                             $('#redatos').after(`
                                 <div class="alert alert-success mt-3">
@@ -647,7 +651,7 @@
                                 </div>
                                 <a class="btn btn-primary px-5 my-3" href="{{ route('login') }}">Iniciar sesión</a>
                             `);
-                           
+
                         } else {
                             showErrorModal(response.message || 'Error al procesar el formulario.');
                             $btn.prop('disabled', false).html(originalHtml);
@@ -780,16 +784,122 @@
 
 
 
+
+            $('#guardarEncuesta').on('click', function() {
+                const data = {};
+                $('#preguntasEncuesta').find('input, textarea').each(function() {
+                    const name = $(this).attr('name');
+                    if ($(this).is(':radio')) {
+                        if ($(this).is(':checked')) data[name] = $(this).val();
+                    } else {
+                        data[name] = $(this).val();
+                    }
+                });
+
+                $.post("", {
+                    respuestas: data,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                }).done(() => {
+                    alert('¡Gracias por participar!');
+                    $('#encuestaModal').modal('hide');
+                });
+            });
+
+
+
             $('#open2modal').on('click', function() {
                 setTimeout(function() {
                     $('#termsModal').modal('hide');
                 }, 1000);
 
             });
-
-
-
         });
+
+        $('#guardarEncuesta').on('click', function() {
+            const respuestas = {};
+            $('#preguntasEncuesta').each(function(i, el) {
+                respuestas[`pregunta_${i}`] = $(el).val();
+            });
+
+            $.post("{{route('guardar.question')}}", {
+                nombre: $('#name').val(),
+                apellido: $('#surname').val(),
+                tipo_documento: $('#tipo_documento').val(),
+                numero_documento: $('#cedula').val(),
+                email: $('#email').val(),
+                pais: $('#pais').val(),
+                departamento: $('#departamento').val(),
+                ciudad: $('#ciudad').val(),
+                respuestas: respuestas,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }).done(() => {
+                alert('¡Gracias por tu tiempo!');
+                $('#encuestaModal').modal('hide');
+            });
+        });
+
+        function abrirEncuestaModal() {
+            const dept = $('#departamento').val();
+            const city = $('#ciudad').val();
+
+            $.ajax({
+                url: "{{ route('questions.byLocation') }}", // la ruta de Laravel
+                type: "POST", // POST para evitar caché y permitir CSRF
+                data: {
+                    department_id: dept,
+                    city_id: city,
+                    _token: "{{ csrf_token() }}" // importante para Laravel
+                },
+                dataType: "json",
+                success: function(res) {
+                    if (res.success && res.questions.length) {
+                        renderPreguntas(res.questions);
+                        const modal = new bootstrap.Modal(
+                            document.getElementById('encuestaModal')
+                        );
+                        modal.show();
+                    } else {
+                        console.log("No hay preguntas para esta ubicación");
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    alert("Error cargando las preguntas");
+                }
+            });
+
+
+            function renderPreguntas(questions) {
+                let html = '';
+                questions.forEach(q => {
+                    html += `<div class="mb-3">
+                   <label class="form-label fw-bold">${q.question_text}
+                     ${q.is_required ? '<span class="text-danger">*</span>' : ''}
+                   </label>`;
+
+                    if (q.question_type === 'multiple_choice' && Array.isArray(q.options)) {
+                        q.options.forEach((opt, i) => {
+                            html += `
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" 
+                         name="q_${q.id}" value="${opt}">
+                  <label class="form-check-label">${opt}</label>
+                </div>`;
+                        });
+                    } else if (q.question_type === 'rating') {
+                        html +=
+                            `<input type="number" class="form-control" name="q_${q.id}" min="1" max="5">`;
+                    } else { // text
+                        html += `<textarea class="form-control" name="q_${q.id}" rows="2"></textarea>`;
+                    }
+
+                    html += '</div>';
+                });
+                $('#preguntasEncuesta').html(html);
+            }
+        }
+
+
 
         $('#error-modal').on('hidden.bs.modal', function() {
             document.querySelector('#next-btn')?.focus();
