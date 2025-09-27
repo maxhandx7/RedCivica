@@ -90,12 +90,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('questions', App\Http\Controllers\QuestionController::class)->names('questions');
     Route::get('/questions/departments', [App\Http\Controllers\QuestionController::class, 'getDepartments'])->name('questions.departments');
     Route::get('/questions/cities/{department}', [App\Http\Controllers\QuestionController::class, 'getCities'])->name('questions.cities');
-   Route::post('/questions/by-location', [App\Http\Controllers\QuestionController::class, 'byLocation'])
+  
+});
+
+ Route::post('/questions/by-location', [App\Http\Controllers\QuestionController::class, 'byLocation'])
     ->name('questions.byLocation');
 
     Route::post('/questions/guardar', [App\Http\Controllers\QuestionController::class, 'guardar'])
     ->name('guardar.question');
-});
+
 Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
     ->name('referidos.registro');
 Route::post('/referidos/create', [UserController::class, 'form'])->name('users.form');

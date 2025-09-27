@@ -69,7 +69,6 @@ class QuestionController extends Controller
         try {
             return view('admin.questions.edit', compact('question'));
         } catch (\Exception $e) {
-            Log::error('Error al cargar formulario de edición: ' . $e->getMessage());
             return redirect()->route('questions.index')->with('error', 'Error al cargar el formulario de edición');
         }
     }
@@ -149,7 +148,6 @@ class QuestionController extends Controller
             return redirect()->route('questions.index')
                 ->with('success', 'Pregunta eliminada exitosamente');
         } catch (\Exception $e) {
-            Log::error('Error al eliminar pregunta: ' . $e->getMessage());
             return redirect()->route('questions.index')
                 ->with('error', 'Error al eliminar la pregunta');
         }
