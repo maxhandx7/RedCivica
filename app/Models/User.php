@@ -130,13 +130,13 @@ class User extends Authenticatable
 
     public function my_store($request)
     {
-        
+
         $request->merge([
             'fecha_nacimiento' => Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->format('Y-m-d'),
             'fecha_expedicion' => Carbon::createFromFormat('d/m/Y', $request->fecha_expedicion)->format('Y-m-d'),
         ]);
 
-       
+
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -184,12 +184,8 @@ class User extends Authenticatable
 
         $password = Str::random(12);
 
-        $user = self::where('cedula', $request->cedula)
-            ->orWhere('referencia_id', $request->referencia_id)
-            ->first();
-
-
-
+        $user = self::where('cedula', $request->cedula)->first();
+        
         if ($user) {
             // Si el usuario ya existe, actualizar sus datos
             $user->update([

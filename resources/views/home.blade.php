@@ -144,19 +144,19 @@
                         </div>
                     </div>
                     <div class="row">
-                            <div class="card mb-4">
-                                <div class="card-header bg-primary text-white">
-                                    |<i class="fas fa-chart-pie me-2"></i>Usuarios por Ciudad
-                                </div>
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                |<i class="fas fa-chart-pie me-2"></i>Usuarios por Ciudad
+                            </div>
 
-                                <div class="card-body text-center d-flex flex-column">
-                                    <p class="text-muted">Visualiza la distribución de usuarios en tu red según su ciudad.
-                                    </p>
-                                    <div class="my-auto">
-                                        <canvas id="ciudadChart" width="1618" height="1000"></canvas>
-                                    </div>
+                            <div class="card-body text-center d-flex flex-column">
+                                <p class="text-muted">Visualiza la distribución de usuarios en tu red según su ciudad.
+                                </p>
+                                <div class="my-auto">
+                                    <canvas id="ciudadChart" width="1618" height="1000"></canvas>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
             @endhasrole
@@ -169,7 +169,7 @@
                         <div class="col-md-6 mb-4 mb-md-0">
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-header bg-primary text-white py-3">
-                                    <h5 class="mb-0"><i class="fas fa-network-wired me-2"></i>Mi Red de Referidos</h5>
+                                    <p class="mb-0"><i class="fas fa-network-wired me-2"></i>Mi Red de Referidos</p>
                                 </div>
                                 <div class="card-body text-center d-flex flex-column">
                                     <div class="my-auto">
@@ -190,19 +190,28 @@
                         <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-header bg-primary text-white py-3">
-                                    <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
+                                    <p class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</p>
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <div class="d-grid gap-3">
-                                        <a href="{{ route('referencias.index') }}" class="btn btn-primary btn-lg">
-                                            <i class="fas fa-link me-2"></i>Mis enlaces de referencia
-                                        </a>
-                                        <a href="#" class="btn btn-outline-primary btn-lg">
-                                            <i class="fas fa-share-alt me-2"></i>Compartir campaña
-                                        </a>
-                                        <a href="#" class="btn btn-light btn-lg">
-                                            <i class="fas fa-question-circle me-2"></i>Guía rápida
-                                        </a>
+                                        <div class="settings my-3">
+                                            <div class="card shadow-none">
+                                                <div class="card-body alert mb-0" role="alert">
+                                                    <div class="btn-close-/falcon-container">
+                                                        <button class="btn btn-link btn-close-/falcon p-0" aria-label="Close"
+                                                            data-bs-dismiss="alert"></button>
+                                                    </div>
+                                                    <div class="text-center"><img
+                                                            src="/falcon/public/assets/img/icons/spot-illustrations/navbar-vertical.png"
+                                                            alt="" width="80" />
+                                                        <p class="fs-11 mt-2">Invita a personas a tu red
+                                                        <div class="d-grid"><a class="btn btn-sm btn-primary" href="{{route('referencias.index')}}"
+                                                                ><i class="fas fa-user-plus"></i> Invitar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="mt-auto pt-3">
                                         <div class="alert alert-info mb-0">
@@ -344,7 +353,7 @@
                 new Chart(ctxciudad, {
                     type: 'doughnut',
                     data: {
-                        labels:  @json($labelsCity) ,
+                        labels: @json($labelsCity),
                         datasets: [{
                             label: 'Usuarios por ciudad',
                             data: @json($totalsCity),
