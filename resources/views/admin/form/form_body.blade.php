@@ -864,7 +864,7 @@
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
-                    alert("Error cargando las preguntas");
+                    console.log("Error cargando las preguntas");
                 }
             });
 
