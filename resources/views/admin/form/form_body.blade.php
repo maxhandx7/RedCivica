@@ -197,7 +197,7 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
                                         </span>
-                                        <input class="form-control datepicker"  type="text"
+                                        <input class="form-control datepicker" {{-- value="17/07/1996" --}}  type="text"
                                             name="fecha_nacimiento" id="fecha_nacimiento" placeholder="DD/MM/AAAA"
                                             autocomplete="off" required />
                                     </div>
@@ -211,7 +211,7 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
-                                        <input class="form-control datepicker"  type="text"
+                                        <input class="form-control datepicker" {{-- value="21/07/2014" --}}  type="text"
                                             name="fecha_expedicion" id="fecha_expedicion" placeholder="DD/MM/AAAA"
                                             autocomplete="off" required />
                                     </div>
@@ -864,7 +864,7 @@
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
-                    alert("Error cargando las preguntas");
+                    console.log("Error cargando las preguntas");
                 }
             });
 

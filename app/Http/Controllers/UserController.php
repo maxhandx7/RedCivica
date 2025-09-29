@@ -122,9 +122,11 @@ class UserController extends Controller
         }
     }
 
-    public function form(Request $request, User $user)
+    public function form(Request $request)
     {
         try {
+            $user  = new User();
+
             // Ejecutar el almacenamiento
             $user->my_store($request);
 

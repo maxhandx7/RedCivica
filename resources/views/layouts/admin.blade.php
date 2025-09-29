@@ -111,10 +111,10 @@
                                             </h6>
                                             <p class="mb-0 text-600 fs--1">
                                                 {{ Auth::user()->email }}
-                                                    <span class="d-block mt-0 fs--2 text-400">
-                                                        Miembro desde
-                                                        {{ Auth::user()->created_at->translatedFormat('F Y') }}
-                                                    </span>
+                                                <span class="d-block mt-0 fs--2 text-400">
+                                                    Miembro desde
+                                                    {{ Auth::user()->created_at->translatedFormat('F Y') }}
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
@@ -146,14 +146,7 @@
                                         </div>
                                     </a>
                                 @endhasrole
-                                <!-- parent pages--><a
-                                    class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}"
-                                    href="{{ route('referencias.index') }}" role="button">
-                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                class="fas fa-link"></span></span><span
-                                            class="nav-link-text ps-1">Referencias</span>
-                                    </div>
-                                </a>
+
                                 <!-- parent pages--><a
                                     class="nav-link {{ Request::segment(1) === 'red' ? 'active' : '' }}"
                                     href="{{ route('red.index') }}" role="button">
@@ -163,18 +156,24 @@
                                     </div>
                                 </a>
                                 @hasrole('admin')
+                                    <!-- parent pages--><a
+                                        class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}"
+                                        href="{{ route('referencias.index') }}" role="button">
+                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                    class="fas fa-link"></span></span><span
+                                                class="nav-link-text ps-1">Referencias</span>
+                                        </div>
+                                    </a>
                                     <!-- parent pages-->
-                                    <a
-                                        class="nav-link {{ Request::segment(1) === 'needs' ? 'active' : '' }}"
+                                    <a class="nav-link {{ Request::segment(1) === 'needs' ? 'active' : '' }}"
                                         href="{{ route('needs.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                     class="fas fa-hands-helping"></span></span><span
                                                 class="nav-link-text ps-1">Necesidades </span>
                                         </div>
                                     </a>
-                                    
-                                    <a
-                                        class="nav-link {{ Request::segment(1) === 'questions' ? 'active' : '' }}"
+
+                                    <a class="nav-link {{ Request::segment(1) === 'questions' ? 'active' : '' }}"
                                         href="{{ route('questions.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                     class="fas fa-question"></span></span><span
@@ -182,8 +181,7 @@
                                         </div>
                                     </a>
 
-                                    <a
-                                        class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
+                                    <a class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
                                         href="{{ route('analitica.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                                     class="fas fa-chart-bar"></span></span><span
@@ -191,7 +189,7 @@
                                         </div>
                                     </a>
 
-                                    
+
                                     <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}"
                                         href="{{ route('users.index') }}" role="button">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
@@ -202,23 +200,7 @@
                                 @endhasrole
                             </li>
                         </ul>
-                        <div class="settings my-3">
-                            <div class="card shadow-none">
-                                <div class="card-body alert mb-0" role="alert">
-                                    <div class="btn-close-/falcon-container">
-                                        <button class="btn btn-link btn-close-/falcon p-0" aria-label="Close"
-                                            data-bs-dismiss="alert"></button>
-                                    </div>
-                                    <div class="text-center"><img
-                                            src="/falcon/public/assets/img/icons/spot-illustrations/navbar-vertical.png"
-                                            alt="" width="80" />
-                                        <p class="fs-11 mt-2">Invita a personas a tu red
-                                        <div class="d-grid"><a class="btn btn-sm btn-primary" href="#"
-                                                target="_blank"><i class="fas fa-user-plus"></i> Invitar</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </nav>
