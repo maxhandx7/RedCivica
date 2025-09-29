@@ -205,8 +205,8 @@
                                                             src="/falcon/public/assets/img/icons/spot-illustrations/navbar-vertical.png"
                                                             alt="" width="80" />
                                                         <p class="fs-11 mt-2">Invita a personas a tu red
-                                                        <div class="d-grid"><a class="btn btn-sm btn-primary" href="{{route('referencias.index')}}"
-                                                                ><i class="fas fa-user-plus"></i> Invitar</a>
+                                                        <div class="d-grid"><button class="btn btn-sm btn-primary" onclick="shareReference()"
+                                                                ><i class="fas fa-user-plus"></i> Invitar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -375,5 +375,39 @@
                         }
                     }
                 });
+                
             });
+
+            let link = 'https://politicfriends.com/referidos/registro?usr=15&fuente=Whatsapp%2C%20instagram%2C%20tiktok%20etc&medio=redes%20sociales&ref_id=4';
+
+
+            window.shareReference = function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Únete a nuestra red en PoliticFriends',
+                        text: 'Por favor regístrate usando este enlace para que ambos ganemos puntos en PoliticFriends.',
+                        url: link,
+                    }).catch(err => {
+                        console.log('Error al compartir:', err);
+                    });
+                } else {
+                    // Fallback para navegadores que no soportan Web Share API
+                    copyReferenceLink();
+
+                }
+
+                window.copyReferenceLink = function() {
+                const copyText = link;
+                copyText.select();
+                document.execCommand("copy");
+
+                // Mostrar notificación
+                const originalText = copyText.nextElementSibling.innerHTML;
+                copyText.nextElementSibling.innerHTML = '<i class="fas fa-check"></i> Copiado';
+
+                setTimeout(() => {
+                    copyText.nextElementSibling.innerHTML = originalText;
+                }, 2000);
+            };
+            };
         </script>
