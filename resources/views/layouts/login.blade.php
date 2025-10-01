@@ -83,6 +83,7 @@
     {!! Html::script('falcon/public/vendors/lodash/lodash.min.js') !!}
     {!! Html::script('falcon/public/vendors/list.js/list.min.js') !!}
     {!! Html::script('falcon/public/assets/js/theme.js') !!}
+    {!! Html::script('falcon/public/assets/js/sweetalert2.js') !!}
     @yield('scripts')
   </body>
 
