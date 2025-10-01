@@ -378,7 +378,7 @@
                 
             });
 
-            let link = 'https://politicfriends.com/referidos/registro?usr=15&fuente=Whatsapp%2C%20instagram%2C%20tiktok%20etc&medio=redes%20sociales&ref_id=4';
+            let link = 'https://politicfriends.com/referidos/registro?usr=1&fuente=Whatsapp&ref_id=4';
 
 
             window.shareReference = function() {
