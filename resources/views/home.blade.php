@@ -180,7 +180,7 @@
                                         <p class="text-muted mb-4">Personas en tu red</p>
                                     </div>
                                     <a href="{{ route('red.index') }}" class="btn btn-success mt-auto">
-                                        <i class="fas fa-chart-network me-2"></i>Explorar red completa
+                                        <i class="fas fa-network-wired "> </i> Explorar red completa
                                     </a>
                                 </div>
                             </div>
