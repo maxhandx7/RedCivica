@@ -200,7 +200,7 @@
                                 @endhasrole
                             </li>
                         </ul>
-                        
+
                     </div>
                 </div>
             </nav>
@@ -540,8 +540,17 @@
                                 aria-labelledby="navbarDropdownUser">
                                 <div class="bg-white dark__bg-1000 rounded-2 py-2">
                                     <a class="dropdown-item fw-bold text-warning"
-                                        href="{{ route('business.index') }}"><span
-                                            class="fas fa-crown me-1"></span><span>{{ $business->name }}</span></a>
+                                        @hasrole('cliente')
+                                        href="#"
+                                        onclick="return false;" 
+                                        style="opacity: 0.6; cursor: not-allowed;"
+                                    @else
+                                        href="{{ route('business.index') }}"
+                                    @endhasrole>
+                                        <span class="fas fa-crown me-1"></span>
+                                        <span>{{ $business->name }}</span>
+                                    </a>
+
 
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('configs.edit', Auth::user()->id) }}">Tu
