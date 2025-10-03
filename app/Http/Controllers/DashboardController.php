@@ -86,7 +86,8 @@ class DashboardController extends Controller
         $dataDep = User::whereIn('id', $descendantIds)
             ->select(
                 DB::raw("IFNULL(departamento, 'Sin datos') as departamento"),
-                DB::raw('COUNT(*) as total'))
+                DB::raw('COUNT(*) as total')
+            )
             ->groupBy('departamento')
             ->orderByDesc('total')
             ->take(5)
@@ -155,6 +156,47 @@ class DashboardController extends Controller
             return $resp->json('name') ?? $code; // fallback por si no hay name
         });
     }
+
+    public function usersByDepartment()
+    {
+        // Traer departamentos de Colombia desde GeoNames
+        $geo = Http::get("https://secure.geonames.org/childrenJSON", [
+            'geonameId' => 3686110,
+            'username' => 'Alan'
+        ])->json();
+
+        // Guardamos los departamentos con su lat/lng
+        $departamentosGeo = collect($geo['geonames'])->mapWithKeys(function ($dep) {
+            $nombreLimpio = str_replace(" Department", "", $dep['name']);
+            return [
+                $nombreLimpio => [
+                    'geonameId' => $dep['geonameId'],
+                    'lat' => $dep['lat'],
+                    'lng' => $dep['lng'],
+                ]
+            ];
+        });
+
+
+        $users = User::selectRaw('departamento, COUNT(*) as total')
+            ->groupBy('departamento')
+            ->pluck('total', 'departamento');
+
+        // Unir datos
+        $data = [];
+        foreach ($departamentosGeo as $nombre => $info) {
+            $data[] = [
+                'name' => $nombre,
+                'geonameId' => $info['geonameId'],
+                'lat' => $info['lat'],
+                'lng' => $info['lng'],
+                'users' => $users[$info['geonameId']] ?? 0
+            ];
+        }
+        return response()->json($data);
+    }
+
+
 
 
 }

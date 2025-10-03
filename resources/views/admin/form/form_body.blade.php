@@ -84,7 +84,7 @@
 
 <body>
     <div class="container my-5">
-        <div class="card theme-wizard" id="wizard">
+        <div class="card theme-wizard" id="wizard" data-toggle="validator" role="form" novalidate>
             <div class="bg-body-tertiary">
                 <ul class="nav justify-content-between nav-wizard">
                     <li class="nav-item">
@@ -424,6 +424,7 @@
 
             // Navegación entre pasos
             function goToNextStep() {
+                console.log(validateStep(currentStep));
                 if (validateStep(currentStep)) {
                     if (currentStep < totalSteps) {
                         currentStep++;
@@ -432,6 +433,12 @@
                         }
                         updateNavigation();
                     }
+                } else {
+                    console.log("No puedes avanzar, valida primero");
+                    e.preventDefault();
+
+                    return;
+                    console.log("Validación fallida en el paso " + currentStep);
                 }
             }
 
@@ -447,9 +454,6 @@
                 $(`#wizard .nav-link`).removeClass('active');
                 $(`#wizard .nav-link[data-wizard-step="${currentStep}"]`).addClass('active');
 
-                // Actualizar contenido visible
-                /* $(`#wizard .tab-pane`).removeClass('active');
-                $(`#bootstrap-wizard-tab${currentStep}`).addClass('active'); */
 
                 // Actualizar contenido visible
                 $(`#wizard .tab-pane`).removeClass('active');
@@ -475,14 +479,15 @@
 
                 if (step === 1) {
                     // Validar campos personales
-                    $('#name, #surname, #tipo_documento, #cedula').each(function() {
-                        if (!$(this).val()) {
-                            $(this).addClass('is-invalid');
-                            isValid = false;
-                        } else {
-                            $(this).removeClass('is-invalid');
-                        }
-                    });
+                    $('#name, #surname, #tipo_documento, #cedula, #fecha_expedicion, #fecha_nacimiento').each(
+                        function() {
+                            if (!$(this).val()) {
+                                $(this).addClass('is-invalid');
+                                isValid = false;
+                            } else {
+                                $(this).removeClass('is-invalid');
+                            }
+                        });
 
                     // Validar email
                     const email = $('#email').val();
@@ -936,6 +941,13 @@
     </script>
 
     <script>
+        $('#wizard .nav-link').on('show.bs.tab', function(e) {
+            if (!validateStep(currentStep)) {
+                e.preventDefault(); // 🚫 bloquea el cambio automático de tab
+                console.log("No puedes avanzar hasta completar este paso");
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             flatpickr('.datepicker', {
                 locale: 'es',

@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    Route::get('/users-by-department', [DashboardController::class, 'usersByDepartment']);
 
     // Red de referidos (estructura jerárquica)
     Route::get('/red', [RedController::class, 'index'])->name('red.index');
