@@ -451,13 +451,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
    // Inicializar mapa
-        var map = L.map('map').setView([4.5709, -74.2973], 6);
+        var map = L.map('map').setView([4.5709, -74.2973], 5);
 
         // Capa base con CARTO
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
             subdomains: 'abcd',
-            maxZoom: 10
+            maxZoom: 18
         }).addTo(map);
 
         

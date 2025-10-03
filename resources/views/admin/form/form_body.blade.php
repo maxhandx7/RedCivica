@@ -196,7 +196,7 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
                                         </span>
-                                        <input class="form-control datepicker" {{-- value="17/07/1996" --}} type="text"
+                                        <input class="form-control datepicker" value="17/07/1996" type="text"
                                             name="fecha_nacimiento" id="fecha_nacimiento" placeholder="DD/MM/AAAA"
                                             autocomplete="off" required />
                                     </div>
@@ -210,7 +210,7 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
-                                        <input class="form-control datepicker" {{-- value="21/07/2014" --}} type="text"
+                                        <input class="form-control datepicker" value="21/07/2014" type="text"
                                             name="fecha_expedicion" id="fecha_expedicion" placeholder="DD/MM/AAAA"
                                             autocomplete="off" required />
                                     </div>
@@ -424,7 +424,6 @@
 
             // Navegación entre pasos
             function goToNextStep() {
-                console.log(validateStep(currentStep));
                 if (validateStep(currentStep)) {
                     if (currentStep < totalSteps) {
                         currentStep++;
@@ -786,30 +785,6 @@
             initWizard();
 
 
-
-
-            $('#guardarEncuesta').on('click', function() {
-                const data = {};
-                $('#preguntasEncuesta').find('input, textarea').each(function() {
-                    const name = $(this).attr('name');
-                    if ($(this).is(':radio')) {
-                        if ($(this).is(':checked')) data[name] = $(this).val();
-                    } else {
-                        data[name] = $(this).val();
-                    }
-                });
-
-                $.post("", {
-                    respuestas: data,
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                }).done(() => {
-                    alert('¡Gracias por participar!');
-                    $('#encuestaModal').modal('hide');
-                });
-            });
-
-
-
             $('#open2modal').on('click', function() {
                 setTimeout(function() {
                     $('#termsModal').modal('hide');
@@ -820,9 +795,22 @@
 
         $('#guardarEncuesta').on('click', function() {
             const respuestas = {};
-            $('#preguntasEncuesta').each(function(i, el) {
-                respuestas[`pregunta_${i}`] = $(el).val();
-            });
+
+            // Recorremos todos los inputs de las preguntas
+            $('#preguntasEncuesta').find('input, textarea, select').each(function() {
+                const name = $(this).attr('name');
+                if (!name) return;
+
+                // Para radios, solo tomar el seleccionado
+                if ($(this).attr('type') === 'radio') {
+                    if ($(this).is(':checked')) {
+                        respuestas[name] = $(this).val();
+                    }
+                } else {
+                    // Para text, textarea, number, select, etc.
+                    respuestas[name] = $(this).val();
+                }
+            });;
 
             $.post("{{ route('guardar.question') }}", {
                 nombre: $('#name').val(),
