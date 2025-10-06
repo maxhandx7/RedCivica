@@ -84,7 +84,7 @@
 
 <body>
     <div class="container my-5">
-        <div class="card theme-wizard" id="wizard">
+        <div class="card theme-wizard" id="wizard" data-toggle="validator" role="form" novalidate>
             <div class="bg-body-tertiary">
                 <ul class="nav justify-content-between nav-wizard">
                     <li class="nav-item">
@@ -432,6 +432,12 @@
                         }
                         updateNavigation();
                     }
+                } else {
+                    console.log("No puedes avanzar, valida primero");
+                    e.preventDefault();
+
+                    return;
+                    console.log("Validación fallida en el paso " + currentStep);
                 }
             }
 
@@ -447,9 +453,6 @@
                 $(`#wizard .nav-link`).removeClass('active');
                 $(`#wizard .nav-link[data-wizard-step="${currentStep}"]`).addClass('active');
 
-                // Actualizar contenido visible
-                /* $(`#wizard .tab-pane`).removeClass('active');
-                $(`#bootstrap-wizard-tab${currentStep}`).addClass('active'); */
 
                 // Actualizar contenido visible
                 $(`#wizard .tab-pane`).removeClass('active');
@@ -475,14 +478,15 @@
 
                 if (step === 1) {
                     // Validar campos personales
-                    $('#name, #surname, #tipo_documento, #cedula').each(function() {
-                        if (!$(this).val()) {
-                            $(this).addClass('is-invalid');
-                            isValid = false;
-                        } else {
-                            $(this).removeClass('is-invalid');
-                        }
-                    });
+                    $('#name, #surname, #tipo_documento, #cedula, #fecha_expedicion, #fecha_nacimiento').each(
+                        function() {
+                            if (!$(this).val()) {
+                                $(this).addClass('is-invalid');
+                                isValid = false;
+                            } else {
+                                $(this).removeClass('is-invalid');
+                            }
+                        });
 
                     // Validar email
                     const email = $('#email').val();
@@ -781,30 +785,6 @@
             initWizard();
 
 
-
-
-            $('#guardarEncuesta').on('click', function() {
-                const data = {};
-                $('#preguntasEncuesta').find('input, textarea').each(function() {
-                    const name = $(this).attr('name');
-                    if ($(this).is(':radio')) {
-                        if ($(this).is(':checked')) data[name] = $(this).val();
-                    } else {
-                        data[name] = $(this).val();
-                    }
-                });
-
-                $.post("", {
-                    respuestas: data,
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                }).done(() => {
-                    alert('¡Gracias por participar!');
-                    $('#encuestaModal').modal('hide');
-                });
-            });
-
-
-
             $('#open2modal').on('click', function() {
                 setTimeout(function() {
                     $('#termsModal').modal('hide');
@@ -815,9 +795,22 @@
 
         $('#guardarEncuesta').on('click', function() {
             const respuestas = {};
-            $('#preguntasEncuesta').each(function(i, el) {
-                respuestas[`pregunta_${i}`] = $(el).val();
-            });
+
+            // Recorremos todos los inputs de las preguntas
+            $('#preguntasEncuesta').find('input, textarea, select').each(function() {
+                const name = $(this).attr('name');
+                if (!name) return;
+
+                // Para radios, solo tomar el seleccionado
+                if ($(this).attr('type') === 'radio') {
+                    if ($(this).is(':checked')) {
+                        respuestas[name] = $(this).val();
+                    }
+                } else {
+                    // Para text, textarea, number, select, etc.
+                    respuestas[name] = $(this).val();
+                }
+            });;
 
             $.post("{{ route('guardar.question') }}", {
                 nombre: $('#name').val(),
@@ -936,6 +929,13 @@
     </script>
 
     <script>
+        $('#wizard .nav-link').on('show.bs.tab', function(e) {
+            if (!validateStep(currentStep)) {
+                e.preventDefault(); // 🚫 bloquea el cambio automático de tab
+                console.log("No puedes avanzar hasta completar este paso");
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             flatpickr('.datepicker', {
                 locale: 'es',
