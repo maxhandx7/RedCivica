@@ -399,7 +399,7 @@
             const userId = {{ auth()->check() ? auth()->id() : 'null' }};
             const refId = {{ $ref_id }};
             let link = '';
-            console.log("Base URL:", baseUrl);
+            const baseUrl = window.location.origin;
             if (userId === null) {
                 alert("Por favor inicia sesión para continuar");
             } else {
