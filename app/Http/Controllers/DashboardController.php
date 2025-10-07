@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaña;
+use App\Models\Referencia;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -117,6 +118,9 @@ class DashboardController extends Controller
                 ->monthName;
         });
 
+        $ref_id = Referencia::latest()->first();
+        $ref_id = $ref_id ? $ref_id->id : 1;
+
 
         return view('home', compact(
             'referidosTotales',
@@ -129,6 +133,7 @@ class DashboardController extends Controller
             'labelsCity',
             'totalsCity',
             'partidariosActivos',
+            'ref_id',
             'noticias'
         ));
     }
