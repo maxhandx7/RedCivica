@@ -144,33 +144,33 @@
                         </div>
                         <div class="col-lg-6 border-end-lg">
                             <div class="card mb-4">
-                            <div class="card-header bg-primary text-white">
-                                |<i class="fas fa-chart-pie me-2"></i>Usuarios por Ciudad
-                            </div>
+                                <div class="card-header bg-primary text-white">
+                                    |<i class="fas fa-chart-pie me-2"></i>Usuarios por Ciudad
+                                </div>
 
-                            <div class="card-body text-center d-flex flex-column">
-                                <p class="text-muted">Visualiza la distribución de usuarios en tu red según su ciudad.
-                                </p>
-                                <div class="my-auto">
-                                    <canvas id="ciudadChart" width="1618" height="1000"></canvas>
+                                <div class="card-body text-center d-flex flex-column">
+                                    <p class="text-muted">Visualiza la distribución de usuarios en tu red según su ciudad.
+                                    </p>
+                                    <div class="my-auto">
+                                        <canvas id="ciudadChart" width="1618" height="1000"></canvas>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="card mb-4">
-                                <div class="card-header bg-primary text-white">
-                                    |<i class="fas fa-chart-pie me-2"></i>Usuarios por Departamento
-                                </div>
-
-                                <div class="card-body text-center d-flex flex-column">
-                                    <p class="text-muted">Visualiza la distribución de usuarios en tu red según su departamento.
-                                    </p>
-                                    <div id="map"></div>
-                                    <canvas id="chart"></canvas>
-                                </div>
+                            <div class="card-header bg-primary text-white">
+                                |<i class="fas fa-chart-pie me-2"></i>Usuarios por Departamento
                             </div>
+
+                            <div class="card-body text-center d-flex flex-column">
+                                <p class="text-muted">Visualiza la distribución de usuarios en tu red según su departamento.
+                                </p>
+                                <div id="map"></div>
+                                <canvas id="chart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             @endhasrole
@@ -396,7 +396,15 @@
 
             });
 
-            let link = 'https://politicfriends.com/referidos/registro?usr=1&fuente=Whatsapp&ref_id=4';
+            const userId = {{ auth()->check() ? auth()->id() : 'null' }};
+            const refId = {{ $ref_id }};
+            let link = '';
+            console.log("Base URL:", baseUrl);
+            if (userId === null) {
+                alert("Por favor inicia sesión para continuar");
+            } else {
+                link = baseUrl+`/referidos/registro?usr=${userId}&fuente=Whatsapp&ref_id=${refId}`;
+            }
 
 
             window.shareReference = function() {
@@ -431,57 +439,57 @@
         </script>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", async () => {
-    const response = await fetch("{{ url('/users-by-department') }}");
-    const data = await response.json();
+        <script>
+            document.addEventListener("DOMContentLoaded", async () => {
+                const response = await fetch("{{ url('/users-by-department') }}");
+                const data = await response.json();
 
-    // --- Gráfico con Chart.js ---
-    const ctx = document.getElementById("chart").getContext("2d");
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: data.map(d => d.name),
-            datasets: [{
-                label: "Usuarios",
-                data: data.map(d => d.users),
-                backgroundColor: "rgba(75, 192, 192, 0.6)"
-            }]
-        }
-    });
+                // --- Gráfico con Chart.js ---
+                const ctx = document.getElementById("chart").getContext("2d");
+                new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: data.map(d => d.name),
+                        datasets: [{
+                            label: "Usuarios",
+                            data: data.map(d => d.users),
+                            backgroundColor: "rgba(75, 192, 192, 0.6)"
+                        }]
+                    }
+                });
 
-   // Inicializar mapa
-        var map = L.map('map').setView([4.5709, -74.2973], 5);
+                // Inicializar mapa
+                var map = L.map('map').setView([4.5709, -74.2973], 5);
 
-        // Capa base con CARTO
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 18
-        }).addTo(map);
+                // Capa base con CARTO
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+                    subdomains: 'abcd',
+                    maxZoom: 18
+                }).addTo(map);
 
-        
-        function getColor(value) {
-            console.log(value);
-            return value > 1200 ? '#800026' :
-                   value > 800  ? '#BD0026' :
-                   value > 400  ? '#E31A1C' :
-                   value > 100  ? '#FC4E2A' :
-                                  '#FFEDA0';
-        }
 
-    // Pintamos marcadores con lat/lng de cada departamento
-    data.forEach(dep => {
-        if (dep.users > 0) {
-            L.circleMarker([dep.lat, dep.lng], {
-                radius: 5 + dep.users, // el tamaño crece con la cantidad
-                fillColor: dep.users > 0 ? getColor(dep.users) : 'gray',
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.6
-            }).bindPopup(`<b>${dep.name}</b><br>Usuarios: ${dep.users}`).addTo(map);
-        }
-    });
-});
-</script>
+                function getColor(value) {
+                    console.log(value);
+                    return value > 1200 ? '#800026' :
+                        value > 800 ? '#BD0026' :
+                        value > 400 ? '#E31A1C' :
+                        value > 100 ? '#FC4E2A' :
+                        '#FFEDA0';
+                }
+
+                // Pintamos marcadores con lat/lng de cada departamento
+                data.forEach(dep => {
+                    if (dep.users > 0) {
+                        L.circleMarker([dep.lat, dep.lng], {
+                            radius: 5 + dep.users, // el tamaño crece con la cantidad
+                            fillColor: dep.users > 0 ? getColor(dep.users) : 'gray',
+                            color: "#000",
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.6
+                        }).bindPopup(`<b>${dep.name}</b><br>Usuarios: ${dep.users}`).addTo(map);
+                    }
+                });
+            });
+        </script>

@@ -3,6 +3,7 @@
 @section('content')
 <div class="container-fluid login-container">
     <div class="row min-vh-100 flex-center g-0">
+         
         <!-- Columna izquierda con imagen decorativa (solo en pantallas grandes) -->
         <div class="col-lg-6 d-none d-lg-block login-bg">
             <div class="login-overlay"></div>
