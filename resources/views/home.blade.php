@@ -403,7 +403,7 @@
                 const userId = {{ auth()->check() ? auth()->id() : 'null' }};
                 const refId = {{ $ref_id }};
                 let link = '';
-                const baseUrl = window.location.origin;
+                const baseUrl =  window.location.origin;
                 if (userId === null) {
                     alert("Por favor inicia sesión para continuar");
                 } else {
