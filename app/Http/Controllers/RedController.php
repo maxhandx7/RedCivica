@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Need;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class RedController extends Controller
 {
+    
 
     /*         public function index(Request $request)
     {
@@ -60,7 +62,7 @@ class RedController extends Controller
     public function index()
     {
         $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
-
+        
         $networkData = $referidos->map(function ($u) use ($referidos) {
             $nivel = 1;
             $parent = $u;
@@ -76,12 +78,25 @@ class RedController extends Controller
                     break;
                 }
             }
-
+            
             return [
                 'id' => (string) $u->id, // 👈 FORZAR STRING
                 'name' => $u->name,
+                'surname' => $u->surname,
+                'email' => $u->email,
+                'tipo_documento' => $u->tipo_documento,
                 'cedula' => $u->cedula,
+                'fecha_nacimiento' => $u->fecha_nacimiento ? Carbon::parse($u->fecha_nacimiento)->isoFormat('D [de] MMMM [de] YYYY') : null,
+                'fecha_expedicion' => $u->fecha_expedicion ? Carbon::parse($u->fecha_expedicion)->isoFormat('D [de] MMMM [de] YYYY') : null,
+                'direccion' => $u->direccion,
+                'barrio' => $u->barrio,
+                'ciudad' => $this->getCity($u->ciudad),
+                'departamento' => $this->getDep($u->departamento),
+                'mesa' => $u->mesa,
+                'telefono' => $u->telefono,
+                'created_at' => $u->created_at->isoFormat('D [de] MMMM [de] YYYY'),
                 'parent_id' => (string) $u->parent_id,
+                'nombre_padre' => $u->parent ? $referidos->firstWhere('id', $u->parent_id)->name  ?? null : null,
                 'nivel' => $nivel,
                 'no' => $u->children->count(), // 👈 Número de hijos directos
             ];
@@ -103,10 +118,6 @@ class RedController extends Controller
 
         $needs = Need::where('registrado_por', auth()->id())->get();
 
-    
-        
-
-
 
         return view('admin.red.index', [
             'referidos' => $referidos,
@@ -115,5 +126,31 @@ class RedController extends Controller
             'needs' => $needs,
         ]);
     }
+
+    public function getCity ($ciudad) {
+            $response = Http::get('https://secure.geonames.org/getJSON', [
+                'geonameId' => $ciudad,
+                'username' => 'Alan'
+            ]);
+            if ($response->successful()) {
+                $geoData = $response->json();
+                return $geoData['name'] ?? $ciudad;
+            }
+            return $ciudad;
+        }
+
+
+        public function getDep ($dep) {
+            $response = Http::get('https://secure.geonames.org/getJSON', [
+                'geonameId' => $dep,
+                'username' => 'Alan'
+            ]);
+
+            if ($response->successful()) {
+                $geoData = $response->json();
+                return $geoData['name'] ?? $dep;
+            }
+            return $dep;
+        }
 
 }

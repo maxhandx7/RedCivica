@@ -17,6 +17,7 @@ use App\Services\ActividadService;
 use App\Constants\ActividadPlantillas;
 use App\Mail\BienvenidaUsuarioMail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -407,6 +408,9 @@ class User extends Authenticatable
         }
 
     }
+
+
+    
 
     public function estado()
     {

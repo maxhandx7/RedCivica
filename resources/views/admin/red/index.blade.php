@@ -13,6 +13,140 @@
     {!! Html::style('/falcon/public/vendors/datatables.net-fixedcolumns/dataTables.fixedColumns.min.js') !!}
 
 
+    <style>
+        .modal-content {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+        }
+
+        .modal-header {
+            background-color: var(--falcon-primary);
+            border-bottom: none;
+            border-radius: 0.5rem 0.5rem 0 0;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-header h5 {
+            color: white;
+            margin: 0;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+
+
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            background-color: white;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--falcon-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .user-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--falcon-dark);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-id {
+            color: var(--falcon-gray);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .info-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--falcon-primary);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--falcon-gray-light);
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-label {
+            flex: 0 0 40%;
+            font-weight: 500;
+            color: var(--falcon-secondary);
+        }
+
+        .info-value {
+            flex: 0 0 60%;
+            color: var(--falcon-dark);
+        }
+
+        .badge-nivel {
+            background-color: var(--falcon-primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-afiliados {
+            background-color: var(--falcon-success);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--falcon-gray-light);
+            padding: 1rem 1.5rem;
+            background-color: var(--falcon-light);
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .btn-falcon-primary {
+            background-color: var(--falcon-primary);
+            border-color: var(--falcon-primary);
+            color: white;
+        }
+
+        .btn-falcon-primary:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+    </style>
+
     <div class="container mt-5">
         {{-- Título --}}
         <div class="mb-4 page-title text-center">
@@ -101,15 +235,17 @@
                                 class="d-flex justify-content-between hover-actions-trigger btn-reveal-trigger px-x1 hover-bg-100 ">
                                 <div class="form-check mb-0 d-flex align-items-center ">
                                     <input class="form-check-input rounded-3 form-check-line-through p-2 mt-0"
-                                        type="checkbox" id="need-{{ $need->id }}" {{ $need->estado == 'resuelta' ? 'disabled' : ($need->estado == 'en proceso' ? 'disabled' : '') }}
-                                        {{ $need->is_completed() ? 'checked' : '' }} 
+                                        type="checkbox" id="need-{{ $need->id }}"
+                                        {{ $need->estado == 'resuelta' ? 'disabled' : ($need->estado == 'en proceso' ? 'disabled' : '') }}
+                                        {{ $need->is_completed() ? 'checked' : '' }}
                                         onchange="toggleNeedCompleted({{ $need->id }}, this.checked)">
                                     <label class="form-check-label mb-0 p-3" for="need-{{ $need->id }}">
                                         {{ $need->titulo }} - {{ Str::limit($need->descripcion, 60) }}
                                     </label>
-                                    <span class="badge bg-{{ $need->estado == 'resuelta' ? 'success' : ($need->estado == 'en proceso' ? 'warning' : 'secondary') }}">
-                                    {{ ucfirst($need->estado) }}
-                                </span>
+                                    <span
+                                        class="badge bg-{{ $need->estado == 'resuelta' ? 'success' : ($need->estado == 'en proceso' ? 'warning' : 'secondary') }}">
+                                        {{ ucfirst($need->estado) }}
+                                    </span>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <div class="dropdown font-sans-serif btn-reveal-trigger">
@@ -118,7 +254,8 @@
                                             type="button" data-bs-toggle="dropdown">
                                             <i class="fas fa-ellipsis-h"></i>
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-end border py-2 {{ $need->estado == 'resuelta' ? 'd-none' : ($need->estado == 'en proceso' ? 'd-none' : '') }}">
+                                        <div
+                                            class="dropdown-menu dropdown-menu-end border py-2 {{ $need->estado == 'resuelta' ? 'd-none' : ($need->estado == 'en proceso' ? 'd-none' : '') }}">
                                             <a class="dropdown-item text-danger" href="#"
                                                 onclick="deleteNeed({{ $need->id }})">Eliminar</a>
                                         </div>
@@ -145,31 +282,31 @@
         <div class="card shadow-sm">
             <div class="card-header ">
                 <div class="row align-items-center">
-                <div class="col">
-                    <h5 class="mb-0">Listado completo de tus referidos</h5>
-                </div>
-
-                <div class="col-auto">
-
-                    <div class="dropdown font-sans-serif btn-reveal-trigger">
-                        <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
-                            type="button" data-bs-toggle="dropdown" data-boundary="viewport">
-                            <span class="fas fa-ellipsis-h fs-11"></span>
-                        </button>
-
-                        <div class="dropdown-menu dropdown-menu-end border py-2">
-                           
-
-                            <!-- Exportar usuarios -->
-                            <a href="{{ url('/exportar-clientes') }}" class="dropdown-item">
-                                <i class="fas fa-file-export me-1"></i> Exportar
-                            </a>
-
-                        </div>
+                    <div class="col">
+                        <h5 class="mb-0">Listado completo de tus referidos</h5>
                     </div>
 
+                    <div class="col-auto">
+
+                        <div class="dropdown font-sans-serif btn-reveal-trigger">
+                            <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
+                                type="button" data-bs-toggle="dropdown" data-boundary="viewport">
+                                <span class="fas fa-ellipsis-h fs-11"></span>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-end border py-2">
+
+
+                                <!-- Exportar usuarios -->
+                                <a href="{{ url('/exportar-clientes') }}" class="dropdown-item">
+                                    <i class="fas fa-file-export me-1"></i> Exportar
+                                </a>
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -186,7 +323,7 @@
                         </thead>
                         <tbody>
                             @foreach ($referidos as $nivel => $usuario)
-                                <tr>
+                                <tr onclick="mostrarUsuario({{ $usuario->id }})" style="cursor:pointer;">
                                     <td>{{ $usuario->cedula }}</td>
                                     <td>{{ $usuario->name }}</td>
                                     <td>{{ $usuario->surname }}</td>
@@ -206,18 +343,22 @@
 
 
     <div class="modal fade" id="userInfoModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Información del Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title"><i class="fas fa-user-circle me-2"></i>Información del Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalUserInfo">
-                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -268,8 +409,10 @@
 
     {!! Html::script('/falcon/public/assets/js/vis-network.min.js') !!}
 
+
     <script>
         let network;
+
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('networkContainer');
             const data = @json($networkData ?? []);
@@ -279,6 +422,26 @@
             const authUserId = '{{ (string) auth()->id() }}';
 
             const addedIds = new Set();
+
+            function mostrarUsuario(userId) {
+                
+                const usuario = data.find(u => u.id == userId);
+
+                if (!usuario) {
+                    console.warn(`No se encontró el usuario con ID ${userId}`);
+                    return;
+                }
+                
+                if (usuario.id === authUserId) {
+                    return;
+                }
+
+                if (usuario) {
+                    document.getElementById('modalUserInfo').innerHTML = generateUserInfo(usuario);
+                    const modal = new bootstrap.Modal(document.getElementById('userInfoModal'));
+                    modal.show();
+                }
+            }
 
             nodes.push({
                 id: authUserId,
@@ -307,7 +470,7 @@
 
                 nodes.push({
                     id: usuario.id,
-                    label: usuario.name,
+                    label: usuario.name + " " + usuario.surname,
                     color: color,
                     shape: 'dot',
                     size: 12
@@ -369,22 +532,112 @@
             }, options);
 
             network.on("click", function(params) {
+
                 if (params.nodes.length === 0) return;
 
                 const nodeId = params.nodes[0];
                 const usuario = data.find(u => u.id === nodeId);
 
                 if (usuario) {
-                    document.getElementById('modalUserInfo').innerHTML = `
-                        <p><strong>Nombre:</strong> ${usuario.name}</p>
-                        <p><strong>Cédula:</strong> ${usuario.cedula}</p>
-                        <p><strong>Nivel:</strong> ${usuario.nivel}</p>
-                        <p><strong>Numero de afiliados:</strong> ${usuario.no}</p>
-                        `;
+                    document.getElementById('modalUserInfo').innerHTML = generateUserInfo(usuario);
                     const modal = new bootstrap.Modal(document.getElementById('userInfoModal'));
                     modal.show();
                 }
             });
+
+
+
+            function generateUserInfo(usuario) {
+                // Generar iniciales para el avatar
+                const initials = (usuario.name.charAt(0) + usuario.surname.charAt(0)).toUpperCase();
+
+                return `
+                <div class="user-avatar">
+                    ${initials}
+                </div>
+                <div class="user-name">${usuario.name} ${usuario.surname}</div>
+                <div class="user-id">ID: ${usuario.id}</div>
+                
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-id-card me-2"></i>Información Personal</div>
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value">${usuario.email || 'No especificada'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Tipo Documento:</div>
+                        <div class="info-value">${usuario.tipo_documento}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Cédula:</div>
+                        <div class="info-value">${usuario.cedula}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Fecha Nacimiento:</div>
+                        <div class="info-value">${usuario.fecha_nacimiento || 'No especificada'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Fecha Expedición:</div>
+                        <div class="info-value">${usuario.fecha_expedicion || 'No especificada'}</div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-map-marker-alt me-2"></i>Ubicación</div>
+                    <div class="info-row">
+                        <div class="info-label">Dirección:</div>
+                        <div class="info-value">${usuario.direccion || 'No especificada'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Barrio:</div>
+                        <div class="info-value">${usuario.barrio || 'No especificado'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Ciudad:</div>
+                        <div class="info-value">${usuario.ciudad || 'No especificada'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Departamento:</div>
+                        <div class="info-value">${usuario.departamento || 'No especificado'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Mesa:</div>
+                        <div class="info-value">${usuario.mesa || 'No asignada'}</div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-phone me-2"></i>Contacto</div>
+                    <div class="info-row">
+                        <div class="info-label">Teléfono:</div>
+                        <div class="info-value">${usuario.telefono || 'No especificado'}</div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-chart-line me-2"></i>Información de Red</div>
+                    <div class="info-row">
+                        <div class="info-label">Nivel:</div>
+                        <div class="info-value"><span class="badge-nivel">${usuario.nivel}</span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Número de Afiliados:</div>
+                        <div class="info-value"><span class="badge-afiliados">${usuario.no}</span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Fecha de Registro:</div>
+                        <div class="info-value">${usuario.created_at}</div>
+                    </div>
+                     <div class="info-row">
+                        <div class="info-label">Nombre Padre:</div>
+                        <div class="info-value">${usuario.nombre_padre || 'Sin padre'}</div>
+                    </div>
+                   
+                </div>
+            `;
+            }
+
+            window.mostrarUsuario = mostrarUsuario;
         });
     </script>
 
@@ -398,7 +651,6 @@
                 }
             }).then(() => location.reload());
         }
-
     </script>
 
 @endsection

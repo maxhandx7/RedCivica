@@ -311,7 +311,7 @@
                 }
             </style>
         @endsection
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         {!! Html::script('/falcon/public/vendors/chart/chart.umd.js') !!}
         {!! Html::script('/js/chart.js') !!}
         {!! Html::script('/js/leaflet.js') !!}
@@ -396,18 +396,38 @@
 
             });
 
-            const userId = {{ auth()->check() ? auth()->id() : 'null' }};
-            const refId = {{ $ref_id }};
-            let link = '';
-            const baseUrl = window.location.origin;
-            if (userId === null) {
-                alert("Por favor inicia sesión para continuar");
-            } else {
-                link = baseUrl+`/referidos/registro?usr=${userId}&fuente=Whatsapp&ref_id=${refId}`;
-            }
+
 
 
             window.shareReference = function() {
+                const userId = {{ auth()->check() ? auth()->id() : 'null' }};
+                const refId = {{ $ref_id }};
+                let link = '';
+                const baseUrl = window.location.origin;
+                if (userId === null) {
+                    alert("Por favor inicia sesión para continuar");
+                } else {
+                    link = baseUrl + `/referidos/registro?usr=${userId}&fuente=Whatsapp&ref_id=${refId}`;
+                    navigator.clipboard.writeText(link).then(() => {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: `✅ Enlace copiado`
+                        });
+                    }).catch(err => {
+                        console.error('No se pudo copiar el enlace: ', err);
+                    });
+                }
                 if (navigator.share) {
                     navigator.share({
                         title: 'Únete a nuestra red en PoliticFriends',

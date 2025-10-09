@@ -16,6 +16,11 @@
                 transform: translateY(-5px);
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             }
+
+            .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+                color: rgb(255, 255, 255) !important;
+                border-bottom: 2px solid rgb(255, 255, 255) !important;
+            }
         </style>
     @endsection
 
@@ -91,7 +96,7 @@
                 <div class="col-lg-8">
                     <!-- Tab Navigation -->
                     <div class="card card-borderless shadow-sm mb-4">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-white">
                             <ul class="nav nav-tabs card-header-tabs" id="userTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
@@ -123,7 +128,7 @@
                                 <!-- Información Tab -->
                                 <div class="tab-pane fade show active" id="info" role="tabpanel"
                                     aria-labelledby="info-tab">
-                                    <h5 class="mb-4">Detalles del Usuario</h5>
+                                    <p class="mb-4">Detalles del Usuario</p>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
@@ -174,11 +179,11 @@
                                                     class="rounded-circle" width="60">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h5 class="mb-1">
+                                                <p class="mb-1">
                                                     <a href="{{ route('users.show', $user->parent) }}" class="text-dark">
                                                         {{ $user->parent->name }} {{ $user->parent->surname }}
                                                     </a>
-                                                </h5>
+                                                </p>
                                                 <p class="text-muted mb-1">CC: {{ $user->parent->cedula }}</p>
                                                 <p class="text-muted mb-0">{{ $user->parent->email }}</p>
                                             </div>
@@ -193,8 +198,8 @@
                                                                 <i class="bi-people fs-2 text-primary"></i>
                                                             </div>
                                                             <div>
-                                                                <h5 class="mb-0">
-                                                                    {{ $user->parent->children->count() ?? 0 }}</h5>
+                                                                <p class="mb-0">
+                                                                    {{ $user->parent->children->count() ?? 0 }}</p>
                                                                 <small class="text-muted">Personas reclutadas</small>
                                                             </div>
                                                         </div>
@@ -209,9 +214,9 @@
                                                                 <i class="bi-calendar-check fs-2 text-success"></i>
                                                             </div>
                                                             <div>
-                                                                <h5 class="mb-0">
+                                                                <p class="mb-0">
                                                                     {{ $user->parent->created_at->translatedFormat('d/m/Y') }}
-                                                                </h5>
+                                                                </p>
                                                                 <small class="text-muted">Fecha de registro</small>
                                                             </div>
                                                         </div>
@@ -223,7 +228,7 @@
                                         <div class="text-center py-4">
                                             <img src="{{ asset('/falcon/public/assets/img/gallery/noData.svg') }}"
                                                 alt="No data" class="img-fluid mb-3" style="max-width: 200px;">
-                                            <h5>No hay información de reclutador</h5>
+                                            <p>No hay información de reclutador</p>
                                             <p class="text-muted">Este usuario no fue reclutado por otro miembro</p>
                                         </div>
                                     @endif
@@ -270,7 +275,7 @@
                                         <div class="text-center py-4">
                                             <img src="{{ asset('/falcon/public/assets/img/gallery/noData.svg') }}"
                                                 alt="No data" class="img-fluid mb-3" style="max-width: 200px;">
-                                            <h5>No hay reclutados registrados</h5>
+                                            <p>No hay reclutados registrados</p>
                                             <p class="text-muted">Este usuario no ha reclutado a otros miembros aún</p>
                                         </div>
                                     @endif
@@ -287,7 +292,7 @@
                     <!-- Quick Stats -->
                     <div class="card card-borderless shadow-sm mb-4">
                         <div class="card-header bg-primary">
-                            <h5 class="card-header-title">Datos de Contacto</h5>
+                            <h5 class="card-header-title text-white">Datos de Contacto</h5>
                         </div>
                         <div class="card-body text-center">
                             <ul class="list-group list-group-flush">
@@ -327,7 +332,8 @@
                                 <li class="list-group-item px-0 py-2">
                                     <div class="d-flex align-items-center">
                                         <i class="bi-check2-square text-primary me-2"></i>
-                                        <span>{{ \Carbon\Carbon::parse($user->fecha_nacimiento)->translatedFormat('d F Y') }} - ({{ \Carbon\Carbon::parse($user->fecha_nacimiento)->age }} años)</span>
+                                        <span>{{ \Carbon\Carbon::parse($user->fecha_nacimiento)->translatedFormat('d F Y') }}
+                                            - ({{ \Carbon\Carbon::parse($user->fecha_nacimiento)->age }} años)</span>
                                     </div>
                                 </li>
                             </ul>
