@@ -404,6 +404,7 @@
                 const refId = {{ $ref_id }};
                 let link = '';
                 const baseUrl =  window.location.origin;
+                console.log("Base URL: ", baseUrl);s
                 if (userId === null) {
                     alert("Por favor inicia sesión para continuar");
                 } else {

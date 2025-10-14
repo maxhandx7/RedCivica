@@ -175,7 +175,7 @@
                                     @if ($user->parent)
                                         <div class="d-flex align-items-center mb-4">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ asset('image/' . $business->logo) }}" alt="Reclutador"
+                                                <img src="{{ asset($user->id == 1 ? $user->image : 'image/' . $user->image) }}" alt="Reclutador"
                                                     class="rounded-circle" width="60">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
@@ -253,10 +253,13 @@
                                                         <tr>
                                                             <td>
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="{{ asset('image/' . $business->logo) }}"
+                                                                    <img src="{{ asset($child ? $child->image : 'image/' . $child->image) }}"
                                                                         alt="{{ $child->name }}"
                                                                         class="rounded-circle me-2" width="30">
-                                                                    {{ $child->name }} {{ $child->surname }}
+                                                                        <a href="{{ route('users.show', $child) }}">
+                                                                            {{ $child->name }} {{ $child->surname }}
+                                                                        </a>
+                                                                    
                                                                 </div>
                                                             </td>
                                                             <td>{{ $child->cedula }}</td>
