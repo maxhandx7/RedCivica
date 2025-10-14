@@ -13,9 +13,9 @@ class ConfigController extends Controller
     public function edit($id)
     {
         $validate = Auth::user()->id;
-        $image = Str::startsWith(Auth::user()->image, ['http', '/'])
+        /* $image = Str::startsWith(Auth::user()->image, ['http', '/'])
             ? Auth::user()->image
-            : asset("image/".Auth::user()->image ?? 'image/system/default.jpg');
+            : asset("image/".Auth::user()->image ?? '/system/default.jpg'); */
 
         if ($validate != $id) {
             return back()->with('error', 'No esta permitido hacer eso');
@@ -36,7 +36,6 @@ class ConfigController extends Controller
 
         return view('admin.config.edit', [
             'user' => $user,
-            'image' => $image,
             'referidos' => $referido
         ]);
     }

@@ -30,7 +30,10 @@
             <div class="card card-borderless shadow-sm mb-4">
                 <div class="card-body text-center">
                     <div class="avatar avatar-5xl mb-3">
-                        <img class="rounded-circle img-thumbnail shadow-sm" src="{{ $image }}" alt="profile">
+                        <img class="rounded-circle img-thumbnail shadow-sm"
+                            src="
+                        {{ asset(Auth::id() == 1 ? Auth::user()->image : 'image/' . Auth::user()->image) }}"
+                            alt="profile">
                     </div>
                     <div class="d-flex justify-content-center">
                         <input type="file" id="profile_image" name="profile_image" class="d-none" />
@@ -136,9 +139,12 @@
                             // Mostrar notificación Falcon style
                             showFalconToast('success', '¡Éxito!',
                                 'Imagen de perfil actualizada correctamente');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
                         } else {
                             showFalconToast('error', 'Error',
-                            'No se pudo actualizar la imagen');
+                                'No se pudo actualizar la imagen');
                         }
                     },
                     error: function() {
