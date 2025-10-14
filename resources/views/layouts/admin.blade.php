@@ -532,6 +532,9 @@
                                 role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar avatar-xl">
                                     <img class="rounded-circle"
+                                    
+                                    
+
                                         src="{{ asset(Auth::id() == 1 ? Auth::user()->image : 'image/' . Auth::user()->image) }}"
                                         alt="Foto de perfil">
 

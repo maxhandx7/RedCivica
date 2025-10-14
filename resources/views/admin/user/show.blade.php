@@ -253,7 +253,7 @@
                                                         <tr>
                                                             <td>
                                                                 <div class="d-flex align-items-center">
-                                                                    <img src="{{ asset($child ? $child->image : 'image/' . $child->image) }}"
+                                                                    <img src="{{ asset($child->id == 1 ? $child->image : 'image/' . $child->image) }}"
                                                                         alt="{{ $child->name }}"
                                                                         class="rounded-circle me-2" width="30">
                                                                         <a href="{{ route('users.show', $child) }}">

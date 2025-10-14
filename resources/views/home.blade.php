@@ -317,9 +317,96 @@
         {!! Html::script('/js/leaflet.js') !!}
 
         <script>
+            /* document.addEventListener('DOMContentLoaded', () => {
+                        const ctx = document.getElementById('usersChart').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: @json($labelsDate),
+                                datasets: [{
+                                    label: 'Usuarios registrados',
+                                    data: @json($totalsDate),
+                                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+
+                        /*   const ctxdep = document.getElementById('departmentsChart').getContext('2d');
+                                        new Chart(ctxdep, {
+                                            type: 'doughnut',
+                                            data: {
+                                                labels: @json($labelsDep),
+                                                datasets: [{
+                                                    label: 'Usuarios por departamento',
+                                                    data: @json($totalsDep),
+                                                    backgroundColor: [
+                                                        'rgba(255, 99, 132, 0.6)',
+                                                        'rgba(54, 162, 235, 0.6)',
+                                                        'rgba(255, 206, 86, 0.6)',
+                                                        'rgba(75, 192, 192, 0.6)',
+                                                        'rgba(153, 102, 255, 0.6)',
+                                                    ]
+                                                }]
+                                            },
+                                            options: {
+                                                responsive: true,
+                                                plugins: {
+                                                    legend: {
+                                                        position: 'right'
+                                                    }
+                                                }
+                                            }
+                                        });
+                         */
+
+            /* const ctxciudad = document.getElementById('ciudadChart').getContext('2d');
+                        new Chart(ctxciudad, {
+                            type: 'doughnut',
+                            data: {
+                                labels: @json($labelsCity),
+                                datasets: [{
+                                    label: 'Usuarios por ciudad',
+                                    data: @json($totalsCity),
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.6)',
+                                        'rgba(54, 162, 235, 0.6)',
+                                        'rgba(255, 206, 86, 0.6)',
+                                        'rgba(75, 192, 192, 0.6)',
+                                        'rgba(153, 102, 255, 0.6)',
+                                    ]
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'right'
+                                    }
+                                }
+                            }
+                        });
+
+                    }); */
+
             document.addEventListener('DOMContentLoaded', () => {
-                const ctx = document.getElementById('usersChart').getContext('2d');
-                new Chart(ctx, {
+
+                const crearGrafico = (id, config) => {
+                    const canvas = document.getElementById(id);
+                    if (!canvas) return; // 👈 evita el error si el canvas no existe
+                    const ctx = canvas.getContext('2d');
+                    new Chart(ctx, config);
+                };
+
+                // Gráfico de usuarios registrados
+                crearGrafico('usersChart', {
                     type: 'bar',
                     data: {
                         labels: @json($labelsDate),
@@ -339,36 +426,8 @@
                     }
                 });
 
-                /*   const ctxdep = document.getElementById('departmentsChart').getContext('2d');
-                                new Chart(ctxdep, {
-                                    type: 'doughnut',
-                                    data: {
-                                        labels: @json($labelsDep),
-                                        datasets: [{
-                                            label: 'Usuarios por departamento',
-                                            data: @json($totalsDep),
-                                            backgroundColor: [
-                                                'rgba(255, 99, 132, 0.6)',
-                                                'rgba(54, 162, 235, 0.6)',
-                                                'rgba(255, 206, 86, 0.6)',
-                                                'rgba(75, 192, 192, 0.6)',
-                                                'rgba(153, 102, 255, 0.6)',
-                                            ]
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                            legend: {
-                                                position: 'right'
-                                            }
-                                        }
-                                    }
-                                });
-                 */
-
-                const ctxciudad = document.getElementById('ciudadChart').getContext('2d');
-                new Chart(ctxciudad, {
+                // Gráfico de ciudades (solo si existe el canvas)
+                crearGrafico('ciudadChart', {
                     type: 'doughnut',
                     data: {
                         labels: @json($labelsCity),
@@ -399,12 +458,12 @@
 
 
 
+
             window.shareReference = function() {
                 const userId = {{ auth()->check() ? auth()->id() : 'null' }};
                 const refId = {{ $ref_id }};
                 let link = '';
-                const baseUrl =  window.location.origin;
-                console.log("Base URL: ", baseUrl);s
+                const baseUrl = window.location.origin;
                 if (userId === null) {
                     alert("Por favor inicia sesión para continuar");
                 } else {
