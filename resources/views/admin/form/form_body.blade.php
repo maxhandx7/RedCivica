@@ -245,8 +245,8 @@
                             <div class="mb-3">
                                 <label class="form-label" for="pais">Pais</label>
                                 <select class="form-select" name="pais" id="pais" required>
-                                    <option disabled  value="">Seleccione un país</option>
-                                    <option value="3686110" selected>Colombia</option>
+                                    <option disabled selected value="">Seleccione un país</option>
+                                    <option value="3686110">Colombia</option>
                                 </select>
                                 <div class="invalid-feedback">Este campo es obligatorio.</div>
                             </div>
