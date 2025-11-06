@@ -16,6 +16,42 @@
                 max-width: 600px;
                 margin: auto;
             }
+
+            /* ESTILO DE IMPRESIÓN: solo imprimir el QR y centrarlo en la hoja */
+            @media print {
+                @page {
+                    size: A4;
+                    /* o 'auto' para dejar al navegador decidir */
+                    margin: 20mm;
+                    /* ajustar según prefieras */
+                }
+
+                /* ocultar todo excepto el QR */
+                body * {
+                    visibility: hidden;
+                }
+
+                #qrCode,
+                #qrCode * {
+                    visibility: visible;
+                }
+
+                /* centrar el QR en la página impresa */
+                #qrCode {
+                    position: fixed;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    /* Opcional: aumentar tamaño en impresión */
+                    width: 120mm;
+                    /* tamaño impreso aproximado */
+                    height: 120mm;
+                    border: none;
+                    box-shadow: none;
+                    background: white;
+                    padding: 0;
+                }
+            }
         </style>
 
         <div class="container py-4">
@@ -206,11 +242,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="text-center" id="qrCode">
-                                            </div>
+                                            
                                         </div>
                                     </div>
-                                    <div class="mt-auto pt-3">
+
+                                    <div class="pt-3">
+                                        <div class="text-center" id="qrCode">
+                                            </div>
+                                    </div>
+                                    <div class="pt-3">
                                         <div class="alert alert-info mb-0">
                                             <i class="fas fa-info-circle me-2"></i>
                                             <small>Gana puntos por cada referido que se una</small>
@@ -228,13 +268,13 @@
                                 </div>
                                 <div class="card-body text-center d-flex flex-column">
                                     <div class="my-auto">
-                                        <div class="icon-xxl bg-success-soft text-success rounded-circle mb-3 mx-auto">
+                                        <div class="icon-xxl bg-primary-soft text-primary rounded-circle mb-3 mx-auto">
                                             <i class="fas fa-users"></i>
                                         </div>
                                         <h2 class="display-4 fw-bold text-primary mb-2">{{ $referidosTotales ?? 0 }}</h2>
                                         <p class="text-muted mb-4">Personas en tu red</p>
                                     </div>
-                                    <a href="{{ route('red.index') }}" class="btn btn-success mt-auto">
+                                    <a href="{{ route('red.index') }}" class="btn btn-primary mt-auto">
                                         <i class="fas fa-network-wired "> </i> Explorar red completa
                                     </a>
                                 </div>
@@ -321,54 +361,54 @@
 
         <script>
             /* document.addEventListener('DOMContentLoaded', () => {
-                        const ctx = document.getElementById('usersChart').getContext('2d');
-                        new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: @json($labelsDate),
-                                datasets: [{
-                                    label: 'Usuarios registrados',
-                                    data: @json($totalsDate),
-                                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        });
-
-                        /*   const ctxdep = document.getElementById('departmentsChart').getContext('2d');
-                                        new Chart(ctxdep, {
-                                            type: 'doughnut',
-                                            data: {
-                                                labels: @json($labelsDep),
-                                                datasets: [{
-                                                    label: 'Usuarios por departamento',
-                                                    data: @json($totalsDep),
-                                                    backgroundColor: [
-                                                        'rgba(255, 99, 132, 0.6)',
-                                                        'rgba(54, 162, 235, 0.6)',
-                                                        'rgba(255, 206, 86, 0.6)',
-                                                        'rgba(75, 192, 192, 0.6)',
-                                                        'rgba(153, 102, 255, 0.6)',
-                                                    ]
-                                                }]
-                                            },
-                                            options: {
-                                                responsive: true,
-                                                plugins: {
-                                                    legend: {
-                                                        position: 'right'
-                                                    }
-                                                }
+                                const ctx = document.getElementById('usersChart').getContext('2d');
+                                new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: @json($labelsDate),
+                                        datasets: [{
+                                            label: 'Usuarios registrados',
+                                            data: @json($totalsDate),
+                                            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
                                             }
-                                        });
-                         */
+                                        }
+                                    }
+                                });
+
+                                /*   const ctxdep = document.getElementById('departmentsChart').getContext('2d');
+                                                new Chart(ctxdep, {
+                                                    type: 'doughnut',
+                                                    data: {
+                                                        labels: @json($labelsDep),
+                                                        datasets: [{
+                                                            label: 'Usuarios por departamento',
+                                                            data: @json($totalsDep),
+                                                            backgroundColor: [
+                                                                'rgba(255, 99, 132, 0.6)',
+                                                                'rgba(54, 162, 235, 0.6)',
+                                                                'rgba(255, 206, 86, 0.6)',
+                                                                'rgba(75, 192, 192, 0.6)',
+                                                                'rgba(153, 102, 255, 0.6)',
+                                                            ]
+                                                        }]
+                                                    },
+                                                    options: {
+                                                        responsive: true,
+                                                        plugins: {
+                                                            legend: {
+                                                                position: 'right'
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                 */
 
             /* const ctxciudad = document.getElementById('ciudadChart').getContext('2d');
                         new Chart(ctxciudad, {
@@ -399,12 +439,12 @@
 
                     }); */
 
-                    
-                    
+
+
 
             document.addEventListener('DOMContentLoaded', () => {
 
-                
+
 
                 const crearGrafico = (id, config) => {
                     const canvas = document.getElementById(id);
@@ -497,13 +537,13 @@
                     });
 
                     new QRCode(document.getElementById("qrCode"), {
-                    text: link,
-                    width: 150,
-                    height: 150,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                });
+                        text: link,
+                        width: 150,
+                        height: 150,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
                 }
                 if (navigator.share) {
                     navigator.share({

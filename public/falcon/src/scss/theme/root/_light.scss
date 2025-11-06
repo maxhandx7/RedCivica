@@ -187,16 +187,16 @@
   // 
   // Gradient Background
   // 
-  --#{$prefix}bg-shape-bg: #b33a3a;
-  --#{$prefix}bg-shape-bg-ltd: #{linear-gradient(-45deg,#b33a3a, #b33a3a)};
-  --#{$prefix}bg-shape-bg-dtl: #{linear-gradient(-45deg,#b33a3a, #b33a3a)};
+  --#{$prefix}bg-shape-bg: #e00000;
+  --#{$prefix}bg-shape-bg-ltd: #{linear-gradient(-45deg,#e00000, #e00000)};
+  --#{$prefix}bg-shape-bg-dtl: #{linear-gradient(-45deg,#e00000, #e00000)};
 
   --#{$prefix}line-chart-gradient: #{linear-gradient(-45deg, #014ba7, #0183d0)};
-  --#{$prefix}card-gradient: #{linear-gradient(-45deg, #b33a3a, #b33a3a)};
-  --#{$prefix}progress-gradient: #{linear-gradient(-45deg, #b33a3a, #b33a3a)};
+  --#{$prefix}card-gradient: #{linear-gradient(-45deg, #e00000, #e00000)};
+  --#{$prefix}progress-gradient: #{linear-gradient(-45deg, #e00000, #e00000)};
   --#{$prefix}bg-circle-shape: none;
-  --#{$prefix}bg-circle-shape-bg: #b33a3a;
-  --#{$prefix}modal-shape-header: #{linear-gradient(-45deg,#b33a3a,#b33a3a)};
+  --#{$prefix}bg-circle-shape-bg: #e00000;
+  --#{$prefix}modal-shape-header: #{linear-gradient(-45deg,#e00000,#e00000)};
   --#{$prefix}modal-shape-header-bg: #4494ff;
 
   // 

@@ -58,7 +58,7 @@ const compilePug = (req, res, next) => {
 
   const mkdir = dir => {
     if (!fs.existsSync(`${baseDir}${dir}`)) {
-      cursor.hex('#b33a3a').bold();
+      cursor.hex('#e00000').bold();
       console.log(`404: ${baseDir}${dir}`);
       cursor.reset();
       cursor.hex('#00ff00').bold();

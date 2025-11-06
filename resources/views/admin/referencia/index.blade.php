@@ -158,6 +158,7 @@
     {!! Html::script('melody/js/data-table.js') !!}
     <!-- Librería QR Code -->
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    
 
     @if (session('show_modal'))
         <script>
