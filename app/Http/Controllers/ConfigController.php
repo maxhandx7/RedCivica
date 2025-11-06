@@ -68,6 +68,7 @@ class ConfigController extends Controller
         try {
             $user = Auth::user();
             $user->name = $request->name;
+            $user->surname = $request->surname;
             $user->email = $request->email;
             $user->save();
             return redirect()->back()->with('success', 'Usuario modificado');
