@@ -206,6 +206,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="text-center" id="qrCode">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="mt-auto pt-3">
@@ -312,6 +314,7 @@
             </style>
         @endsection
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
         {!! Html::script('/falcon/public/vendors/chart/chart.umd.js') !!}
         {!! Html::script('/js/chart.js') !!}
         {!! Html::script('/js/leaflet.js') !!}
@@ -396,7 +399,12 @@
 
                     }); */
 
+                    
+                    
+
             document.addEventListener('DOMContentLoaded', () => {
+
+                
 
                 const crearGrafico = (id, config) => {
                     const canvas = document.getElementById(id);
@@ -487,6 +495,15 @@
                     }).catch(err => {
                         console.error('No se pudo copiar el enlace: ', err);
                     });
+
+                    new QRCode(document.getElementById("qrCode"), {
+                    text: link,
+                    width: 150,
+                    height: 150,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
                 }
                 if (navigator.share) {
                     navigator.share({
