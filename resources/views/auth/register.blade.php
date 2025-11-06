@@ -254,7 +254,7 @@
     }
     
     .register-btn:hover {
-        background-color: #B33A3A;
+        background-color: #e00000;
         transform: translateY(-2px);
     }
     

@@ -19,7 +19,7 @@
     }
 
     .nav-link.active .nav-item-circle {
-        background-color: #b33a3a;
+        background-color: #e00000;
         color: white;
     }
 
@@ -36,8 +36,8 @@
     }
 
     .btn-primary {
-        background-color: #b33a3a;
-        border-color: #b33a3a;
+        background-color: #e00000;
+        border-color: #e00000;
     }
 
     .card-header {

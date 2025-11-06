@@ -5,18 +5,18 @@
 <defs>
 <linearGradient id="paint0_linear" x1="1.09078" y1="14.587" x2="6.30866" y2="9.3691" gradientUnits="userSpaceOnUse">
 <stop stop-color="#80B5FB"/>
-<stop offset="0.0001" stop-color="#b33a3a"/>
-<stop offset="1" stop-color="#b33a3a"/>
+<stop offset="0.0001" stop-color="#e00000"/>
+<stop offset="1" stop-color="#e00000"/>
 </linearGradient>
 <linearGradient id="paint1_linear" x1="12.0058" y1="14.587" x2="17.2237" y2="9.3691" gradientUnits="userSpaceOnUse">
 <stop stop-color="#80B5FB"/>
-<stop offset="0.0001" stop-color="#b33a3a"/>
-<stop offset="1" stop-color="#b33a3a"/>
+<stop offset="0.0001" stop-color="#e00000"/>
+<stop offset="1" stop-color="#e00000"/>
 </linearGradient>
 <linearGradient id="paint2_linear" x1="6.30855" y1="5.89069" x2="11.5264" y2="0.672809" gradientUnits="userSpaceOnUse">
 <stop stop-color="#80B5FB"/>
-<stop offset="0.0001" stop-color="#b33a3a"/>
-<stop offset="1" stop-color="#b33a3a"/>
+<stop offset="0.0001" stop-color="#e00000"/>
+<stop offset="1" stop-color="#e00000"/>
 </linearGradient>
 </defs>
 </svg>

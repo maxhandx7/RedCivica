@@ -37,11 +37,11 @@ const bandwidthSavedInit = () => {
                 colorStops: [
                   {
                     offset: 0,
-                    color: '#b33a3a'
+                    color: '#e00000'
                   },
                   {
                     offset: 1,
-                    color: '#b33a3a'
+                    color: '#e00000'
                   }
                 ]
               }
