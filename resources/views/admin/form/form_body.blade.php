@@ -873,8 +873,6 @@
                     console.log("Error cargando las preguntas");
                 }
             });
-
-
             function renderPreguntas(questions) {
                 let html = '';
                 questions.forEach(q => {
