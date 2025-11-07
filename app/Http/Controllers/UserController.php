@@ -60,15 +60,18 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $response = null;
         if ($user->ciudad) {
             $response = Http::get('https://secure.geonames.org/getJSON', [
                 'geonameId' => $user->ciudad,
                 'username' => 'Alan'
             ]);
         }
-        if ($response->successful()) {
+        if ($response) {
             $geoData = $response->json();
             $user->ciudad = $geoData['name'] ?? $user->ciudad;
+        }else {
+            $user->ciudad = 'Ciudad no regfistrada';
         }
         return view('admin.user.show', compact('user'));
     }
