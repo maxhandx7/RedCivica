@@ -540,7 +540,7 @@
                         text: link,
                         width: 150,
                         height: 150,
-                        colorDark: "#000000",
+                        colorDark: "#900000",
                         colorLight: "#ffffff",
                         correctLevel: QRCode.CorrectLevel.H
                     });
