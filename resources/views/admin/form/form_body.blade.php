@@ -691,14 +691,10 @@
                     $('#ciudad').prop('disabled', true);
 
                     $.ajax({
-                        url: 'https://secure.geonames.org/childrenJSON',
+                        url: `http://api.afdeveloper.online/api/countries/${colombiaGeonameId}/departments`,
                         method: 'GET',
-                        data: {
-                            geonameId: colombiaGeonameId,
-                            username: 'Alan'
-                        },
                         success: function(response) {
-                            const states = response.geonames;
+                            const states = response;
                             $('#departamento').empty().append(new Option("Seleccione un departamento",
                                 ""));
 
@@ -728,14 +724,11 @@
                     $('#ciudad').prop('disabled', false);
 
                     $.ajax({
-                        url: 'https://secure.geonames.org/childrenJSON',
+                        url: `http://api.afdeveloper.online/api/departments/${stateGeonameId}/cities`,
                         method: 'GET',
-                        data: {
-                            geonameId: stateGeonameId,
-                            username: 'Alan'
-                        },
+                        
                         success: function(response) {
-                            const cities = response.geonames;
+                            const cities = response;
                             $('#ciudad').empty().append(new Option("Seleccione una ciudad", ""));
 
                             cities.forEach(city => {
