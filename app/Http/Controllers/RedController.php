@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 
 class RedController extends Controller
 {
-    
+
 
     /*         public function index(Request $request)
     {
@@ -62,7 +62,7 @@ class RedController extends Controller
     public function index()
     {
         $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
-        
+
         $networkData = $referidos->map(function ($u) use ($referidos) {
             $nivel = 1;
             $parent = $u;
@@ -78,7 +78,7 @@ class RedController extends Controller
                     break;
                 }
             }
-            
+
             return [
                 'id' => (string) $u->id, // 👈 FORZAR STRING
                 'name' => $u->name,
@@ -96,7 +96,7 @@ class RedController extends Controller
                 'telefono' => $u->telefono,
                 'created_at' => $u->created_at->isoFormat('D [de] MMMM [de] YYYY'),
                 'parent_id' => (string) $u->parent_id,
-                'nombre_padre' => $u->parent ? $referidos->firstWhere('id', $u->parent_id)->name  ?? null : null,
+                'nombre_padre' => $u->parent ? $referidos->firstWhere('id', $u->parent_id)->name ?? null : null,
                 'nivel' => $nivel,
                 'no' => $u->children->count(), // 👈 Número de hijos directos
             ];
@@ -122,35 +122,32 @@ class RedController extends Controller
         return view('admin.red.index', [
             'referidos' => $referidos,
             'networkData' => $networkData,
-            'topReferidores' => $topReferidores, 
+            'topReferidores' => $topReferidores,
             'needs' => $needs,
         ]);
     }
 
-    public function getCity ($ciudad) {
-            $response = Http::get('https://secure.geonames.org/getJSON', [
-                'geonameId' => $ciudad,
-                'username' => 'Alan'
-            ]);
-            if ($response->successful()) {
-                $geoData = $response->json();
-                return $geoData['name'] ?? $ciudad;
-            }
-            return $ciudad;
+    public function getCity($ciudad)
+    {
+        $response = Http::get('http://api.afdeveloper.online/api/city/' . $ciudad);
+
+        if ($response->successful()) {
+            return collect($response->json())
+                ->first()['name'] ?? $ciudad;
         }
+        return $ciudad;
+    }
 
 
-        public function getDep ($dep) {
-            $response = Http::get('https://secure.geonames.org/getJSON', [
-                'geonameId' => $dep,
-                'username' => 'Alan'
-            ]);
+    public function getDep($dep)
+    {
+        $response = Http::get('http://api.afdeveloper.online/api/department/' . $dep);
 
-            if ($response->successful()) {
-                $geoData = $response->json();
-                return $geoData['name'] ?? $dep;
-            }
-            return $dep;
+        if ($response->successful()) {
+            return collect($response->json())
+                ->first()['name'] ?? $dep;
         }
+        return $dep;
+    }
 
 }

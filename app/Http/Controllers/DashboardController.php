@@ -143,10 +143,10 @@ class DashboardController extends Controller
         return $data->pluck('departamento')->map(function ($code) {
             $resp = Http::get('https://secure.geonames.org/getJSON', [
                 'geonameId' => $code,
-                'username' => 'Alan', // tu usuario de GeoNames
+                'username' => 'Alan',
             ]);
 
-            return $resp->json('name') ?? $code; // fallback por si no hay name
+            return $resp->json('name') ?? $code;
         });
     }
 
@@ -158,7 +158,7 @@ class DashboardController extends Controller
                 'username' => 'Alan',
             ]);
 
-            return $resp->json('name') ?? $code; // fallback por si no hay name
+            return $resp->json('name') ?? $code;
         });
     }
 
