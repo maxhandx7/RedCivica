@@ -62,14 +62,11 @@ class UserController extends Controller
     {
         $response = null;
         if ($user->ciudad) {
-            $response = Http::get('https://secure.geonames.org/getJSON', [
-                'geonameId' => $user->ciudad,
-                'username' => 'Alan'
-            ]);
+            $response = Http::get('http://api.afdeveloper.online/api/city/' . $user->ciudad);
         }
         if ($response) {
-            $geoData = $response->json();
-            $user->ciudad = $geoData['name'] ?? $user->ciudad;
+            $user->ciudad = collect($response->json())
+                ->first()['name'] ?? $user->ciudad;
         }else {
             $user->ciudad = 'Ciudad no regfistrada';
         }

@@ -211,7 +211,7 @@
                             </table>
                         </div>
                         <div class="card-footer  text-center">
-                            <a href="#" class="fs--1 fw-semi-bold text-decoration-none">Ver la clasificación completa
+                            <a href="#lista" class="fs--1 fw-semi-bold text-decoration-none">Ver la clasificación completa
                                 →</a>
                         </div>
                     @else
@@ -279,7 +279,7 @@
         </div>
 
         {{-- Tabla completa de referidos --}}
-        <div class="card shadow-sm">
+        <div class="card shadow-sm" id="lista">
             <div class="card-header ">
                 <div class="row align-items-center">
                     <div class="col">
