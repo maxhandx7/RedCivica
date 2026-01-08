@@ -383,6 +383,29 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- Modal de Question -->
+    <div class="modal fade" id="question-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content position-relative p-5">
+                <div class="d-flex align-items-center">
+                    <div class="lottie me-3"
+                        data-options='{"path":"../falcon/public/assets/img/animated-icons/celebration.json"}'></div>
+                    <div class="flex-1">
+                        <button class="btn btn-link text-success position-absolute top-0 end-0 mt-2 me-2"
+                            data-bs-dismiss="modal">
+                            <span class="fas fa-check"></span>
+                        </button>
+                        <p class="mb-0" id="question-message"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
@@ -442,6 +465,7 @@
             }
 
             function goToPrevStep() {
+                
                 if (currentStep > 1) {
                     currentStep--;
                     updateNavigation();
@@ -587,7 +611,6 @@
                     $('#resumen-datos').html('<p class="text-muted">⚠️ No se está enviando ningún dato</p>');
                 }
             }
-
 
 
             // Enviar formulario
@@ -935,5 +958,35 @@
                 disableMobile: true
             });
         });
+
+     function showInfoModal(message) {
+                $('#question-message').html(message);
+                $('#question-modal').modal('show');
+            }
+
+         $('#cedula').on('change', function() {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    $.ajax({
+                        url: "{{ route('users.check_cedula') }}",
+                        type: "POST",
+                        data: {
+                            cedula: this.value,
+                            ref_id: "{{ $referencia_id ?? null }}",
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            if (response) {
+                                showInfoModal('El número de documento ya está registrado. se ha cambiado a campaña '+response.campaña);
+                                $('#cedula').val('');
+                            }else {
+                                console.log('Número de documento disponible.');
+                            }
+                        },
+                        error: function() {
+                            console.log('Error al verificar el número de documento.');
+                        }
+                    });
+             });
+
     </script>
 </body>

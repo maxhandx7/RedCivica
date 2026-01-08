@@ -114,6 +114,8 @@ Route::get('/generate-sitemap', function () {
     return 'Sitemap generado ✅';
 });
 
+Route::post('check-cedula', [UserController::class, 'checkCedula'])->name('users.check_cedula');
+
 Auth::routes();
 
 

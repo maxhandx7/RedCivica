@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Referencia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -13,11 +13,11 @@ class UserController extends Controller
 
     public function __construct()
     {
-       // $this->middleware('auth');
-       // $this->middleware('role:admin')->except(['form', 'store']);
+        // $this->middleware('auth');
+        // $this->middleware('role:admin')->except(['form', 'store']);
 
         $this->middleware('auth')->except(['form', 'store']);
-    $this->middleware('role:admin')->except(['form', 'store']);
+        $this->middleware('role:admin')->except(['form', 'store']);
     }
 
     public function index(Request $request)
@@ -67,7 +67,7 @@ class UserController extends Controller
         if ($response) {
             $user->ciudad = collect($response->json())
                 ->first()['name'] ?? $user->ciudad;
-        }else {
+        } else {
             $user->ciudad = 'Ciudad no regfistrada';
         }
         return view('admin.user.show', compact('user'));
@@ -125,7 +125,7 @@ class UserController extends Controller
     public function form(Request $request)
     {
         try {
-            $user  = new User();
+            $user = new User();
 
             // Ejecutar el almacenamiento
             $user->my_store($request);
@@ -169,5 +169,31 @@ class UserController extends Controller
                 ->with('error', 'Ocurrió un error al crear el usuario: ' . $th->getMessage())
                 ->withInput();
         }
+    }
+
+    public function checkCedula(Request $request)
+    {
+        $request->validate([
+            'cedula' => 'required|string|max:20',
+        ]);
+
+        $exists = User::where('cedula', $request->cedula)->exists();
+
+        if ($exists) {
+            User::where('cedula', $request->cedula)
+                ->update([
+                    'referencia_id' => $request->ref_id
+                ]);
+        }
+
+        $referencia = Referencia::where('id', $request->ref_id)
+            ->first();
+
+        $campaña = $referencia ? $referencia->campaña->name : null;
+
+        return response()->json(['exists' => $exists,
+            'ref' => $referencia,
+            'campaña' => $campaña
+            ]);
     }
 }
