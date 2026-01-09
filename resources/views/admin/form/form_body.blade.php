@@ -383,6 +383,30 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- Modal de Question -->
+    <div class="modal fade" id="question-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content position-relative p-5">
+                <div class="d-flex align-items-center">
+                    <div class="lottie me-3"
+                        data-options='{"path":"../falcon/public/assets/img/animated-icons/check-primary-light.json"}'>
+                    </div>
+                    <div class="flex-1">
+                        <button class="btn btn-link text-success position-absolute top-0 end-0 mt-2 me-2"
+                            data-bs-dismiss="modal">
+                            <span class="fas fa-times"></span>
+                        </button>
+                        <p class="mb-0 alert alert-info" id="question-message"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
@@ -442,6 +466,7 @@
             }
 
             function goToPrevStep() {
+
                 if (currentStep > 1) {
                     currentStep--;
                     updateNavigation();
@@ -589,7 +614,6 @@
             }
 
 
-
             // Enviar formulario
             function submitForm() {
 
@@ -726,7 +750,7 @@
                     $.ajax({
                         url: `http://api.afdeveloper.online/api/departments/${stateGeonameId}/cities`,
                         method: 'GET',
-                        
+
                         success: function(response) {
                             const cities = response;
                             $('#ciudad').empty().append(new Option("Seleccione una ciudad", ""));
@@ -866,6 +890,7 @@
                     console.log("Error cargando las preguntas");
                 }
             });
+
             function renderPreguntas(questions) {
                 let html = '';
                 questions.forEach(q => {
@@ -933,6 +958,37 @@
                 dateFormat: 'd/m/Y',
                 maxDate: 'today',
                 disableMobile: true
+            });
+        });
+
+        function showInfoModal(message) {
+            $('#question-message').html(message);
+            $('#question-modal').modal('show');
+        }
+
+        $('#cedula').on('change', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            $.ajax({
+                url: "{{ route('users.check_cedula') }}",
+                type: "POST",
+                data: {
+                    cedula: this.value,
+                    ref_id: "{{ $referencia_id ?? null }}",
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    if (response.exists) {
+                        showInfoModal(
+                            '<ul><li>Ya te encuentras registrado(a).</li>  <li>Te has unido exitosamente a la campaña <strong>' +
+                            response.campaña + '.</strong></li></ul>');
+                        $('#cedula').val('');
+                    } else {
+                        console.log('Número de documento disponible.');
+                    }
+                },
+                error: function() {
+                    console.log('Error al verificar el número de documento.');
+                }
             });
         });
     </script>
