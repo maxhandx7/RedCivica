@@ -127,10 +127,8 @@ class UserController extends Controller
         try {
             $user = new User();
 
-            // Ejecutar el almacenamiento
             $user->my_store($request);
 
-            // Determinar el tipo de respuesta basado en la solicitud
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
