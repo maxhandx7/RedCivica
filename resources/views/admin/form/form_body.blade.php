@@ -229,6 +229,21 @@
                                         placeholder="name@example.com" id="email" />
                                     <div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
                                 </div>
+
+                                <div class="col-md-12 mt-3">
+                                    <label for="referido_por" class="form-label">
+                                        ¿Quién te invitó? <small class="text-muted">(Opcional)</small>
+                                    </label>
+
+                                    <input type="text" name="referido_por" id="referido_por" class="form-control"
+                                        placeholder="Cédula o correo de la persona que te invitó"
+                                        value="{{ old('referido_por', request('ref') ?? '') }}">
+
+                                    <small class="text-muted">
+                                        Si no recuerdas o no aplica, puedes dejarlo vacío.
+                                    </small>
+                                </div>
+
                             </div>
 
 
@@ -630,6 +645,7 @@
                     fecha_expedicion: $('#fecha_expedicion').val(),
                     fecha_nacimiento: $('#fecha_nacimiento').val(),
                     email: $('#email').val(),
+                    referido_por: $('#referido_por').val(),
                     telefono: $('#telephoneInputmask').val(),
                     pais: $('#pais').val(),
                     departamento: $('#departamento').val(),

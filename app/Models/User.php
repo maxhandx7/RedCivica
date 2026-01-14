@@ -144,6 +144,7 @@ class User extends Authenticatable
             'surname' => 'required|string|max:255',
             'tipo_documento' => 'required|string|max:50',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
+            'referido_por' => 'nullable|string|max:100',
             'fecha_nacimiento' => [
                 'required',
                 'date',
@@ -183,10 +184,24 @@ class User extends Authenticatable
             'referencia_id' => 'nullable|exists:referencias,id',
         ]);
 
+        $referenciaId = null;
+
+        if ($request->filled('referido_por')) {
+
+            $referido = self::where('cedula', $request->referido_por)
+                ->orWhere('email', $request->referido_por)
+                ->first();
+
+            if ($referido) {
+                $referenciaId = $referido->id;
+            }
+        }
+
+
         $password = Str::random(12);
 
         $user = self::where('cedula', $request->cedula)->first();
-        
+
         if ($user) {
             // Si el usuario ya existe, actualizar sus datos
             $user->update([
@@ -203,10 +218,10 @@ class User extends Authenticatable
                 'pais' => $request->pais ?? 'Colombia',
                 'estado' => $request->estado ?? 'activo',
                 'mesa' => $request->mesa,
-                'parent_id' => $request->parent_id,
+                'parent_id' => $referenciaId ?? $request->parent_id,
                 'fuente' => $request->fuente,
                 'medio' => $request->medio,
-                'referencia_id' => $request->referencia_id,
+                'referencia_id' =>  $request->referencia_id,
             ]);
         } else {
             // Si no existe, crear nuevo usuario
@@ -227,19 +242,29 @@ class User extends Authenticatable
                 'pais' => $request->pais ?? 'Colombia',
                 'estado' => $request->estado ?? 'activo',
                 'mesa' => $request->mesa,
-                'parent_id' => $request->parent_id,
+                'parent_id' => $referenciaId ?? $request->parent_id,
                 'fuente' => $request->fuente,
                 'medio' => $request->medio,
                 'password' => Hash::make($password),
-                'referencia_id' => $request->referencia_id,
+                'referencia_id' =>  $request->referencia_id,
             ]);
         }
 
         if ($user) {
+
+            if ($request->filled('referido_por') && !$referenciaId) {
+                session()->flash(
+                    'info',
+                    'No encontramos a la persona que te invitó, pero el registro se realizó sin problema.'
+                );
+            }
+
+
             // Asignar rol solo si es nuevo usuario o si no tiene roles
             if (!$user->hasRole("cliente")) {
                 $user->assignRole("cliente");
             }
+
 
             // Enviar email solo para usuarios nuevos
             if (/* !$user->wasRecentlyCreated &&  */ $user->email) {
@@ -410,7 +435,7 @@ class User extends Authenticatable
     }
 
 
-    
+
 
     public function estado()
     {
