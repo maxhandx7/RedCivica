@@ -731,7 +731,7 @@
                     $('#ciudad').prop('disabled', true);
 
                     $.ajax({
-                        url: `http://api.afdeveloper.online/api/countries/${colombiaGeonameId}/departments`,
+                        url: `https://api.afdeveloper.online/api/countries/${colombiaGeonameId}/departments`,
                         method: 'GET',
                         success: function(response) {
                             const states = response;
@@ -764,7 +764,7 @@
                     $('#ciudad').prop('disabled', false);
 
                     $.ajax({
-                        url: `http://api.afdeveloper.online/api/departments/${stateGeonameId}/cities`,
+                        url: `https://api.afdeveloper.online/api/departments/${stateGeonameId}/cities`,
                         method: 'GET',
 
                         success: function(response) {
