@@ -62,7 +62,7 @@ class UserController extends Controller
     {
         $response = null;
         if ($user->ciudad) {
-            $response = Http::get('http://api.afdeveloper.online/api/city/' . $user->ciudad);
+            $response = Http::get('https://api.afdeveloper.online/api/city/' . $user->ciudad);
         }
         if ($response) {
             $user->ciudad = collect($response->json())
