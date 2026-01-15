@@ -122,7 +122,7 @@
             <p>Saludos cordiales,<br><strong>Equipo PoliticFriends</strong></p>
             <p>
                 <small>
-                    © 2025 PoliticFriends. Todos los derechos reservados.<br>
+                    © 2026 PoliticFriends. Todos los derechos reservados.<br>
                     <a href="https://PoliticFriends.com" style="color: #D25252;">Visita nuestro sitio web</a>
                 </small>
             </p>

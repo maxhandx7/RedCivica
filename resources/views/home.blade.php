@@ -359,7 +359,7 @@
         {!! Html::script('/js/chart.js') !!}
         {!! Html::script('/js/leaflet.js') !!}
 
-        <script>
+      {{--   <script>
             /* document.addEventListener('DOMContentLoaded', () => {
                                 const ctx = document.getElementById('usersChart').getContext('2d');
                                 new Chart(ctx, {
@@ -515,7 +515,7 @@
                 if (userId === null) {
                     alert("Por favor inicia sesión para continuar");
                 } else {
-                    link = baseUrl + `/referidos/registro?usr=${userId}&fuente=Whatsapp&ref_id=${refId}`;
+                    link = baseUrl + `/referidos/registro?usr=${userId}&ref_id=${refId}`;
                     navigator.clipboard.writeText(link).then(() => {
                         const Toast = Swal.mixin({
                             toast: true,
@@ -629,4 +629,185 @@
                     }
                 });
             });
-        </script>
+        </script> --}}
+
+
+        <script>
+document.addEventListener('DOMContentLoaded', async () => {
+
+    /* =======================
+       CHARTS
+    ======================= */
+
+    const crearGrafico = (id, config) => {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, config);
+    };
+
+    // Usuarios registrados por fecha
+    crearGrafico('usersChart', {
+        type: 'bar',
+        data: {
+            labels: @json($labelsDate),
+            datasets: [{
+                label: 'Usuarios registrados',
+                data: @json($totalsDate),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Usuarios por ciudad
+    crearGrafico('ciudadChart', {
+        type: 'doughnut',
+        data: {
+            labels: @json($labelsCity),
+            datasets: [{
+                label: 'Usuarios por ciudad',
+                data: @json($totalsCity),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+
+    /* =======================
+       FETCH USERS BY DEPARTMENT
+    ======================= */
+
+    try {
+        const response = await fetch("{{ url('/users-by-department') }}");
+        const data = await response.json();
+
+        // Chart departamentos
+        crearGrafico('chart', {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.name),
+                datasets: [{
+                    label: 'Usuarios',
+                    data: data.map(d => d.users),
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        /* =======================
+           MAPA LEAFLET
+        ======================= */
+
+        const mapContainer = document.getElementById('map');
+        if (!mapContainer) return;
+
+        const map = L.map('map').setView([4.5709, -74.2973], 5);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OSM & CARTO',
+            subdomains: 'abcd',
+            maxZoom: 18
+        }).addTo(map);
+
+        const getColor = (value) =>
+            value > 1200 ? '#800026' :
+            value > 800  ? '#BD0026' :
+            value > 400  ? '#E31A1C' :
+            value > 100  ? '#FC4E2A' :
+                           '#FFEDA0';
+
+        data.forEach(dep => {
+            if (dep.users > 0 && dep.lat && dep.lng) {
+                L.circleMarker([dep.lat, dep.lng], {
+                    radius: Math.min(40, 5 + dep.users / 10),
+                    fillColor: getColor(dep.users),
+                    color: '#000',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.6
+                })
+                .bindPopup(`<b>${dep.name}</b><br>Usuarios: ${dep.users}`)
+                .addTo(map);
+            }
+        });
+
+    } catch (error) {
+        console.error('Error cargando datos:', error);
+    }
+
+});
+
+/* =======================
+   SHARE REFERENCE
+======================= */
+
+window.shareReference = function () {
+
+    const userId = {{ auth()->check() ? auth()->id() : 'null' }};
+    const refId  = {{ $ref_id }};
+    const baseUrl = window.location.origin;
+
+    if (userId === null) {
+        alert('Por favor inicia sesión para continuar');
+        return;
+    }
+
+    const link = `${baseUrl}/referidos/registro?usr=${userId}&ref_id=${refId}`;
+
+    navigator.clipboard.writeText(link).then(() => {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Enlace copiado',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    });
+
+    const qrContainer = document.getElementById('qrCode');
+    if (qrContainer) {
+        qrContainer.innerHTML = '';
+        new QRCode(qrContainer, {
+            text: link,
+            width: 150,
+            height: 150,
+            colorDark: '#900000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'Únete a PoliticFriends',
+            text: 'Regístrate con este enlace y gana puntos.',
+            url: link
+        }).catch(() => {});
+    }
+};
+</script>
+

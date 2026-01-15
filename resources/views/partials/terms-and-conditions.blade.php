@@ -173,7 +173,7 @@
             </section>
 
             <footer class="border-top pt-3 mt-4">
-                <p class="small text-secondary mb-0">© 2025 PoliticFriends. Todos los derechos reservados.</p>
+                <p class="small text-secondary mb-0">© 2026 PoliticFriends. Todos los derechos reservados.</p>
             </footer>
         </div>
     </div>
