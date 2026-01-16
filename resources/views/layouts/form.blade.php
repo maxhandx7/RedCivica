@@ -20,6 +20,20 @@
     <meta name="application-name" content="{{ $referido->campaña->name }}">
     <meta name="apple-mobile-web-app-title" content="{{ $referido->campaña->name }}">
 
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $referido->campaña->name }}">
+    <meta property="og:description" content="{{ $referido->campaña->description }}">
+    <meta property="og:image" content="{{ asset('image/' . $referido->campaña->image) }}">
+    <meta property="og:url" content="{{ request()->fullUrl() }}">
+    <meta property="og:site_name" content="PoliticFriends">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $referido->campaña->name }}">
+    <meta name="twitter:description" content="{{ $referido->campaña->description }}">
+    <meta name="twitter:image" content="{{ asset('image/' . $referido->campaña->image) }}">
+
+
 
 
     <!-- Compatibilidad con Windows -->
@@ -47,7 +61,7 @@
     <!-- JavaScripts -->
     {!! Html::script('melody/vendors/js/vendor.bundle.base.js') !!}
     {!! Html::script('melody/vendors/js/vendor.bundle.addons.js') !!}
-    {!! Html::script('/falcon/public/vendors/popper/popper.min.js') !!} 
+    {!! Html::script('/falcon/public/vendors/popper/popper.min.js') !!}
     {!! Html::script('/falcon/public/vendors/bootstrap/bootstrap.min.js') !!}
     {!! Html::script('/falcon/public/vendors/anchorjs/anchor.min.js') !!}
     {!! Html::script('/falcon/public/vendors/is/is.min.js') !!}
@@ -55,7 +69,7 @@
     {!! Html::script('/falcon/public/vendors/prism/prism.js') !!}
     {!! Html::script('falcon/public/vendors/lottie/lottie.min.js') !!}
     {!! Html::script('/falcon/public/vendors/simplebar/simplebar.min.js') !!}
-    {!! Html::script('/falcon/public/assets/js/config.js') !!}  
+    {!! Html::script('/falcon/public/assets/js/config.js') !!}
     {!! Html::script('/falcon/public/vendors/fontawesome/all.min.js') !!}
     {!! Html::script('/falcon/public/vendors/lodash/lodash.min.js') !!}
     {!! Html::script('/falcon/public/vendors/list.js/list.min.js') !!}
