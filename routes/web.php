@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('campañas', CampañaController::class)->names('campañas');
 
     Route::get('/analitica', [AnaliticaController::class, 'index'])->name('analitica.index');
+    Route::get('/analitica/{id}/usuarios-por-referencia', [AnaliticaController::class, 'usuariosPorReferencia'])->name('analitica.usuarios_por_referencia');
 
     Route::get('/needs', [NeedController::class, 'index'])->name('needs.index');
     Route::post('/needs', [NeedController::class, 'store'])->name('needs.store');

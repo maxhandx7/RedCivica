@@ -48,6 +48,10 @@ class AnaliticaController extends Controller
              : 0; */
 
 
+
+
+
+
         $usuariosPorReferencia = $descendientes
             ->load('referencia.user')
             ->groupBy('referencia_id')
@@ -68,4 +72,18 @@ class AnaliticaController extends Controller
         ));
 
     }
+
+
+    public function usuariosPorReferencia($id)
+    {
+        $referencia = Referencia::with('user')->findOrFail($id);
+
+        $usuarios = $referencia->usuariosRegistrados;
+
+        return view(
+            'admin.analitica.usuarios_por_referencia',
+            compact('usuarios', 'referencia')
+        );
+    }
+
 }

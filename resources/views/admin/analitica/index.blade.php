@@ -170,11 +170,17 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($usuariosPorReferencia as $refId => $total)
+                                            @php
+                                                preg_match('/\((\d+)\)$/', $refId, $match);
+                                                $id = $match[1] ?? null;
+                                            @endphp
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <span class="legend-indicator bg-success"></span>
-                                                        {{ $refId }}
+                                                        <a href="{{ route('analitica.usuarios_por_referencia', $id) }}">
+                                                            {{ $refId }}
+                                                        </a>
                                                     </div>
                                                 </td>
                                                 <td class="text-end">{{ number_format($total) }}</td>
