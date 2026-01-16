@@ -16,14 +16,15 @@ class UserController extends Controller
         // $this->middleware('auth');
         // $this->middleware('role:admin')->except(['form', 'store']);
 
-        $this->middleware('auth')->except(['form', 'store']);
-        $this->middleware('role:admin')->except(['form', 'store']);
+        $this->middleware('auth')->except(['form', 'store', 'checkCedula']);
+        $this->middleware('role:admin')->except(['form', 'store', 'checkCedula']);
     }
 
     public function index(Request $request)
     {
         $query = User::query();
 
+        
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
