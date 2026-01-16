@@ -236,19 +236,21 @@
                                                             alt="" width="80" />
                                                         <p class="fs-11 mt-2">Invita a personas a tu red
                                                         <div class="d-grid"><button class="btn btn-sm btn-primary"
-                                                                onclick="shareReference()"><i class="fas fa-user-plus"></i>
+                                                                {{-- onclick="shareReference()" --}} data-bs-toggle="modal"
+                                                                data-bs-target="#userInfoModal"><i
+                                                                    class="fas fa-user-plus"></i>
                                                                 Invitar</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
 
                                     <div class="pt-3">
                                         <div class="text-center" id="qrCode">
-                                            </div>
+                                        </div>
                                     </div>
                                     <div class="pt-3">
                                         <div class="alert alert-info mb-0">
@@ -281,51 +283,88 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Segunda fila: Noticias Políticas (full width) -->
-                    @if ($noticias && count($noticias))
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-primary text-white py-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0"><i class="fas fa-newspaper me-2"></i>Noticias Políticas</h5>
 
+                <div class="modal fade" id="userInfoModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="fas fa-user-circle me-2"></i>Campañas para compartir</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modalUserInfo">
+                                <div class="table-responsive  pt-3">
+                                    <table id="order-listing"
+                                        class="table table-sm table-striped table-hover align-middle mb-0 fs-12">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Campaña</th>
+                                                <th style="width: 40%;">Objetivo</th>
+                                                <th style="width: 20%;" class="text-center">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($referencias as $ref)
+                                                <tr>
+                                                    <td>{{ $ref->campaña->name }}</td>
+                                                    <td>{{ $ref->objetivo }}</td>
+
+                                                    <td style="width: 200px;" class="text-center">
+                                                        {!! Form::open([
+                                                            'route' => ['referencias.destroy', $ref],
+                                                            'method' => 'DELETE',
+                                                            'id' => 'delete-form-' . $ref->id,
+                                                        ]) !!}
+
+                                                        <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center show-reference-btn"
+                                                            data-bs-toggle="modal" data-bs-target="#referenceModal"
+                                                            data-reference-id="{{ $ref->id }}"
+                                                            data-campaign="{{ $ref->campaña->name }}"
+                                                            data-objective="{{ $ref->objetivo }}"
+                                                            data-source="{{ $ref->fuente }}"
+                                                            data-medium="{{ $ref->medio }}"
+                                                            data-created="{{ $ref->created_at->translatedFormat('d/m/Y H:i') }}"
+                                                            data-referral-url="{{ route('referidos.registro', [
+                                                                'usr' => auth()->id(),
+                                                                'fuente' => $ref->fuente,
+                                                                'medio' => $ref->medio,
+                                                                'ref_id' => $ref->id,
+                                                            ]) }}"
+                                                            title="Compartir campaña">
+
+                                                            <i class="fas fa-link me-1"></i>
+                                                           Click aqui para compartir
+                                                        </a>
+
+                                                        {!! Form::close() !!}
+
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <div class="text-center py-4">
+                                                    <img class="img-fluid mb-3"
+                                                        src="{{ asset('/falcon/public/assets/img/gallery/noData.svg') }}"
+                                                        alt="No data" style="max-width: 200px;">
+                                                    <h5>No hay campañas publicadas</h5>
+                                                    <p class="mb-0">Parece que no hay datos disponibles todavía</p>
+                                                </div>
+                                            @endforelse
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    @foreach ($noticias as $n)
-                                        <div class="col-md-6 col-lg-4 mb-4">
-                                            <div class="card h-100 border-0 hover-shadow">
-                                                <div class="card-body">
-                                                    <span class="badge bg-info mb-2">{{ $n['source'] }}</span>
-                                                    <h6 class="card-title">
-                                                        <a href="{{ $n['url'] }}" target="_blank"
-                                                            class="text-dark stretched-link">{{ $n['title'] }}</a>
-                                                    </h6>
-                                                    <p class="card-text small text-muted">
-                                                        {{ Str::limit($n['description'], 120) }}
-                                                    </p>
-                                                </div>
-                                                <div class="card-footer bg-transparent border-0 pt-0">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <small class="text-muted">
-                                                            <i class="far fa-clock me-1"></i>
-                                                            {{ \Carbon\Carbon::parse($n['published_at'])->diffForHumans() }}
-                                                        </small>
-                                                        <a href="{{ $n['url'] }}" target="_blank"
-                                                            class="btn btn-sm btn-outline-primary">
-                                                            Leer <i class="fas fa-external-link-alt ms-1"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
+
+                @include('admin.referencia.__modal_referencia')
 
 
             @endhasrole
@@ -360,100 +399,20 @@
         {!! Html::script('/js/leaflet.js') !!}
 
         <script>
-            /* document.addEventListener('DOMContentLoaded', () => {
-                                const ctx = document.getElementById('usersChart').getContext('2d');
-                                new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: @json($labelsDate),
-                                        datasets: [{
-                                            label: 'Usuarios registrados',
-                                            data: @json($totalsDate),
-                                            backgroundColor: 'rgba(54, 162, 235, 0.6)'
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true
-                                            }
-                                        }
-                                    }
-                                });
+            document.addEventListener('DOMContentLoaded', async () => {
 
-                                /*   const ctxdep = document.getElementById('departmentsChart').getContext('2d');
-                                                new Chart(ctxdep, {
-                                                    type: 'doughnut',
-                                                    data: {
-                                                        labels: @json($labelsDep),
-                                                        datasets: [{
-                                                            label: 'Usuarios por departamento',
-                                                            data: @json($totalsDep),
-                                                            backgroundColor: [
-                                                                'rgba(255, 99, 132, 0.6)',
-                                                                'rgba(54, 162, 235, 0.6)',
-                                                                'rgba(255, 206, 86, 0.6)',
-                                                                'rgba(75, 192, 192, 0.6)',
-                                                                'rgba(153, 102, 255, 0.6)',
-                                                            ]
-                                                        }]
-                                                    },
-                                                    options: {
-                                                        responsive: true,
-                                                        plugins: {
-                                                            legend: {
-                                                                position: 'right'
-                                                            }
-                                                        }
-                                                    }
-                                                });
-                                 */
-
-            /* const ctxciudad = document.getElementById('ciudadChart').getContext('2d');
-                        new Chart(ctxciudad, {
-                            type: 'doughnut',
-                            data: {
-                                labels: @json($labelsCity),
-                                datasets: [{
-                                    label: 'Usuarios por ciudad',
-                                    data: @json($totalsCity),
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.6)',
-                                        'rgba(54, 162, 235, 0.6)',
-                                        'rgba(255, 206, 86, 0.6)',
-                                        'rgba(75, 192, 192, 0.6)',
-                                        'rgba(153, 102, 255, 0.6)',
-                                    ]
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: {
-                                        position: 'right'
-                                    }
-                                }
-                            }
-                        });
-
-                    }); */
-
-
-
-
-            document.addEventListener('DOMContentLoaded', () => {
-
-
+                /* =======================
+                   CHARTS
+                ======================= */
 
                 const crearGrafico = (id, config) => {
                     const canvas = document.getElementById(id);
-                    if (!canvas) return; // 👈 evita el error si el canvas no existe
+                    if (!canvas) return;
                     const ctx = canvas.getContext('2d');
                     new Chart(ctx, config);
                 };
 
-                // Gráfico de usuarios registrados
+                // Usuarios registrados por fecha
                 crearGrafico('usersChart', {
                     type: 'bar',
                     data: {
@@ -474,7 +433,7 @@
                     }
                 });
 
-                // Gráfico de ciudades (solo si existe el canvas)
+                // Usuarios por ciudad
                 crearGrafico('ciudadChart', {
                     type: 'doughnut',
                     data: {
@@ -501,66 +460,177 @@
                     }
                 });
 
-            });
+                /* =======================
+                   FETCH USERS BY DEPARTMENT
+                ======================= */
 
+                try {
+                    const response = await fetch("{{ url('/users-by-department') }}");
+                    const data = await response.json();
 
-
-
-
-            window.shareReference = function() {
-                const userId = {{ auth()->check() ? auth()->id() : 'null' }};
-                const refId = {{ $ref_id }};
-                let link = '';
-                const baseUrl = window.location.origin;
-                if (userId === null) {
-                    alert("Por favor inicia sesión para continuar");
-                } else {
-                    link = baseUrl + `/referidos/registro?usr=${userId}&fuente=Whatsapp&ref_id=${refId}`;
-                    navigator.clipboard.writeText(link).then(() => {
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
+                    // Chart departamentos
+                    crearGrafico('chart', {
+                        type: 'bar',
+                        data: {
+                            labels: data.map(d => d.name),
+                            datasets: [{
+                                label: 'Usuarios',
+                                data: data.map(d => d.users),
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
                             }
-                        });
-                        Toast.fire({
-                            icon: "success",
-                            title: `✅ Enlace copiado`
-                        });
-                    }).catch(err => {
-                        console.error('No se pudo copiar el enlace: ', err);
+                        }
                     });
 
-                    new QRCode(document.getElementById("qrCode"), {
+                    /* =======================
+                       MAPA LEAFLET
+                    ======================= */
+
+                    const mapContainer = document.getElementById('map');
+                    if (!mapContainer) return;
+
+                    const map = L.map('map').setView([4.5709, -74.2973], 5);
+
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                        attribution: '&copy; OSM & CARTO',
+                        subdomains: 'abcd',
+                        maxZoom: 18
+                    }).addTo(map);
+
+                    const getColor = (value) =>
+                        value > 1200 ? '#800026' :
+                        value > 800 ? '#BD0026' :
+                        value > 400 ? '#E31A1C' :
+                        value > 100 ? '#FC4E2A' :
+                        '#FFEDA0';
+
+                    data.forEach(dep => {
+                        if (dep.users > 0 && dep.lat && dep.lng) {
+                            L.circleMarker([dep.lat, dep.lng], {
+                                    radius: Math.min(40, 5 + dep.users / 10),
+                                    fillColor: getColor(dep.users),
+                                    color: '#000',
+                                    weight: 1,
+                                    opacity: 1,
+                                    fillOpacity: 0.6
+                                })
+                                .bindPopup(`<b>${dep.name}</b><br>Usuarios: ${dep.users}`)
+                                .addTo(map);
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Error cargando datos:', error);
+                }
+
+            });
+
+            /* =======================
+               SHARE REFERENCE
+            ======================= */
+
+            window.shareReference = function() {
+
+                const userId = {{ auth()->check() ? auth()->id() : 'null' }};
+                const refId = {{ $ref_id }};
+                const baseUrl = window.location.origin;
+
+                if (userId === null) {
+                    alert('Por favor inicia sesión para continuar');
+                    return;
+                }
+
+                const link = `${baseUrl}/referidos/registro?usr=${userId}&ref_id=${refId}`;
+
+                navigator.clipboard.writeText(link).then(() => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Enlace copiado',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                });
+
+                const qrContainer = document.getElementById('qrCode');
+                if (qrContainer) {
+                    qrContainer.innerHTML = '';
+                    new QRCode(qrContainer, {
                         text: link,
                         width: 150,
                         height: 150,
-                        colorDark: "#900000",
-                        colorLight: "#ffffff",
+                        colorDark: '#900000',
+                        colorLight: '#ffffff',
                         correctLevel: QRCode.CorrectLevel.H
                     });
                 }
+
                 if (navigator.share) {
                     navigator.share({
-                        title: 'Únete a nuestra red en PoliticFriends',
-                        text: 'Por favor regístrate usando este enlace para que ambos ganemos puntos en PoliticFriends.',
-                        url: link,
-                    }).catch(err => {
-                        console.log('Error al compartir:', err);
-                    });
-                } else {
-                    // Fallback para navegadores que no soportan Web Share API
-                    copyReferenceLink();
-
+                        title: 'Únete a PoliticFriends',
+                        text: 'Regístrate con este enlace y gana puntos.',
+                        url: link
+                    }).catch(() => {});
                 }
+            };
+        </script>
 
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Variables para almacenar datos
+                let currentReferenceUrl = '';
+                let qrCodeInstance = null;
+
+                // Evento cuando se muestra el modal
+                document.querySelectorAll('.show-reference-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Obtener datos de los atributos data
+                        const referenceId = this.getAttribute('data-reference-id');
+                        const campaign = this.getAttribute('data-campaign');
+                        const objective = this.getAttribute('data-objective');
+                        const source = this.getAttribute('data-source');
+                        const medium = this.getAttribute('data-medium');
+                        const created = this.getAttribute('data-created');
+                        currentReferenceUrl = this.getAttribute('data-referral-url');
+
+                        // Actualizar contenido del modal
+                        document.getElementById('modalCampaign').textContent = campaign;
+                        document.getElementById('modalObjective').textContent = objective;
+                        document.getElementById('modalSource').textContent = source;
+                        document.getElementById('modalMedium').textContent = medium;
+                        document.getElementById('modalCreated').textContent = created;
+                        document.getElementById('referenceLinkInput').value = currentReferenceUrl;
+
+                        // Generar o actualizar QR
+                        if (qrCodeInstance) {
+                            qrCodeInstance.clear();
+                            qrCodeInstance.makeCode(currentReferenceUrl);
+                        } else {
+                            qrCodeInstance = new QRCode(document.getElementById("qrCodeContainer"), {
+                                text: currentReferenceUrl,
+                                width: 150,
+                                height: 150,
+                                colorDark: "#000000",
+                                colorLight: "#ffffff",
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+                        }
+                    });
+                });
+
+                // Función para copiar el enlace
                 window.copyReferenceLink = function() {
-                    const copyText = link;
+                    const copyText = document.getElementById("referenceLinkInput");
                     copyText.select();
                     document.execCommand("copy");
 
@@ -572,61 +642,28 @@
                         copyText.nextElementSibling.innerHTML = originalText;
                     }, 2000);
                 };
-            };
-        </script>
 
+                // Función para abrir el formulario
+                window.openReferralForm = function() {
+                    window.open(currentReferenceUrl, '_blank');
+                };
 
-        <script>
-            document.addEventListener("DOMContentLoaded", async () => {
-                const response = await fetch("{{ url('/users-by-department') }}");
-                const data = await response.json();
+                // Función para compartir
+                window.shareReference = function() {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Únete a nuestra campaña',
+                            text: 'Por favor regístrate usando este enlace de campaña',
+                            url: currentReferenceUrl
+                        }).catch(err => {
+                            console.log('Error al compartir:', err);
+                        });
+                    } else {
+                        // Fallback para navegadores que no soportan Web Share API
+                        copyReferenceLink();
+                        toast.show();
 
-                // --- Gráfico con Chart.js ---
-                const ctx = document.getElementById("chart").getContext("2d");
-                new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                        labels: data.map(d => d.name),
-                        datasets: [{
-                            label: "Usuarios",
-                            data: data.map(d => d.users),
-                            backgroundColor: "rgba(75, 192, 192, 0.6)"
-                        }]
                     }
-                });
-
-                // Inicializar mapa
-                var map = L.map('map').setView([4.5709, -74.2973], 5);
-
-                // Capa base con CARTO
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-                    subdomains: 'abcd',
-                    maxZoom: 18
-                }).addTo(map);
-
-
-                function getColor(value) {
-                    console.log(value);
-                    return value > 1200 ? '#800026' :
-                        value > 800 ? '#BD0026' :
-                        value > 400 ? '#E31A1C' :
-                        value > 100 ? '#FC4E2A' :
-                        '#FFEDA0';
-                }
-
-                // Pintamos marcadores con lat/lng de cada departamento
-                data.forEach(dep => {
-                    if (dep.users > 0) {
-                        L.circleMarker([dep.lat, dep.lng], {
-                            radius: 5 + dep.users, // el tamaño crece con la cantidad
-                            fillColor: dep.users > 0 ? getColor(dep.users) : 'gray',
-                            color: "#000",
-                            weight: 1,
-                            opacity: 1,
-                            fillOpacity: 0.6
-                        }).bindPopup(`<b>${dep.name}</b><br>Usuarios: ${dep.users}`).addTo(map);
-                    }
-                });
+                };
             });
         </script>

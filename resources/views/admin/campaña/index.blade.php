@@ -87,11 +87,11 @@
                                 <a href="{{ route('campañas.edit', $campaña) }}" class="btn btn-sm btn-link" data-bs-toggle="tooltip" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                {!! Form::open(['route' => ['campañas.destroy', $campaña], 'method' => 'DELETE', 'class' => 'd-inline']) !!}
+                                {{-- {!! Form::open(['route' => ['campañas.destroy', $campaña], 'method' => 'DELETE', 'class' => 'd-inline']) !!}
                                 <button type="submit" class="btn btn-sm btn-link text-danger" data-bs-toggle="tooltip" title="Eliminar" onclick="return confirm('¿Estás seguro?')">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                                {!! Form::close() !!}
+                                {!! Form::close() !!} --}}
                             </div>
                         </td>
                     </tr>

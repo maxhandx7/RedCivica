@@ -236,7 +236,7 @@
                                     </label>
 
                                     <input type="text" name="referido_por" id="referido_por" class="form-control"
-                                        placeholder="Cédula o correo de la persona que te invitó"
+                                        placeholder="Cédula de la persona que te invitó"
                                         value="{{ old('referido_por', request('ref') ?? '') }}">
 
                                     <small class="text-muted">

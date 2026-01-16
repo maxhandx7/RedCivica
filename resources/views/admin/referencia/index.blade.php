@@ -133,10 +133,10 @@
                                             <span class="fas fa-pen ms-1" data-fa-transform="shrink-3"></span>
                                         </a>
 
-                                        <button class="btn btn-outline-danger me-1 mb-1 delete-confirm btn-sm" type="submit"
+                                        {{-- <button class="btn btn-outline-danger me-1 mb-1 delete-confirm btn-sm" type="submit"
                                             title="Eliminar" onclick="return confirmDelete()">
                                             <span class="fas fa-trash ms-1" data-fa-transform="shrink-3"></span>
-                                        </button>
+                                        </button> --}}
                                     @endhasrole
                                     {!! Form::close() !!}
 

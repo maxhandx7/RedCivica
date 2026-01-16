@@ -14,15 +14,44 @@ class ReferenciaController extends Controller
 {
     public function index()
     {
-        $referencias = Referencia::all();
+        $referencias = Referencia::whereHas('campaña', function ($q) {
+            $q->where('estado', 'activo')
+                ->where('fecha_fin', '>=', now())
+                ->where(function ($q2) {
+                    $q2->where('tipo', 'publica')
+                        ->orWhere(function ($q3) {
+                            $q3->where('tipo', 'privada')
+                                ->where('user_id', auth()->id());
+                        });
+                });
+        })
+            ->with('campaña')
+            ->get();
+
         return view('admin.referencia.index', compact('referencias'));
     }
 
+
+
+
+
     public function create()
     {
-        $campañas = Campaña::where('estado', 'activo')
-            ->where('tipo', 'publica')
+        $campañas = Campaña::leftJoin('referencias', 'referencias.campaña_id', '=', 'campañas.id')
+            ->where('campañas.estado', 'activo')
+            ->where('campañas.fecha_fin', '>=', now())
+            ->where(function ($q) {
+                $q->where('campañas.tipo', 'publica')
+                    ->orWhere(function ($q2) {
+                        $q2->where('campañas.tipo', 'privada')
+                            ->where('referencias.user_id', auth()->id());
+                    });
+            })
+            ->select('campañas.*')
+            ->distinct()
             ->get();
+
+
         if ($campañas->isEmpty()) {
             return back()->with('error', 'No hay campañas activas para crear una referencia');
         }
@@ -90,7 +119,7 @@ class ReferenciaController extends Controller
     {
         try {
             $referencia->delete();
-            return back()->with('success', 'Campaña eliminada');
+            return back()->with('success', 'Referencia eliminada');
         } catch (\Throwable $th) {
             return back()->with('error', 'Ocurrió un error al eliminar la referencia');
         }

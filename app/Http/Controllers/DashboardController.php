@@ -75,6 +75,20 @@ class DashboardController extends Controller
 
         } */
 
+            $referencias = Referencia::whereHas('campaña', function ($q) {
+            $q->where('estado', 'activo')
+                ->where('fecha_fin', '>=', now())
+                ->where(function ($q2) {
+                    $q2->where('tipo', 'publica')
+                        ->orWhere(function ($q3) {
+                            $q3->where('tipo', 'privada')
+                                ->where('user_id', auth()->id());
+                        });
+                });
+        })
+            ->with('campaña')
+            ->get();
+
         // IDs de todos los descendientes (incluido el mismo user si quieres)
         $descendantIds = $user->descendants()->pluck('id');
 
@@ -134,7 +148,8 @@ class DashboardController extends Controller
             'totalsCity',
             'partidariosActivos',
             'ref_id',
-            'noticias'
+            'noticias',
+            'referencias'
         ));
     }
 
