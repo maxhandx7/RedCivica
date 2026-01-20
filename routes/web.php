@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 use App\Exports\UsuariosExport;
+use App\Http\Controllers\CandidatoController;
+use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\PropuestaController;
+use App\Http\Controllers\TarjetonController;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsuariosImport;
 use Illuminate\Http\Request;
@@ -42,6 +46,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Red de referidos (estructura jerárquica)
     Route::get('/red', [RedController::class, 'index'])->name('red.index');
+
+    Route::get('/candidato-dash', [App\Http\Controllers\HomeController::class, 'candidatoDash'])->name('candidato.dashboard');
 
     Route::resource('business', BusinessController::class)->names('business')->only([
         'index',
@@ -92,6 +98,36 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('questions', App\Http\Controllers\QuestionController::class)->names('questions');
     Route::get('/questions/departments', [App\Http\Controllers\QuestionController::class, 'getDepartments'])->name('questions.departments');
     Route::get('/questions/cities/{department}', [App\Http\Controllers\QuestionController::class, 'getCities'])->name('questions.cities');
+
+
+    // Candidatos
+    Route::resource('candidatos', CandidatoController::class)->names('candidatos');
+
+    Route::post('/candidatos/{candidato}/toggle-activo', [CandidatoController::class, 'toggleActivo'])->name('candidatos.toggle-activo');
+    Route::post('/candidatos/reordenar', [CandidatoController::class, 'reordenar'])->name('candidatos.reordenar');
+    Route::get('/candidatos/{candidato}/metricas', [CandidatoController::class, 'metricas'])->name('candidatos.metricas');
+    Route::post('/candidatos/{candidato}/metricas', [CandidatoController::class, 'guardarMetrica'])->name('candidatos.metricas.store');
+    
+    // Propuestas
+    Route::prefix('candidatos/{candidato}')->group(function () {
+        Route::resource('propuestas', PropuestaController::class)->except(['index']);
+        Route::get('/propuestas', [PropuestaController::class, 'index'])->name('candidatos.propuestas.index');
+        Route::post('/propuestas/{propuesta}/toggle-destacada', [PropuestaController::class, 'toggleDestacada'])->name('candidatos.propuestas.toggle-destacada');
+        Route::post('/propuestas/reordenar', [PropuestaController::class, 'reordenar'])->name('candidatos.propuestas.reordenar');
+    });
+    
+    // Tarjetones
+    Route::resource('tarjetones', TarjetonController::class);
+    
+    // Documentos
+    Route::resource('documentos', DocumentoController::class);
+    
+    // Configuración
+    Route::prefix('configuracion')->group(function () {
+        Route::get('/general', function () { return view('admin.configuracion.general'); })->name('configuracion.general');
+        Route::get('/categorias', function () { return view('admin.configuracion.categorias'); })->name('configuracion.categorias');
+        Route::get('/estadisticas', function () { return view('admin.configuracion.estadisticas'); })->name('configuracion.estadisticas');
+    });
 
 });
 

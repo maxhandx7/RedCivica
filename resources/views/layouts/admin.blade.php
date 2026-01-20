@@ -155,6 +155,7 @@
                                             class="nav-link-text ps-1">Red</span>
                                     </div>
                                 </a>
+                                
                                 @hasrole('admin')
                                     <!-- parent pages--><a
                                         class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}"
@@ -164,6 +165,15 @@
                                                 class="nav-link-text ps-1">Referencias</span>
                                         </div>
                                     </a>
+                                    <a class="nav-link {{ Request::segment(1) === 'admin' ? 'active' : '' }}"
+                                    href="{{ route('candidato.dashboard') }}" role="button">
+                                    <div class="d-flex align-items-center">
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-user-tie"></span>
+                                        </span>
+                                        <span class="nav-link-text ps-1">Panel Candidatos</span>
+                                    </div>
+                                </a>
                                     <!-- parent pages-->
                                     <a class="nav-link {{ Request::segment(1) === 'needs' ? 'active' : '' }}"
                                         href="{{ route('needs.index') }}" role="button">
@@ -532,9 +542,6 @@
                                 role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar avatar-xl">
                                     <img class="rounded-circle"
-                                    
-                                    
-
                                         src="{{ asset(Auth::id() == 1 ? Auth::user()->image : 'image/' . Auth::user()->image) }}"
                                         alt="Foto de perfil">
 

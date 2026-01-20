@@ -158,5 +158,11 @@
             --falcon-spinner-width: 8rem !important;
             --falcon-spinner-height: 8rem !important;
         }
+
+        @media (max-width: 576px) {
+            #title-logo h1 {
+                font-size: 1.8rem;
+            }
+        }
     </style>
 @endsection
