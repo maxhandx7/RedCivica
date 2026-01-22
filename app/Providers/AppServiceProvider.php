@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 use App\Models\Actividad;
+use App\Models\Candidato;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 
@@ -20,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    /* public function boot(): void
     {
         view()->composer('*', function ($view) {
             $notificacionesRecientes = Actividad::where('actor_id', auth()->id())
@@ -30,12 +31,36 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
             $hayNoLeidas = $notificacionesRecientes->where('leida', false)->count() > 0;
-
+            $candidatos = Candidato::all();
             $view->with([
                 'notificacionesRecientes' => $notificacionesRecientes,
-                'hayNotificacionesNoLeidas' => $hayNoLeidas
+                'hayNotificacionesNoLeidas' => $hayNoLeidas,
+                'candidato' => $candidatos,
             ]);
         });
         Paginator::useBootstrap();
-    } 
+    }  */
+
+    public function boot(): void
+    {
+        view()->composer('layouts.*', function ($view) {
+            if (!auth()->check())
+                return;
+
+            $notificacionesRecientes = Actividad::where(function ($q) {
+                $q->where('actor_id', auth()->id())
+                    ->orWhere('afectado_id', auth()->id());
+            })
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $view->with([
+                'notificacionesRecientes' => $notificacionesRecientes,
+                'hayNotificacionesNoLeidas' => $notificacionesRecientes->where('leida', false)->isNotEmpty(),
+                'candidatos' => Candidato::select('id', 'alias')->get(),
+            ]);
+        });
+        Paginator::useBootstrap();
+    }
 }

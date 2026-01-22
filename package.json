@@ -12,5 +12,13 @@
         "laravel-vite-plugin": "^1.0.0",
         "sass": "^1.56.1",
         "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "chart.js": "^4.5.1",
+        "html2canvas": "^1.4.1",
+        "jspdf": "^4.0.0",
+        "sortablejs": "^1.15.6",
+        "sweetalert2": "^11.26.17",
+        "xlsx": "^0.18.5"
     }
 }

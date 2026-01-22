@@ -18,6 +18,7 @@ use Spatie\Sitemap\Tags\Url;
 use App\Exports\UsuariosExport;
 use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PropuestaController;
 use App\Http\Controllers\TarjetonController;
 use Maatwebsite\Excel\Facades\Excel;
@@ -110,24 +111,33 @@ Route::middleware(['auth'])->group(function () {
     
     // Propuestas
     Route::prefix('candidatos/{candidato}')->group(function () {
-        Route::resource('propuestas', PropuestaController::class)->except(['index']);
         Route::get('/propuestas', [PropuestaController::class, 'index'])->name('candidatos.propuestas.index');
+        Route::get('/propuestas/create', [PropuestaController::class, 'create'])->name('candidatos.propuestas.create');
+        Route::post('/propuestas', [PropuestaController::class, 'store'])->name('candidatos.propuestas.store');
+        Route::get('/propuestas/{propuesta}/edit', [PropuestaController::class, 'edit'])->name('candidatos.propuestas.edit');
+        Route::put('/propuestas/{propuesta}', [PropuestaController::class, 'update'])->name('candidatos.propuestas.update');
+        Route::delete('/propuestas/{propuesta}', [PropuestaController::class, 'destroy'])->name('candidatos.propuestas.destroy');
         Route::post('/propuestas/{propuesta}/toggle-destacada', [PropuestaController::class, 'toggleDestacada'])->name('candidatos.propuestas.toggle-destacada');
         Route::post('/propuestas/reordenar', [PropuestaController::class, 'reordenar'])->name('candidatos.propuestas.reordenar');
     });
     
     // Tarjetones
-    Route::resource('tarjetones', TarjetonController::class);
+    Route::resource('tarjetones', TarjetonController::class)->names('tarjetones');
+    Route::post('/tarjetones/{tarjeton}/toggle-activo', [TarjetonController::class, 'toggleActivo'])->name('tarjetones.toggle-activo');
+    Route::get('/tarjetones/{tarjeton}/preview', [TarjetonController::class, 'preview'])->name('tarjetones.preview');
+    Route::post('/tarjetones/{tarjeton}/duplicate', [TarjetonController::class, 'duplicate'])->name('tarjetones.duplicate');
+    Route::get('/tarjetones/{tarjeton}/export', [TarjetonController::class, 'exportPdf'])->name('tarjetones.export-pdf');
+    Route::get('/tarjetones/{tarjeton}/export-image', [TarjetonController::class, 'exportImage'])->name('tarjetones.export-image');
     
     // Documentos
     Route::resource('documentos', DocumentoController::class);
     
     // Configuración
-    Route::prefix('configuracion')->group(function () {
+   
         Route::get('/general', function () { return view('admin.configuracion.general'); })->name('configuracion.general');
         Route::get('/categorias', function () { return view('admin.configuracion.categorias'); })->name('configuracion.categorias');
         Route::get('/estadisticas', function () { return view('admin.configuracion.estadisticas'); })->name('configuracion.estadisticas');
-    });
+   
 
 });
 
@@ -142,6 +152,10 @@ Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormular
 Route::post('/referidos/create', [UserController::class, 'form'])->name('users.form');
 Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
+
+
+Route::get('/{alias}', [HomeController::class, 'candidatoPage'])
+    ->name('candidato.alias');
 
 Route::get('/generate-sitemap', function () {
     Sitemap::create()

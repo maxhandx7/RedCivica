@@ -136,12 +136,12 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.candidatos.show', $candidato) }}" 
+                                            <a href="{{ route('candidatos.show', $candidato) }}" 
                                                class="btn btn-outline-primary" 
                                                title="Ver">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.candidatos.edit', $candidato) }}" 
+                                            <a href="{{ route('candidatos.edit', $candidato) }}" 
                                                class="btn btn-outline-secondary" 
                                                title="Editar">
                                                 <i class="fas fa-edit"></i>
@@ -187,7 +187,7 @@
 </div>
 @endsection
 
-@push('scripts')
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Gráfico de categorías
@@ -220,4 +220,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endpush

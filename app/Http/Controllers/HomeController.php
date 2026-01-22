@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('candidatoPage');
     }
 
     /**
@@ -74,8 +74,36 @@ class HomeController extends Controller
             'totalDocumentos',
             'documentosPublicos',
             'candidatosRecientes',
-            'propuestasPorCategoria', $categoriasFormateadas
+            'propuestasPorCategoria', 'categoriasFormateadas'
         ));
     
+    }
+
+    public function candidatoPage($alias)
+    {
+        $candidato = Candidato::where('alias', $alias)->firstOrFail();
+        $candidato->load([
+            'propuestas' => function($q) {
+                $q->orderBy('orden');
+            },
+            'tarjetones',
+            'metricas' => function($q) {
+                $q->orderBy('fecha_medicion', 'desc');
+            },
+            'documentos' => function($q) {
+                $q->orderBy('tipo');
+            }
+        ]);
+
+        // Estadísticas
+        $estadisticas = [
+            'total_propuestas' => $candidato->propuestas->count(),
+            'propuestas_por_categoria' => $candidato->propuestas->groupBy('categoria')->map->count(),
+            'total_tarjetones' => $candidato->tarjetones->count(),
+            'total_documentos' => $candidato->documentos->count(),
+            'metricas_recientes' => $candidato->metricas->take(5)
+        ];
+
+        return view('landing', compact('candidato', 'estadisticas'));
     }
 }

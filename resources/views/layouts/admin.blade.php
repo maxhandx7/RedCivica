@@ -155,7 +155,19 @@
                                             class="nav-link-text ps-1">Red</span>
                                     </div>
                                 </a>
-                                
+
+                                @foreach ($candidatos as $candidato)   
+                    
+                                <a class="nav-link {{ Request::segment(1) === $candidato->alias ? 'active' : '' }}"
+                                    href="{{ route('candidato.alias', $candidato->alias) }}" role="button">
+                                    <div class="d-flex align-items-center">
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-user-tie"></span>
+                                        </span>
+                                        <span class="nav-link-text ps-1">{{$candidato->alias}}</span>
+                                    </div>
+                                </a>
+                                 @endforeach
                                 @hasrole('admin')
                                     <!-- parent pages--><a
                                         class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}"
