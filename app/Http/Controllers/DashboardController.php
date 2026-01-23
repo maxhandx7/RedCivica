@@ -75,7 +75,7 @@ class DashboardController extends Controller
 
         } */
 
-            $referencias = Referencia::whereHas('campaña', function ($q) {
+        $referencias = Referencia::whereHas('campaña', function ($q) {
             $q->where('estado', 'activo')
                 ->where('fecha_fin', '>=', now())
                 ->where(function ($q2) {
@@ -153,7 +153,7 @@ class DashboardController extends Controller
         ));
     }
 
-    public function getDepName($data)
+    /* public function getDepName($data)
     {
         return $data->pluck('departamento')->map(function ($code) {
             $resp = Http::get('https://secure.geonames.org/getJSON', [
@@ -163,17 +163,56 @@ class DashboardController extends Controller
 
             return $resp->json('name') ?? $code;
         });
+    } */
+
+
+    public function getDepName($data)
+    {
+        $response = Http::get("https://api.afdeveloper.online/api/countries/3686110/departments");
+
+        if (!$response->successful()) {
+            return $data->pluck('departamento');
+        }
+
+        $departments = collect($response->json());
+
+        return $data->pluck('departamento')->map(function ($geonameId) use ($departments) {
+            $department = $departments->firstWhere('geonameId', $geonameId);
+
+            return $department
+                ? str_replace(' Department', '', $department['name'])
+                : $geonameId;
+        });
     }
 
-    public function getCityName($data)
+
+    /* public function getCityName($data)
     {
         return $data->pluck('ciudad')->map(function ($code) {
             $resp = Http::get('https://secure.geonames.org/getJSON', [
                 'geonameId' => $code,
                 'username' => 'Alan',
             ]);
-
+            dd($resp->json('name'));
             return $resp->json('name') ?? $code;
+        });
+    } */
+
+    public function getCityName($data)
+    {
+        return $data->map(function ($item) {
+            if (!$item->ciudad) {
+                return null;
+            }
+            $response = Http::get(
+                "https://api.afdeveloper.online/api/city/{$item->ciudad}"
+            );
+            if (!$response->successful()) {
+                return $item->ciudad;
+            }
+            $cities = collect($response->json());
+            $city = $cities->firstWhere('geonameId', $item->ciudad);
+            return $city['name'] ?? $item->ciudad;
         });
     }
 

@@ -1,0 +1,98 @@
+/* public/css/admin.css */
+.stat-card {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.propuesta-card {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.propuesta-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-md {
+    width: 48px;
+    height: 48px;
+}
+
+.avatar-lg {
+    width: 56px;
+    height: 56px;
+}
+
+.avatar-xl {
+    width: 64px;
+    height: 64px;
+}
+
+.avatar-2xl {
+    width: 80px;
+    height: 80px;
+}
+
+.avatar-4xl {
+    width: 120px;
+    height: 120px;
+}
+
+.drag-handle {
+    cursor: move;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.drag-handle:hover {
+    opacity: 1;
+}
+
+.color-preview {
+    border: 1px solid #dee2e6;
+}
+
+.badge-categoria {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stat-card .fa-2x {
+        font-size: 1.5rem !important;
+    }
+    
+    .avatar-md {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .avatar-lg {
+        width: 44px;
+        height: 44px;
+    }
+}
