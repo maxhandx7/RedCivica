@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $candidato->nombre_completo }} - {{ $candidato->cargo_formateado }} por {{ $candidato->circunscripcion }}">
+    <meta name="description" content="{{ $candidato->nombre_completo }} - {{ $candidato->cargo }} por {{ $candidato->circunscripcion }}">
     <title>{{ $candidato->nombre_completo }} - Propuestas para {{ $candidato->circunscripcion }}</title>
     <link rel="icon" href="{{ Storage::url($candidato->imagen ?? 'default-favicon.ico') }}" type="image/x-icon">
     <meta name="author" content="Alan Carabali">
-    <meta name="keywords" content="Candidato, {{ $candidato->cargo }}, {{ $candidato->circunscripcion }}, Propuestas, {{ $candidato->partido }}">
+    <meta name="keywords" content="Candidato, {{ $candidato->cargo }}, {{ $candidato->circunscripcion }} Propuestas, Campaña, Elecciones, Política">
     <meta name="robots" content="index, follow">
     
 
@@ -18,20 +18,20 @@
     <link rel="apple-touch-icon" href="{{ Storage::url($candidato->imagen) }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="application-name" content="{{ $referido->campaña->name }}">
-    <meta name="apple-mobile-web-app-title" content="{{ $referido->campaña->name }}">
+    <meta name="application-name" content="{{ $candidato->nombre_completo }}">
+    <meta name="apple-mobile-web-app-title" content="{{ $candidato->nombre_completo }}">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ $referido->campaña->name }}">
-    <meta property="og:description" content="{{ $referido->campaña->description }}">
+    <meta property="og:title" content="{{ $candidato->nombre_completo }}">
+    <meta property="og:description" content="{{ $candidato->cargo }} por {{ $candidato->circunscripcion }} - Conoce sus propuestas y planes para el futuro.">
     <meta property="og:image" content="{{ Storage::url($candidato->imagen) }}">
     <meta property="og:url" content="{{ request()->fullUrl() }}">
     <meta property="og:site_name" content="PoliticFriends">
 
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $referido->campaña->name }}">
-    <meta name="twitter:description" content="{{ $referido->campaña->description }}">
+    <meta name="twitter:title" content="{{ $candidato->nombre_completo }}">
+    <meta name="twitter:description" content="{{ $candidato->cargo }} por {{ $candidato->circunscripcion }} - Descubre sus propuestas y visión para el futuro.">
     <meta name="twitter:image" content="{{ Storage::url($candidato->imagen) }}">
 
 
