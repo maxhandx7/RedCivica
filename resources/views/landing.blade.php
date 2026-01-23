@@ -5,6 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ $candidato->nombre_completo }} - {{ $candidato->cargo_formateado }} por {{ $candidato->circunscripcion }}">
     <title>{{ $candidato->nombre_completo }} - Propuestas para {{ $candidato->circunscripcion }}</title>
+    <link rel="icon" href="{{ Storage::url($candidato->imagen ?? 'default-favicon.ico') }}" type="image/x-icon">
+    <meta name="author" content="Alan Carabali">
+    <meta name="keywords" content="Candidato, {{ $candidato->cargo }}, {{ $candidato->circunscripcion }}, Propuestas, {{ $candidato->partido }}">
+    <meta name="robots" content="index, follow">
+    
+
+    <!-- Favicon y compatibilidad con plataformas -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ Storage::url($candidato->imagen) }}">
+    <link rel="icon" href="{{ Storage::url($candidato->imagen) }}" sizes="32x32">
+    <link rel="icon" href="{{ Storage::url($candidato->imagen) }}" sizes="192x192">
+    <link rel="apple-touch-icon" href="{{ Storage::url($candidato->imagen) }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="{{ $referido->campaña->name }}">
+    <meta name="apple-mobile-web-app-title" content="{{ $referido->campaña->name }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $referido->campaña->name }}">
+    <meta property="og:description" content="{{ $referido->campaña->description }}">
+    <meta property="og:image" content="{{ Storage::url($candidato->imagen) }}">
+    <meta property="og:url" content="{{ request()->fullUrl() }}">
+    <meta property="og:site_name" content="PoliticFriends">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $referido->campaña->name }}">
+    <meta name="twitter:description" content="{{ $referido->campaña->description }}">
+    <meta name="twitter:image" content="{{ Storage::url($candidato->imagen) }}">
+
+
+
+
+    <!-- Compatibilidad con Windows -->
+    <meta name="msapplication-TileImage" content="{{ Storage::url($candidato->imagen) }}">
+    <meta name="theme-color" content="#ffffff">
     
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
