@@ -154,8 +154,7 @@ Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, '
 Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
 
 
-Route::get('/{alias}', [HomeController::class, 'candidatoPage'])
-    ->name('candidato.alias');
+
 
 Route::get('/generate-sitemap', function () {
     Sitemap::create()
@@ -168,5 +167,8 @@ Route::get('/generate-sitemap', function () {
 Route::post('check-cedula', [UserController::class, 'checkCedula'])->name('users.check_cedula');
 
 Auth::routes();
+
+Route::get('/{alias}', [HomeController::class, 'candidatoPage'])
+    ->name('candidato.alias');
 
 

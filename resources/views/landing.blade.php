@@ -325,7 +325,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 text-center text-lg-start animate-on-scroll" style="animation-delay: 0.2s">
-                    <h6 class="text-uppercase mb-2 opacity-75">Candidato a</h6>
+                    <h6 class="text-uppercase mb-2 opacity-75">Candidato a {{ ucfirst($candidato->cargo) }}</h6>
                     <h1 class="display-4 fw-bold mb-3">{{ $candidato->nombre_completo }}</h1>
                     @if($candidato->alias)
                         <h3 class="mb-4" style="font-weight: 300;">"{{ $candidato->alias }}"</h3>
@@ -608,7 +608,7 @@
                     </h3>
                     <div class="mt-4">
                         <h5 class="mb-0">{{ $candidato->nombre_completo }}</h5>
-                        <p class="opacity-75 mb-0">{{ $candidato->cargo_formateado }}</p>
+                        <p class="opacity-75 mb-0">{{ ucfirst($candidato->cargo) }}</p>
                     </div>
                 </div>
             </div>
@@ -622,7 +622,7 @@
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h4 class="mb-4">{{ $candidato->nombre_completo }}</h4>
                     <p class="opacity-75">
-                        {{ $candidato->cargo_formateado }} por {{ $candidato->circunscripcion }}<br>
+                        {{ ucfirst($candidato->cargo) }} por {{ $candidato->circunscripcion }}<br>
                         Partido: {{ $candidato->partido }}
                     </p>
                     <div class="social-links mt-4">

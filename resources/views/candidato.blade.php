@@ -80,7 +80,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Candidatos Recientes</h5>
-                <a href="" class="btn btn-sm btn-primary">
+                <a href="{{ route('candidatos.create') }}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus me-1"></i> Nuevo Candidato
                 </a>
             </div>
