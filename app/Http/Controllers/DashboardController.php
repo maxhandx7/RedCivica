@@ -28,52 +28,14 @@ class DashboardController extends Controller
         $probabilidadVoto = $total > 0
             ? round((($conReferidos + $recientes) / (2 * $total)) * 100)
             : 0;
-        $partidariosActivos = User::has('parent')->count();
 
-        //noticias
 
-        $noticias = [];
-        /* if ($user->hasRole('cliente')) {
-            $client = new Client();
-            $res = $client->get('https://api.mediastack.com/v1/news', [
-                'query' => [
-                    'access_key' => env('MEDIASTACK_KEY'),
-                    'countries' => 'co',
-                    'categories' => 'general',
-                    'languages' => 'es',
-                    'keywords' => 'politica',
-                    'limit' => 6,
-                ],
-            ]);
+        $partidariosActivos = $user->descendants()
+            ->has('children')
+            ->count();
 
 
 
-            $body = json_decode($res->getBody(), true);
-            $whitelist = [
-                'elespectador.com',
-                'lasillavacia.com',
-                'elcolombiano.com',
-                'noticiasunolared.com',
-                'razonpublica.com',
-                'semana.com',
-                'enter.co'
-
-            ];
-
-
-            foreach ($body['data'] as $article) {
-                $host = parse_url($article['url'], PHP_URL_HOST);
-                $normalizedHost = preg_replace('/^(www\.|m\.)/', '', $host);
-
-               foreach ($whitelist as $allowedDomain) {
-                    if (str_ends_with($normalizedHost, $allowedDomain)) {
-                        $noticias[] = $article;
-                     break;
-                    }
-                }
-            }
-
-        } */
 
         $referencias = Referencia::whereHas('campaña', function ($q) {
             $q->where('estado', 'activo')
@@ -148,7 +110,6 @@ class DashboardController extends Controller
             'totalsCity',
             'partidariosActivos',
             'ref_id',
-            'noticias',
             'referencias'
         ));
     }
