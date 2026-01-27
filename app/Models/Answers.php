@@ -9,7 +9,7 @@ class Answers extends Model
 {
     use HasFactory;
 
-        protected $fillable = [
+    protected $fillable = [
         'nombre',
         'apellido',
         'tipo_documento',
@@ -30,5 +30,22 @@ class Answers extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->nombre} {$this->apellido}";
+    }
+
+    public function getLocationAttribute()
+    {
+        return "{$this->ciudad}, {$this->departamento}, {$this->pais}";
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('nombre', 'like', "%{$search}%")
+            ->orWhere('apellido', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%");
     }
 }

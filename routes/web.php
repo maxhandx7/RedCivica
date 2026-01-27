@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 use App\Exports\UsuariosExport;
+use App\Http\Controllers\AnswersController;
 use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\DocumentoController;
 use App\Http\Controllers\HomeController;
@@ -101,6 +102,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/questions/cities/{department}', [App\Http\Controllers\QuestionController::class, 'getCities'])->name('questions.cities');
 
 
+    Route::get('/answers', [AnswersController::class, 'index'])->name('answers.index');
+    Route::get('/answers/{id}', [AnswersController::class, 'show'])->name('answers.show');
+
     // Candidatos
     Route::resource('candidatos', CandidatoController::class)->names('candidatos');
 
@@ -108,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/candidatos/reordenar', [CandidatoController::class, 'reordenar'])->name('candidatos.reordenar');
     Route::get('/candidatos/{candidato}/metricas', [CandidatoController::class, 'metricas'])->name('candidatos.metricas');
     Route::post('/candidatos/{candidato}/metricas', [CandidatoController::class, 'guardarMetrica'])->name('candidatos.metricas.store');
-    
+
     // Propuestas
     Route::prefix('candidatos/{candidato}')->group(function () {
         Route::get('/propuestas', [PropuestaController::class, 'index'])->name('candidatos.propuestas.index');
@@ -120,7 +124,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/propuestas/{propuesta}/toggle-destacada', [PropuestaController::class, 'toggleDestacada'])->name('candidatos.propuestas.toggle-destacada');
         Route::post('/propuestas/reordenar', [PropuestaController::class, 'reordenar'])->name('candidatos.propuestas.reordenar');
     });
-    
+
     // Tarjetones
     Route::resource('tarjetones', TarjetonController::class)->names('tarjetones');
     Route::post('/tarjetones/{tarjeton}/toggle-activo', [TarjetonController::class, 'toggleActivo'])->name('tarjetones.toggle-activo');
@@ -128,16 +132,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tarjetones/{tarjeton}/duplicate', [TarjetonController::class, 'duplicate'])->name('tarjetones.duplicate');
     Route::get('/tarjetones/{tarjeton}/export', [TarjetonController::class, 'exportPdf'])->name('tarjetones.export-pdf');
     Route::get('/tarjetones/{tarjeton}/export-image', [TarjetonController::class, 'exportImage'])->name('tarjetones.export-image');
-    
+
     // Documentos
     Route::resource('documentos', DocumentoController::class);
-    
+
     // Configuración
-   
-        Route::get('/general', function () { return view('admin.configuracion.general'); })->name('configuracion.general');
-        Route::get('/categorias', function () { return view('admin.configuracion.categorias'); })->name('configuracion.categorias');
-        Route::get('/estadisticas', function () { return view('admin.configuracion.estadisticas'); })->name('configuracion.estadisticas');
-   
+
+    Route::get('/general', function () {
+        return view('admin.configuracion.general'); })->name('configuracion.general');
+    Route::get('/categorias', function () {
+        return view('admin.configuracion.categorias'); })->name('configuracion.categorias');
+    Route::get('/estadisticas', function () {
+        return view('admin.configuracion.estadisticas'); })->name('configuracion.estadisticas');
+
 
 });
 
