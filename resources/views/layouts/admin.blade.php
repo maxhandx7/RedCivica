@@ -156,18 +156,17 @@
                                     </div>
                                 </a>
 
-                                @foreach ($candidatos as $candidato)   
-                    
-                                <a class="nav-link {{ Request::segment(1) === $candidato->alias ? 'active' : '' }}"
-                                    href="{{ route('candidato.alias', $candidato->alias) }}" role="button">
-                                    <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon">
-                                            <span class="fas fa-user-tie"></span>
-                                        </span>
-                                        <span class="nav-link-text ps-1">{{$candidato->alias}}</span>
-                                    </div>
-                                </a>
-                                 @endforeach
+                                @foreach ($candidatos as $candidato)
+                                    <a class="nav-link {{ Request::segment(1) === $candidato->alias ? 'active' : '' }}"
+                                        href="{{ route('candidato.alias', $candidato->alias) }}" role="button">
+                                        <div class="d-flex align-items-center">
+                                            <span class="nav-link-icon">
+                                                <span class="fas fa-user-tie"></span>
+                                            </span>
+                                            <span class="nav-link-text ps-1">{{ $candidato->alias }}</span>
+                                        </div>
+                                    </a>
+                                @endforeach
                                 @hasrole('admin')
                                     <!-- parent pages--><a
                                         class="nav-link {{ Request::segment(1) === 'referencias' ? 'active' : '' }}"
@@ -178,14 +177,14 @@
                                         </div>
                                     </a>
                                     <a class="nav-link {{ Request::segment(1) === 'admin' ? 'active' : '' }}"
-                                    href="{{ route('candidato.dashboard') }}" role="button">
-                                    <div class="d-flex align-items-center">
-                                        <span class="nav-link-icon">
-                                            <span class="fas fa-user-tie"></span>
-                                        </span>
-                                        <span class="nav-link-text ps-1">Panel Candidatos</span>
-                                    </div>
-                                </a>
+                                        href="{{ route('candidato.dashboard') }}" role="button">
+                                        <div class="d-flex align-items-center">
+                                            <span class="nav-link-icon">
+                                                <span class="fas fa-user-tie"></span>
+                                            </span>
+                                            <span class="nav-link-text ps-1">Panel Candidatos</span>
+                                        </div>
+                                    </a>
                                     <!-- parent pages-->
                                     <a class="nav-link {{ Request::segment(1) === 'needs' ? 'active' : '' }}"
                                         href="{{ route('needs.index') }}" role="button">
@@ -195,31 +194,56 @@
                                         </div>
                                     </a>
 
-                                    <a class="nav-link {{ Request::segment(1) === 'questions' ? 'active' : '' }}"
-                                        href="{{ route('questions.index') }}" role="button">
-                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                    class="fas fa-question"></span></span><span
-                                                class="nav-link-text ps-1">Preguntas </span>
-                                        </div>
-                                    </a>
-
-                                    <a class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
-                                        href="{{ route('analitica.index') }}" role="button">
-                                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                    class="fas fa-chart-bar"></span></span><span
-                                                class="nav-link-text ps-1">Analítica </span>
-                                        </div>
-                                    </a>
 
 
-                                    <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}"
-                                        href="{{ route('users.index') }}" role="button">
+                                <li class="nav-item">
+                                    <!-- parent pages--><a class="nav-link dropdown-indicator" href="#estadisticas"
+                                        role="button" data-bs-toggle="collapse" aria-expanded="true"
+                                        aria-controls="estadisticas">
                                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                                    class="fas fa-user"></span></span><span
-                                                class="nav-link-text ps-1">Usuarios </span>
+                                                    class="fas fa-chart-pie"></span></span><span
+                                                class="nav-link-text ps-1">Estadisticas</span>
                                         </div>
                                     </a>
-                                @endhasrole
+                                    <ul class="nav collapse show" id="estadisticas">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ Request::segment(1) === 'analitica' ? 'active' : '' }}"
+                                                href="{{ route('analitica.index') }}" role="button">
+                                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                            class="fas fa-chart-bar"></span></span><span
+                                                        class="nav-link-text ps-1">Analítica </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item"><a
+                                                class="nav-link {{ Request::segment(1) === 'questions' ? 'active' : '' }}"
+                                                href="{{ route('questions.index') }}" role="button">
+                                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                            class="fas fa-question"></span></span><span
+                                                        class="nav-link-text ps-1">Preguntas </span>
+                                                </div>
+
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ Request::segment(1) === 'answers' ? 'active' : '' }}"
+                                                href="{{ route('answers.index') }}" role="button">
+                                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                            class="fas fa-file-alt"></span></span><span
+                                                        class="nav-link-text ps-1">Respuestas </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <a class="nav-link {{ Request::segment(1) === 'users' ? 'active' : '' }}"
+                                    href="{{ route('users.index') }}" role="button">
+                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                class="fas fa-user"></span></span><span
+                                            class="nav-link-text ps-1">Usuarios </span>
+                                    </div>
+                                </a>
+                            @endhasrole
                             </li>
                         </ul>
 
