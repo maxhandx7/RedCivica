@@ -267,9 +267,11 @@ class User extends Authenticatable
 
 
             // Enviar email solo para usuarios nuevos
-            if (/* !$user->wasRecentlyCreated &&  */ $user->email) {
+            if ($user->email) {
                 Mail::to($user->email)->send(new BienvenidaUsuarioMail($user, $password));
             }
+
+            
 
             $this->notified_form($user->id, $request->parent_id);
 

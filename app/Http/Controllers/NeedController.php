@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\ActividadPlantillas;
 use App\Models\Need;
 use App\Http\Requests\StoreNeedRequest;
 use App\Http\Requests\UpdateNeedRequest;
+use App\Models\Actividad;
+use App\Services\ActividadService;
 use Illuminate\Http\Request;
 
 class NeedController extends Controller
@@ -32,6 +35,11 @@ class NeedController extends Controller
             'estado' => 'pendiente'
         ]);
 
+        ActividadService::registrarNecesidad(
+            ActividadPlantillas::NUEVA_NECESIDAD,
+            auth()->id()
+        );
+
         return redirect()->back()->with('success', 'Necesidad registrada con éxito');
 
     }
@@ -49,7 +57,17 @@ class NeedController extends Controller
 
         $need->update($request->only(['titulo', 'descripcion', 'estado']));
 
-          return redirect()->back()->with('success', 'Necesidad actualizada');
+        if ($request->estado === 'resuelta') {
+            $actividad = ActividadPlantillas::NECESIDAD_UPDATE;
+            $actividad['accion'] = sprintf($actividad['accion'], $need->titulo);
+            ActividadService::registrarNecesidad(
+                $actividad,
+                auth()->id(),   
+                $need->registrado_por,
+            );
+
+            return redirect()->back()->with('success', 'Necesidad actualizada');
+        }
     }
 
     public function destroy($id)
@@ -59,6 +77,6 @@ class NeedController extends Controller
 
         $need->delete();
 
-          return redirect()->back()->with('success', 'Necesidad eliminada con éxito');
+        return redirect()->back()->with('success', 'Necesidad eliminada con éxito');
     }
 }

@@ -355,7 +355,7 @@
                                                                     {{ $actividad->accion }}
                                                                 @else
                                                                     <strong>{{ $actividad->afectado->name }}</strong>
-                                                                    {{ $actividad->accion }}
+                                                                    {!! $actividad->accion !!}
                                                                     {{ $actividad->actor->name }}
                                                                 @endif
                                                             </p>
