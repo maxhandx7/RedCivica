@@ -13,8 +13,6 @@ class UserController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('auth');
-        // $this->middleware('role:admin')->except(['form', 'store']);
 
         $this->middleware('auth')->except(['form', 'store', 'checkCedula']);
         $this->middleware('role:admin')->except(['form', 'store', 'checkCedula']);

@@ -17,7 +17,8 @@
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             }
 
-            .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+            .nav-tabs .nav-link.active,
+            .nav-tabs .nav-item.show .nav-link {
                 color: rgb(255, 255, 255) !important;
                 border-bottom: 2px solid rgb(255, 255, 255) !important;
             }
@@ -54,9 +55,9 @@
                     <div class="card card-borderless shadow-sm mb-4">
                         <div class="card-body text-center">
                             <div class="mb-4">
-                                <div class="avatar avatar-xl mb-3">
-                                    <img src="{{ asset('image/' . $business->logo) }}" alt="Foto de perfil"
-                                        class="profile-avatar rounded-circle">
+                                <div class="avatar avatar-xl mb-3" style="height: 5rem; width: 5rem;">
+                                    <img src="{{ asset($user->id == 1 ? $user->image : 'image/' . $user->image) }}"
+                                        alt="Foto de perfil" class="profile-avatar rounded-circle">
                                 </div>
                                 <h3 class="mb-1">{{ $user->name }} {{ $user->surname }}</h3>
                                 <p class="text-muted mb-2">
@@ -175,8 +176,8 @@
                                     @if ($user->parent)
                                         <div class="d-flex align-items-center mb-4">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ asset($user->id == 1 ? $user->image : 'image/' . $user->image) }}" alt="Reclutador"
-                                                    class="rounded-circle" width="60">
+                                                <img src="{{ asset($user->parent->id == 1 ? $user->parent->image : 'image/' . $user->parent->image) }}"
+                                                    alt="Reclutador" class="rounded-circle" width="60">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <p class="mb-1">
@@ -239,7 +240,7 @@
                                     aria-labelledby="recruits-tab">
                                     @if ($user->children && $user->children->count() > 0)
                                         <div class="table table-responsive">
-                                            <table id="order-listing" class="table table-hover">
+                                            <table id="order-listing-small" class="table table-hover">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th>Nombre</th>
@@ -256,10 +257,10 @@
                                                                     <img src="{{ asset($child->id == 1 ? $child->image : 'image/' . $child->image) }}"
                                                                         alt="{{ $child->name }}"
                                                                         class="rounded-circle me-2" width="30">
-                                                                        <a href="{{ route('users.show', $child) }}">
-                                                                            {{ $child->name }} {{ $child->surname }}
-                                                                        </a>
-                                                                    
+                                                                    <a href="{{ route('users.show', $child) }}">
+                                                                        {{ $child->name }} {{ $child->surname }}
+                                                                    </a>
+
                                                                 </div>
                                                             </td>
                                                             <td>{{ $child->cedula }}</td>

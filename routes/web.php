@@ -24,7 +24,10 @@ use App\Http\Controllers\PropuestaController;
 use App\Http\Controllers\TarjetonController;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsuariosImport;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Contracts\DataTable;
+use Yajra\DataTables\DataTables;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,6 +151,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/estadisticas', function () {
         return view('admin.configuracion.estadisticas');
     })->name('configuracion.estadisticas');
+
+
+    Route::get('/users/datatable', function () {
+    return DataTables::of(User::query())->make(true);
+});
 
 
 });

@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Candidato;
-use App\Models\Propuesta;
-use App\Models\Tarjeton;
-use App\Models\Documento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class CandidatoController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware('auth')/* ->except(['form', 'store', 'checkCedula']) */ ;
+        $this->middleware('role:admin')/* ->except(['form', 'store', 'checkCedula']) */ ;
+    }
     public function index()
     {
         $candidatos = Candidato::withCount('propuestas')
@@ -56,7 +59,7 @@ class CandidatoController extends Controller
             DB::beginTransaction();
 
             $data = $request->except('imagen');
-            
+
             if ($request->hasFile('imagen')) {
                 $imagenPath = $request->file('imagen')->store('candidatos', 'public');
                 $data['imagen'] = $imagenPath;
@@ -79,14 +82,14 @@ class CandidatoController extends Controller
     public function show(Candidato $candidato)
     {
         $candidato->load([
-            'propuestas' => function($q) {
+            'propuestas' => function ($q) {
                 $q->orderBy('orden');
             },
             'tarjetones',
-            'metricas' => function($q) {
+            'metricas' => function ($q) {
                 $q->orderBy('fecha_medicion', 'desc');
             },
-            'documentos' => function($q) {
+            'documentos' => function ($q) {
                 $q->orderBy('tipo');
             }
         ]);
@@ -138,13 +141,13 @@ class CandidatoController extends Controller
             DB::beginTransaction();
 
             $data = $request->except('imagen');
-            
+
             if ($request->hasFile('imagen')) {
                 // Eliminar imagen anterior si existe
                 if ($candidato->imagen) {
                     Storage::disk('public')->delete($candidato->imagen);
                 }
-                
+
                 $imagenPath = $request->file('imagen')->store('candidatos', 'public');
                 $data['imagen'] = $imagenPath;
             }
@@ -189,7 +192,7 @@ class CandidatoController extends Controller
     public function toggleActivo(Candidato $candidato)
     {
         $candidato->update(['activo' => !$candidato->activo]);
-        
+
         return redirect()->back()
             ->with('success', 'Estado del candidato actualizado.');
     }

@@ -12,6 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class ReferenciaController extends Controller
 {
+    
     public function index()
     {
         $referencias = Referencia::whereHas('campaña', function ($q) {

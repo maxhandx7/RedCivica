@@ -6,11 +6,6 @@
         <h2 class="h3 font-weight-bold text-gray-800">
             <i class="fas fa-check text-primary"></i> Respuestas Recibidas
         </h2>
-        <div>
-            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#exportModal">
-                <i class="fas fa-file-export"></i> Exportar
-            </button>
-        </div>
     </div>
 
     <!-- Filtros -->
@@ -81,11 +76,10 @@
                                 </a>
                             </td>
                             <td>
-                                <small>{{ $answer->ciudad }}, {{ $answer->departamento }}</small><br>
-                                <span class="badge badge-light">{{ $answer->pais }}</span>
+                                <small>{{ $answer->ciudad }}, {{ $answer->departamento }}</small>
                             </td>
                             <td>
-                                <span class="badge badge-info">
+                                <span class="text-primary font-weight-bold">
                                     {{ $answer->created_at->format('d/m/Y') }}
                                 </span><br>
                                 <small>{{ $answer->created_at->format('H:i') }}</small>
