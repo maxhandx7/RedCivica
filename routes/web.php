@@ -39,6 +39,7 @@ use Illuminate\Http\Request;
 
 Route::permanentRedirect('/', '/login');
 
+Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 
@@ -139,43 +140,48 @@ Route::middleware(['auth'])->group(function () {
     // Configuración
 
     Route::get('/general', function () {
-        return view('admin.configuracion.general'); })->name('configuracion.general');
+        return view('admin.configuracion.general');
+    })->name('configuracion.general');
     Route::get('/categorias', function () {
-        return view('admin.configuracion.categorias'); })->name('configuracion.categorias');
+        return view('admin.configuracion.categorias');
+    })->name('configuracion.categorias');
     Route::get('/estadisticas', function () {
-        return view('admin.configuracion.estadisticas'); })->name('configuracion.estadisticas');
+        return view('admin.configuracion.estadisticas');
+    })->name('configuracion.estadisticas');
 
 
 });
 
-Route::post('/questions/by-location', [App\Http\Controllers\QuestionController::class, 'byLocation'])
-    ->name('questions.byLocation');
+Route::middleware('web')->group(function () {
 
-Route::post('/questions/guardar', [App\Http\Controllers\QuestionController::class, 'guardar'])
-    ->name('guardar.question');
+    Route::post('/questions/by-location', [App\Http\Controllers\QuestionController::class, 'byLocation'])
+        ->name('questions.byLocation');
 
-Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
-    ->name('referidos.registro');
-Route::post('/referidos/create', [UserController::class, 'form'])->name('users.form');
-Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');
-Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
+    Route::post('/questions/guardar', [App\Http\Controllers\QuestionController::class, 'guardar'])
+        ->name('guardar.question');
+
+    Route::get('/referidos/registro', [ReferenciaController::class, 'mostrarFormularioRegistro'])
+        ->name('referidos.registro');
+    Route::post('/referidos/create', [UserController::class, 'form'])->name('users.form');
+    Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
 
 
 
 
-Route::get('/generate-sitemap', function () {
-    Sitemap::create()
-        ->add(Url::create('/'))
-        ->writeToFile(public_path('sitemap.xml'));
+    Route::get('/generate-sitemap', function () {
+        Sitemap::create()
+            ->add(Url::create('/'))
+            ->writeToFile(public_path('sitemap.xml'));
 
-    return 'Sitemap generado ✅';
+        return 'Sitemap generado ✅';
+    });
+
+    Route::post('check-cedula', [UserController::class, 'checkCedula'])->name('users.check_cedula');
+
+
+
+    Route::get('/{alias}', [HomeController::class, 'candidatoPage'])
+        ->name('candidato.alias');
+
 });
-
-Route::post('check-cedula', [UserController::class, 'checkCedula'])->name('users.check_cedula');
-
-Auth::routes();
-
-Route::get('/{alias}', [HomeController::class, 'candidatoPage'])
-    ->name('candidato.alias');
-
-
