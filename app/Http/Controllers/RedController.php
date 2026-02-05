@@ -61,7 +61,7 @@ class RedController extends Controller
     } */
     public function index()
     {
-        $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
+        $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->paginate(10);
 
         $networkData = $referidos->map(function ($u) use ($referidos) {
             $nivel = 1;
