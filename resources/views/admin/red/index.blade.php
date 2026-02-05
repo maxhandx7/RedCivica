@@ -310,7 +310,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="order-listing" class="table table-striped mb-0">
+                    <table id="order-listing-small" class="table table-striped mb-0">
                         <thead class="bg-200 text-900">
                             <tr>
                                 <th>Cédula</th>

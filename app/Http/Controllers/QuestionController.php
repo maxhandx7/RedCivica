@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware('auth')/* ->except(['form', 'store', 'checkCedula']) */ ;
+        $this->middleware('role:admin')/* ->except(['form', 'store', 'checkCedula']) */ ;
+    }
     /**
      * Display a listing of the resource.
      */

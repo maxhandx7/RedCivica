@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class PropuestaController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware('auth')/* ->except(['form', 'store', 'checkCedula']) */ ;
+        $this->middleware('role:admin')/* ->except(['form', 'store', 'checkCedula']) */ ;
+    }
     public function index(Candidato $candidato)
     {
         $propuestas = $candidato->propuestas()

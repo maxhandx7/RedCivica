@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class AnswersController extends Controller
 {
+    public $controller;
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+        $this->controller = app(DashboardController::class);
+    }
     public function index(Request $request)
     {
         $query = Answers::with('user')->latest();
@@ -34,6 +41,18 @@ class AnswersController extends Controller
         }
         
         $answers = $query->paginate(20);
+
+        $ciudad = $this->controller->getCityName($answers);
+        $ciudad = $ciudad->toArray();
+        foreach ($answers as $index => $client) {
+            $client->ciudad = $ciudad[$index];
+        }
+
+        $departamento = $this->controller->getDepName($answers);
+        $departamento = $departamento->toArray();
+        foreach ($answers as $index => $client) {
+            $client->departamento = $departamento[$index];
+        }
         
         return view('admin.answers.index', compact('answers'));
     }

@@ -2,9 +2,10 @@
 (function ($) {
   'use strict';
   $(function () {
-     $('#order-listing').DataTable({
+    $('#order-listing').DataTable({
       responsive: true,
-      "order": [[ 0, "desc" ]],
+      pageLength: 5,
+      "order": [[0, "desc"]],
       "aLengthMenu": [
         [5, 10, 15, -1],
         [5, 10, 15, "All"]
@@ -36,7 +37,7 @@
 
     $('#order-listing1').DataTable({
       responsive: true,
-      "order": [[ 0, "desc" ]],
+      "order": [[0, "desc"]],
       "aLengthMenu": [
         [5, 10, 15, -1],
         [5, 10, 15, "All"]
@@ -67,7 +68,7 @@
 
 
     $('#order-listing-small').DataTable({
-
+      responsive: true,
       "aLengthMenu": [
         [5, 10, 15, -1],
         [5, 10, 15, "All"]
@@ -93,6 +94,9 @@
         "zeroRecords": "No hay coincidencias",
         "infoEmpty": "",
         "infoFiltered": "",
+        processing: true,
+        serverSide: true,
+        ajax: '/users/datatable'
       }
     });
 
