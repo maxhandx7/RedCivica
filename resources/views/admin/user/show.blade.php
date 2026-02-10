@@ -330,9 +330,11 @@
                                     <div class="d-flex align-items-center">
                                         <i class="bi-pin-map-fill text-primary me-2"></i>
                                         <span>{{ $user->barrio ?: 'Barrio no registrado' }},
-                                            {{ $user->ciudad ?: 'Ciudad no registrada' }}</span>
+                                            {{ $user->ciudad ?: 'Ciudad no registrada' }},
+                                        {{ $user->departamento }}</span>
                                     </div>
                                 </li>
+                                @if ($user->fecha_nacimiento)
                                 <li class="list-group-item px-0 py-2">
                                     <div class="d-flex align-items-center">
                                         <i class="bi-check2-square text-primary me-2"></i>
@@ -340,6 +342,7 @@
                                             - ({{ \Carbon\Carbon::parse($user->fecha_nacimiento)->age }} años)</span>
                                     </div>
                                 </li>
+                                @endif
                             </ul>
                         </div>
                     </div>

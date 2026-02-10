@@ -196,11 +196,10 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
                                         </span>
-                                        <input class="form-control datepicker" {{-- value="17/07/1996" --}} type="text"
+                                        <input class="form-control datepicker"  type="text"
                                             name="fecha_nacimiento" id="fecha_nacimiento" placeholder="DD/MM/AAAA"
-                                            autocomplete="off" required />
+                                            autocomplete="off"  />
                                     </div>
-                                    <div class="invalid-feedback">La fecha de nacimiento es obligatoria</div>
                                 </div>
 
                                 <!-- Fecha de Expedición -->
@@ -210,11 +209,10 @@
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
-                                        <input class="form-control datepicker" {{-- value="21/07/2014" --}} type="text"
+                                        <input class="form-control datepicker"  type="text"
                                             name="fecha_expedicion" id="fecha_expedicion" placeholder="DD/MM/AAAA"
-                                            autocomplete="off" required />
+                                            autocomplete="off"  />
                                     </div>
-                                    <div class="invalid-feedback">La fecha de expedición es obligatoria</div>
                                 </div>
 
 
@@ -518,7 +516,7 @@
 
                 if (step === 1) {
                     // Validar campos personales
-                    $('#name, #surname, #tipo_documento, #cedula, #fecha_expedicion, #fecha_nacimiento').each(
+                    $('#name, #surname, #tipo_documento, #cedula').each(
                         function() {
                             if (!$(this).val()) {
                                 $(this).addClass('is-invalid');
