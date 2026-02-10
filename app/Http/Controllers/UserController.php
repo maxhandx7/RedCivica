@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Pool;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
     {
         $query = User::query();
 
-        
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -57,20 +58,23 @@ class UserController extends Controller
         }
     }
 
-    public function show(User $user)
-    {
-        $response = null;
-        if ($user->ciudad) {
-            $response = Http::get('https://api.afdeveloper.online/api/city/' . $user->ciudad);
-        }
-        if ($response) {
-            $user->ciudad = collect($response->json())
-                ->first()['name'] ?? $user->ciudad;
-        } else {
-            $user->ciudad = 'Ciudad no regfistrada';
-        }
-        return view('admin.user.show', compact('user'));
+ public function show(User $user)
+{
+    $responses = Http::pool(fn (Pool $pool) => [
+        $pool->as('city')->get('https://api.afdeveloper.online/api/city/' . $user->ciudad),
+        $pool->as('dept')->get('https://api.afdeveloper.online/api/department/' . $user->departamento),
+    ]);
+
+    if ($responses['city']?->successful() && isset($responses['city']->json()[0])) {
+        $user->ciudad = $responses['city']->json()[0]['name'];
     }
+
+    if ($responses['dept']?->successful() && isset($responses['dept']->json()[0])) {
+        $user->departamento = $responses['dept']->json()[0]['name'];
+    }
+
+    return view('admin.user.show', compact('user'));
+}
 
 
     public function edit(User $user)
@@ -188,9 +192,10 @@ class UserController extends Controller
 
         $campaña = $referencia ? $referencia->campaña->name : null;
 
-        return response()->json(['exists' => $exists,
+        return response()->json([
+            'exists' => $exists,
             'ref' => $referencia,
             'campaña' => $campaña
-            ]);
+        ]);
     }
 }

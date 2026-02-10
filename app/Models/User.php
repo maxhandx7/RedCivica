@@ -132,12 +132,17 @@ class User extends Authenticatable
     public function my_store($request)
     {
 
-        $request->merge([
-            'fecha_nacimiento' => Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->format('Y-m-d'),
-            'fecha_expedicion' => Carbon::createFromFormat('d/m/Y', $request->fecha_expedicion)->format('Y-m-d'),
-        ]);
+        if ($request->filled('fecha_nacimiento')) {
+            $request->merge([
+                'fecha_nacimiento' => Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->format('Y-m-d')
+            ]);
+        }
 
-
+        if ($request->filled('fecha_expedicion')) {
+            $request->merge([
+                'fecha_expedicion' => Carbon::createFromFormat('d/m/Y', $request->fecha_expedicion)->format('Y-m-d')
+            ]);
+        }
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -146,25 +151,28 @@ class User extends Authenticatable
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
             'referido_por' => 'nullable|string|max:100',
             'fecha_nacimiento' => [
-                'required',
+                'nullable',
                 'date',
                 'before_or_equal:' . now()->subYears(18)->format('Y-m-d')
             ],
+
             'fecha_expedicion' => [
-                'required',
+                'nullable',
                 'date',
                 function ($attribute, $value, $fail) use ($request) {
-                    $fechaNacimiento = Carbon::parse($request->fecha_nacimiento);
-                    $fechaExpedicion = Carbon::parse($value);
+                    if ($request->filled('fecha_nacimiento') && $value) {
+                        $fechaNacimiento = Carbon::parse($request->fecha_nacimiento);
+                        $fechaExpedicion = Carbon::parse($value);
 
-                    $edadEnExpedicion = $fechaNacimiento->diffInYears($fechaExpedicion);
+                        $edadEnExpedicion = $fechaNacimiento->diffInYears($fechaExpedicion);
 
-                    if ($edadEnExpedicion < 18) {
-                        $fail('Debía ser mayor de edad al momento de expedir la cédula.');
-                    }
+                        if ($edadEnExpedicion < 18) {
+                            $fail('Debía ser mayor de edad al momento de expedir la cédula.');
+                        }
 
-                    if ($fechaExpedicion->lt($fechaNacimiento)) {
-                        $fail('La fecha de expedición no puede ser anterior a la fecha de nacimiento.');
+                        if ($fechaExpedicion->lt($fechaNacimiento)) {
+                            $fail('La fecha de expedición no puede ser anterior a la fecha de nacimiento.');
+                        }
                     }
                 }
             ],
@@ -197,13 +205,11 @@ class User extends Authenticatable
             }
         }
 
-
         $password = Str::random(12);
 
         $user = self::where('cedula', $request->cedula)->first();
 
         if ($user) {
-            // Si el usuario ya existe, actualizar sus datos
             $user->update([
                 'name' => $request->name,
                 'surname' => $request->surname,
@@ -221,10 +227,9 @@ class User extends Authenticatable
                 'parent_id' => $referenciaId ?? $request->parent_id,
                 'fuente' => $request->fuente,
                 'medio' => $request->medio,
-                'referencia_id' =>  $request->referencia_id,
+                'referencia_id' => $request->referencia_id,
             ]);
         } else {
-            // Si no existe, crear nuevo usuario
             $user = self::create([
                 'name' => $request->name,
                 'surname' => $request->surname,
@@ -246,7 +251,7 @@ class User extends Authenticatable
                 'fuente' => $request->fuente,
                 'medio' => $request->medio,
                 'password' => Hash::make($password),
-                'referencia_id' =>  $request->referencia_id,
+                'referencia_id' => $request->referencia_id,
             ]);
         }
 
@@ -271,7 +276,7 @@ class User extends Authenticatable
                 Mail::to($user->email)->send(new BienvenidaUsuarioMail($user, $password));
             }
 
-            
+
 
             $this->notified_form($user->id, $request->parent_id);
 
