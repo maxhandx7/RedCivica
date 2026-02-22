@@ -15,12 +15,10 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="card-title">Lista de mesas</h4>
-        @hasrole('admin')
             <a href="{{ route('mesas.create') }}" class="btn btn-primary me-1 mb-1" type="button">
                 <span class="fas fa-plus ms-1" data-fa-transform="shrink-3"></span>
                 Nueva Mesa
             </a>
-        @endhasrole
     </div>
 
     @include('alert.message')
@@ -66,7 +64,7 @@
                                     <span class="fas fa-eye" data-fa-transform="shrink-3"></span>
                                 </a>
 
-                                @hasrole('admin')
+                              
                                     <a class="btn btn-outline-success me-1 mb-1 btn-sm"
                                         href="{{ route('mesas.edit', $mesa) }}" title="Editar">
                                         <span class="fas fa-pen" data-fa-transform="shrink-3"></span>
@@ -77,7 +75,7 @@
                                         onclick="return confirm('¿Estás seguro de eliminar esta mesa?')">
                                         <span class="fas fa-trash" data-fa-transform="shrink-3"></span>
                                     </button>
-                                @endhasrole
+                                    
 
                                 {!! Form::close() !!}
                             </td>
