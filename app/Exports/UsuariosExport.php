@@ -2,53 +2,50 @@
 
 namespace App\Exports;
 
-use App\Http\Controllers\DashboardController;
 use App\Models\User;
+use App\Services\LocationService;
+use App\Services\parent_service;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class UsuariosExport implements FromCollection, WithHeadings
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
+    private $locationService;
+    private $parentService;
+
+    public function __construct(LocationService $locationService, parent_service $parentService)
+    {
+        $this->locationService = $locationService;
+        $this->parentService = $parentService;
+    }
+
     public function collection()
     {
-       
-       $controller = app(DashboardController::class);
-
         $users = User::select(
-                'id',
-                'cedula',
-                'name',
-                'surname',
-                'fecha_nacimiento',
-                'email',
-                'telefono',
-                'direccion',
-                'comuna',
-                'barrio',
-                'ciudad',
-                'departamento',
-                'estado',
-                'created_at'
-            )
-            ->get();
+            'id',
+            'cedula',
+            'name',
+            'surname',
+            'fecha_nacimiento',
+            'email',
+            'telefono',
+            'direccion',
+            'comuna',
+            'barrio',
+            'ciudad',
+            'departamento',
+            'estado',
+            'parent_id',
+            'created_at'
+        )->get();
 
-        $ciudad = $controller->getCityName($users);
-        $ciudad = $ciudad->toArray();
-        foreach ($users as $index => $user) {
-            $user->ciudad = $ciudad[$index];
-        }
+        $users = $this->locationService->resolveNames($users);
 
-        $departamento = $controller->getDepName($users);
-        $departamento = $departamento->toArray();
-        foreach ($users as $index => $user) {
-            $user->departamento = $departamento[$index];
-        }
 
-        $data = $users->map(function ($user) {
+
+        return $users->map(function ($user) {
+            $nombre_completo_padre = $user->parent ? $user->parent->name . ' ' . $user->parent->surname : 'N/A';
             return [
                 'id' => $user->id,
                 'cedula' => $user->cedula,
@@ -60,16 +57,16 @@ class UsuariosExport implements FromCollection, WithHeadings
                 'telefono' => $user->telefono,
                 'pais' => 'Colombia',
                 'departamento' => $user->departamento,
-                'ciudad' => $user->ciudad,
+                'ciudad' => $user->ciudad, // ya viene con el nombre resuelto
                 'comuna' => $user->comuna,
                 'barrio' => $user->barrio,
                 'direccion' => $user->direccion,
                 'estado' => $user->estado,
-                'created_at' => Carbon::parse($user->created_at)->translatedFormat('d \d\e F \d\e Y'),
+                'nombre_padre' => $nombre_completo_padre, // Aquí se obtiene el nombre del referente
+                'created_at' => Carbon::parse($user->created_at)
+                    ->translatedFormat('d \d\e F \d\e Y'),
             ];
         });
-        return $data;
-        
     }
 
     public function headings(): array
@@ -90,8 +87,8 @@ class UsuariosExport implements FromCollection, WithHeadings
             'Barrio',
             'Dirección',
             'Estado',
+            'Nombre del Referente',
             'Fecha de Registro',
         ];
-
     }
 }

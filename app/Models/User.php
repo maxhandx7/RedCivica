@@ -32,6 +32,7 @@ class User extends Authenticatable
      */
 
     protected $fillable = [
+        'mesa_id',
         'name',
         'surname',
         'email',
@@ -289,20 +290,14 @@ class User extends Authenticatable
 
     public function my_update($request, $user)
     {
+
         // Validación para actualización
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula,' . $user->id,
             'telefono' => 'nullable',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'direccion' => 'nullable|string|max:255',
-            'barrio' => 'nullable|string|max:255',
-            'ciudad' => 'nullable|string|max:255',
-            'departamento' => 'nullable|string|max:255',
-            'comuna' => 'nullable|string|max:50',
-            'pais' => 'nullable|string|max:50',
-            'mesa' => 'nullable|string|max:50',
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
             'parent_id' => 'nullable|exists:users,id',
             'fuente' => 'nullable|string|max:50',
             'medio' => 'nullable|string|max:50',
@@ -310,6 +305,12 @@ class User extends Authenticatable
             'estado' => 'nullable',
             'referencia_id' => 'nullable|exists:referencias,id',
         ]);
+
+        if ($request->estado === 'on') {
+            $validatedData['estado'] = 'activo';
+        } else {
+            $validatedData['estado'] = 'inactivo';
+        }
 
         // Preparar datos para actualización
         $updateData = [
@@ -320,14 +321,8 @@ class User extends Authenticatable
             'fecha_expedicion' => $validatedData['fecha_expedicion'] ?? null,
             'telefono' => $validatedData['telefono'] ?? null,
             'email' => $validatedData['email'] ?? null,
-            'direccion' => $validatedData['direccion'] ?? null,
-            'barrio' => $validatedData['barrio'] ?? null,
-            'ciudad' => $validatedData['ciudad'] ?? null,
-            'departamento' => $validatedData['departamento'] ?? null,
-            'comuna' => $validatedData['comuna'] ?? null,
             'pais' => $validatedData['pais'] ?? 'Colombia',
-            'mesa' => $validatedData['mesa'] ?? null,
-            'estado' => $user->estado ?? null,
+            'estado' => $validatedData['estado'] ?? null,
             'parent_id' => $validatedData['parent_id'] ?? $user->parent_id,
             'fuente' => $validatedData['fuente'] ?? $user->fuente,
             'medio' => $validatedData['medio'] ?? $user->medio,
@@ -383,16 +378,17 @@ class User extends Authenticatable
         } else {
             $request->estado = 'inactivo';
         }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
+            'tipo_documento' => 'required|string|max:50',
             'cedula' => 'required|digits_between:6,10|unique:users,cedula',
             'telefono' => 'nullable|digits_between:10,15',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'direccion' => 'nullable|string|max:255',
             'barrio' => 'nullable|string|max:255',
             'ciudad' => 'nullable|string|max:255',
-            'mesa' => 'nullable|string|max:50',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
@@ -417,6 +413,7 @@ class User extends Authenticatable
         $user = self::create([
             'name' => $request->name,
             'surname' => $request->surname,
+            'tipo_documento' => $request->tipo_documento,
             'cedula' => $request->cedula,
             'telefono' => $request->telefono,
             'email' => $request->email,
@@ -439,6 +436,11 @@ class User extends Authenticatable
             throw new \Exception('Error al crear la actividad');
         }
 
+    }
+
+    public function mesa()
+    {
+        return $this->belongsTo(Mesa::class, 'mesa_id');
     }
 
 

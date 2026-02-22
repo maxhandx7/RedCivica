@@ -141,8 +141,8 @@
                         id="bootstrap-wizard-tab1">
                         <div class="container text-center">
                             <h3>Datos personales</h3>
-                            <p class="text-muted">Ingresa tus datos personales para que sepamos de ti.</p>
-
+                            <p class="text-muted" style="margin-bottom: 0px !important; ">Ingresa tus datos personales para que sepamos de ti.</p>
+                            <small class="text-muted" style="margin-bottom: 1rem !important; color: #e00000;">Los campos marcados con * son obligatorios.</small>
                             <div class="row">
                                 <!-- Nombre -->
                                 <div class="col-md-6 mb-3">
@@ -191,7 +191,7 @@
                             <div class="row">
                                 <!-- Fecha de Nacimiento -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="fecha_nacimiento">Fecha de Nacimiento*</label>
+                                    <label class="form-label" for="fecha_nacimiento">Fecha de Nacimiento</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-birthday-cake"></i>
@@ -204,7 +204,7 @@
 
                                 <!-- Fecha de Expedición -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="fecha_expedicion">Fecha de Expedición*</label>
+                                    <label class="form-label" for="fecha_expedicion">Fecha de Expedición</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>

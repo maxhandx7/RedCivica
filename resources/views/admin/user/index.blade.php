@@ -71,16 +71,11 @@
                             <div class="dropdown-divider"></div>
 
                             <!-- Importar usuarios -->
-                            <form action="/importar-usuarios" method="POST" enctype="multipart/form-data"
-                                class="dropdown-item p-0 px-3">
-                                @csrf
-                                <label class="form-label mb-1" for="archivo_excel">
-                                    <i class="fas fa-file-import me-1"></i> Importar
-                                </label>
-                                <input type="file" name="archivo_excel" id="archivo_excel"
-                                    class="form-control form-control-sm mb-2" required>
-                                <button type="submit" class="btn btn-sm btn-primary w-100">Subir</button>
-                            </form>
+                            {{--  --}}
+
+                            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createModal">
+                                <i class="fas fa-file-import me-1"></i> Importar
+                            </button>
                         </div>
                     </div>
 
@@ -136,7 +131,8 @@
                                     <td class="name">{{ $user->name }}</td>
                                     <td class="surname">{{ $user->surname }}</td>
                                     <td class="email">{{ $user->email }}</td>
-                                    <td class="mesa">{{ $user->mesa }}</td>
+                                    <td class="mesa"> <a href="{{ route('mesas.show', $user->mesa) }}">
+                                            {{ $user->mesa->mesa }}</a> </td>
                                     <td class="created" data-sort="{{ $user->created_at->timestamp }}">
                                         {{ $user->created_at->diffForHumans() }}
                                     </td>
@@ -171,6 +167,82 @@
             @endif
         </div>
     </div>
+
+
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="createModalLabel">
+                        <i class="fas fa-file-excel me-2"></i> Importar Usuarios desde Excel
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form action="/importar-usuarios" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="modal-body">
+
+                        <!-- Archivo -->
+                        <div class="mb-3">
+                            <label for="archivo_excel" class="form-label">
+                                Archivo Excel
+                            </label>
+                            <input type="file" name="archivo_excel" id="archivo_excel" class="form-control"
+                                accept=".xlsx,.xls" required>
+                        </div>
+
+                        <!-- Cédula dueño -->
+                        <div class="mb-3">
+                            <label for="cedula_dueno" class="form-label">
+                                Cédula del dueño del Excel
+                            </label>
+                            <input type="text" name="cedula_dueno" id="cedula_dueno" class="form-control"
+                                placeholder="Ej: 123456789" required>
+                        </div>
+
+                        <!-- Heading Row -->
+                        <div class="mb-3">
+                            <label for="heading_row" class="form-label">
+                                Fila de encabezados (Heading Row)
+                            </label>
+                            <input type="number" name="heading_row" id="heading_row" value="6"
+                                class="form-control" placeholder="Ej: 5" min="1" required>
+                            <small class="text-muted">
+                                Número de fila donde están los títulos de las columnas.
+                            </small>
+                        </div>
+
+                        <!-- Start Row -->
+                        <div class="mb-3">
+                            <label for="start_row" class="form-label">
+                                Fila donde comienzan los datos (Start Row)
+                            </label>
+                            <input type="number" name="start_row" id="start_row" class="form-control" value="7"
+                                placeholder="Ej: 6" min="1" required>
+                            <small class="text-muted">
+                                Primera fila que contiene datos reales.
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-upload me-1"></i> Importar
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')

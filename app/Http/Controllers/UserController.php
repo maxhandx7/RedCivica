@@ -58,23 +58,23 @@ class UserController extends Controller
         }
     }
 
- public function show(User $user)
-{
-    $responses = Http::pool(fn (Pool $pool) => [
-        $pool->as('city')->get('https://api.afdeveloper.online/api/city/' . $user->ciudad),
-        $pool->as('dept')->get('https://api.afdeveloper.online/api/department/' . $user->departamento),
-    ]);
+    public function show(User $user)
+    {
+        $responses = Http::pool(fn(Pool $pool) => [
+            $pool->as('city')->get('https://api.afdeveloper.online/api/city/' . $user->ciudad),
+            $pool->as('dept')->get('https://api.afdeveloper.online/api/department/' . $user->departamento),
+        ]);
 
-    if ($responses['city']?->successful() && isset($responses['city']->json()[0])) {
-        $user->ciudad = $responses['city']->json()[0]['name'];
+        if ($responses['city']?->successful() && isset($responses['city']->json()[0])) {
+            $user->ciudad = $responses['city']->json()[0]['name'];
+        }
+
+        if ($responses['dept']?->successful() && isset($responses['dept']->json()[0])) {
+            $user->departamento = $responses['dept']->json()[0]['name'];
+        }
+
+        return view('admin.user.show', compact('user'));
     }
-
-    if ($responses['dept']?->successful() && isset($responses['dept']->json()[0])) {
-        $user->departamento = $responses['dept']->json()[0]['name'];
-    }
-
-    return view('admin.user.show', compact('user'));
-}
 
 
     public function edit(User $user)
@@ -83,7 +83,22 @@ class UserController extends Controller
         if ($user->id === 1) {
             return redirect()->back()->with('error', 'No puedes modificar este usuario');
         }
-        return view('admin.user.edit', compact('user', 'roles'));
+    
+        $responses = Http::pool(fn(Pool $pool) => [
+            $pool->as('city')->get('https://api.afdeveloper.online/api/city/' . $user->ciudad),
+            $pool->as('dept')->get('https://api.afdeveloper.online/api/department/' . $user->departamento),
+        ]);
+
+        if ($responses['city']?->successful() && isset($responses['city']->json()[0])) {
+            $user->ciudad = $responses['city']->json()[0]['name'];
+        }
+
+        if ($responses['dept']?->successful() && isset($responses['dept']->json()[0])) {
+            $user->departamento = $responses['dept']->json()[0]['name'];
+        }
+
+        $referidos = auth()->user()->descendantsAndSelf()->depthFirst()->get();
+        return view('admin.user.edit', compact('user', 'roles', 'referidos'));
     }
 
     public function update(Request $request, User $user)
@@ -94,7 +109,7 @@ class UserController extends Controller
             }
 
             $user->my_update($request, $user);
-            return redirect()->route('users.index')->with('success', 'Usuario modificado');
+            return redirect()->back()->with('success', 'Usuario modificado');
         } catch (\Exception $th) {
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el usuario ' . $th->getMessage());
         }

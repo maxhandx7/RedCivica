@@ -4,7 +4,7 @@
 
 <div class="card card-borderless shadow-sm mb-4">
     <div class="card-header bg-primary">
-        <h5 class="card-header-title">Información Personal</h5>
+        <h5 class="card-header-title text-white">Información Personal</h5>
     </div>
     <div class="card-body">
         <div class="row g-3">
@@ -44,7 +44,7 @@
             <div class="col-md-6">
                 <label class="form-label" for="telefono">Teléfono</label>
                 <input class="form-control @error('telefono') is-invalid @enderror" id="telefono" type="text"
-                    name="telefono" value="{{ old('telefono', $user->telefono) }}" 
+                    name="telefono" value="{{ old('telefono', $user->telefono) }}"
                     title="Ingresa un número de teléfono válido">
                 @error('telefono')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -54,7 +54,7 @@
             <div class="col-md-12">
                 <label class="form-label" for="email">Correo Electrónico</label>
                 <input class="form-control @error('email') is-invalid @enderror" id="email" type="email"
-                    name="email" value="{{ old('email', $user->email) }}" required autocomplete="email">
+                    name="email" value="{{ old('email', $user->email) }}"  autocomplete="email">
                 @error('email')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -65,24 +65,16 @@
 
 <div class="card card-borderless shadow-sm mb-4">
     <div class="card-header bg-primary">
-        <h5 class="card-header-title">Ubicación</h5>
+        <h5 class="card-header-title text-white">Ubicación</h5>
     </div>
     <div class="card-body">
         <div class="row g-3">
-            <div class="col-md-12">
-                <label class="form-label" for="direccion">Dirección</label>
-                <input class="form-control @error('direccion') is-invalid @enderror" id="direccion" type="text"
-                    name="direccion" value="{{ old('direccion', $user->direccion) }}">
-                @error('direccion')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
 
             <div class="col-md-6">
-                <label class="form-label" for="barrio">Barrio</label>
-                <input class="form-control @error('barrio') is-invalid @enderror" id="barrio" type="text"
-                    name="barrio" value="{{ old('barrio', $user->barrio) }}">
-                @error('barrio')
+                <label class="form-label" for="departamento">Departamento</label>
+                <input class="form-control @error('departamento') is-invalid @enderror" id="departamento" type="text"
+                    name="departamento" value="{{ old('departamento', $user->departamento) }}" disabled>
+                @error('departamento')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -90,17 +82,38 @@
             <div class="col-md-6">
                 <label class="form-label" for="ciudad">Ciudad</label>
                 <input class="form-control @error('ciudad') is-invalid @enderror" id="ciudad" type="text"
-                    name="ciudad" value="{{ old('ciudad', $user->ciudad) }}">
+                    name="ciudad" value="{{ old('ciudad', $user->ciudad) }}" disabled>
                 @error('ciudad')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-12">
-                <label class="form-label" for="mesa">Mesa de Votación</label>
-                <input class="form-control @error('mesa') is-invalid @enderror" id="mesa" type="text"
-                    name="mesa" value="{{ old('mesa', $user->mesa) }}" placeholder="Ej: A12, B05">
-                @error('mesa')
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <label class="form-label" for="barrio">Barrio</label>
+                <input class="form-control @error('barrio') is-invalid @enderror" id="barrio" type="text"
+                    name="barrio" value="{{ old('barrio', $user->barrio) }}" disabled>
+                @error('barrio')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="comuna">Comuna</label>
+                <input class="form-control @error('comuna') is-invalid @enderror" id="comuna" type="text"
+                    name="comuna" value="{{ old('comuna', $user->comuna) }}" disabled>
+                @error('comuna')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label" for="direccion">Dirección</label>
+                <input class="form-control @error('direccion') is-invalid @enderror" id="direccion" type="text"
+                    name="direccion" value="{{ old('direccion', $user->direccion) }}" disabled>
+                @error('direccion')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -110,7 +123,7 @@
 
 <div class="card card-borderless shadow-sm mb-4">
     <div class="card-header bg-primary">
-        <h5 class="card-header-title">Configuración Adicional</h5>
+        <h5 class="card-header-title text-white">Configuración Adicional</h5>
     </div>
     <div class="card-body">
         <div class="row g-3">
@@ -151,14 +164,27 @@
                 </select>
             </div>
 
+            <div class="col-md-12">
+                <div class="form-label">Usuario padre</div>
+                <select name="parent_id" id="parent_id" class="form-select">
+                    <option value="">Ninguno</option>
+                    @foreach ($referidos as $potentialParent)
+                        <option value="{{ $potentialParent->id }}"
+                            {{ old('parent_id', $user->parent_id) == $potentialParent->id ? 'selected' : '' }}>
+                            {{ $potentialParent->name }} {{ $potentialParent->surname }}
+                            ({{ $potentialParent->email }})
+                        </option>
+                    @endforeach
+                </select>
+
+            </div>
         </div>
     </div>
-</div>
 
-<div class="mb-3">
-    <button class="btn btn-primary d-block w-100 mt-3" type="submit">
-        <i class="fas fa-save me-2"></i> Actualizar Usuario
-    </button>
-</div>
+    <div class="mb-3">
+        <button class="btn btn-primary d-block w-100 mt-3" type="submit">
+            <i class="fas fa-save me-2"></i> Actualizar Usuario
+        </button>
+    </div>
 
-{!! Form::close() !!}
+    {!! Form::close() !!}
