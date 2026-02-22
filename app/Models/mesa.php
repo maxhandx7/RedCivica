@@ -13,6 +13,7 @@ class Mesa extends Model
         'mesa',
         'zona',
         'direccion',
+        
     ];
 
     public function users()
