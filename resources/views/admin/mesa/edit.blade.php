@@ -8,7 +8,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-custom">
                 <li class="breadcrumb-item"><a href="/home">Panel principal</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.mesa.index') }}">Mesas</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('mesas.index') }}">Mesas</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Editar</li>
             </ol>
         </nav>
@@ -24,7 +24,7 @@
                     <span class="badge bg-warning text-dark">Editando</span>
                 </div>
                 <div class="card-body">
-                    {!! Form::model($mesa, ['route' => ['admin.mesa.update', $mesa], 'method' => 'PUT']) !!}
+                    {!! Form::model($mesa, ['route' => ['mesas.update', $mesa], 'method' => 'PUT']) !!}
 
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -92,10 +92,10 @@
                         <button type="submit" class="btn btn-success">
                             <span class="fas fa-save me-1"></span> Actualizar Mesa
                         </button>
-                        <a href="{{ route('admin.mesa.show', $mesa) }}" class="btn btn-info text-white">
+                        <a href="{{ route('mesas.show', $mesa) }}" class="btn btn-info text-white">
                             <span class="fas fa-eye me-1"></span> Ver detalle
                         </a>
-                        <a href="{{ route('admin.mesa.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('mesas.index') }}" class="btn btn-secondary">
                             <span class="fas fa-arrow-left me-1"></span> Volver
                         </a>
                     </div>

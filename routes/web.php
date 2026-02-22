@@ -81,6 +81,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('campañas', CampañaController::class)->names('campañas');
 
     Route::resource('mesa', MesaController::class)->names('mesas');
+    Route::get('/buscarusuario', [MesaController::class, 'buscarUsuario'])->name('mesa.buscar-usuario');
+   
 
     Route::get('/analitica', [AnaliticaController::class, 'index'])->name('analitica.index');
     Route::get('/analitica/{id}/usuarios-por-referencia', [AnaliticaController::class, 'usuariosPorReferencia'])->name('analitica.usuarios_por_referencia');
@@ -141,6 +143,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Candidatos
     Route::resource('candidatos', CandidatoController::class)->names('candidatos');
+    
 
     Route::post('/candidatos/{candidato}/toggle-activo', [CandidatoController::class, 'toggleActivo'])->name('candidatos.toggle-activo');
     Route::post('/candidatos/reordenar', [CandidatoController::class, 'reordenar'])->name('candidatos.reordenar');
@@ -223,3 +226,5 @@ Route::middleware('web')->group(function () {
         ->name('candidato.alias');
 
 });
+
+

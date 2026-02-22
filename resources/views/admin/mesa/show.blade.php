@@ -44,7 +44,8 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between fs-10">
                             <span class="text-muted">Dirección</span>
-                            <strong>{{ $mesa->direccion ?? '—' }}</strong>
+                            <strong> <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($mesa->direccion) }}"
+                                target="_blank" class="text-decoration-none text-dark"></a> </strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between fs-10">
                             <span class="text-muted">Total usuarios</span>
@@ -106,7 +107,7 @@
                             <tbody>
                                 @foreach ($mesa->users as $user)
                                     <tr>
-                                        <td>{{ $user->cedula }}</td>
+                                        <td> <a href="{{ route('users.show', $user ) }}">{{ $user->cedula }}</a> </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->surname }}</td>
                                         <td>{{ $user->email }}</td>
