@@ -156,6 +156,13 @@
                                     </div>
                                 </a>
 
+                                <a class="nav-link {{ Request::segment(1) === 'mesas' ? 'active' : '' }}"
+                                    href="{{ route('mesas.index') }}" role="button">
+                                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                                class="fas fa-table"></span></span><span
+                                            class="nav-link-text ps-1">Mesas de votación</span>
+                                    </div>
+
                                 @foreach ($candidatos as $candidato)
                                     <a class="nav-link {{ Request::segment(1) === $candidato->alias ? 'active' : '' }}"
                                         href="{{ route('candidato.alias', $candidato->alias) }}" role="button">

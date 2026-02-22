@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 use App\Exports\UsuariosExport;
+use App\Http\Controllers\MesaController;
 use App\Http\Controllers\AnswersController;
 use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\DocumentoController;
@@ -79,6 +80,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('campañas', CampañaController::class)->names('campañas');
 
+    Route::resource('mesa', MesaController::class)->names('mesas');
+
     Route::get('/analitica', [AnaliticaController::class, 'index'])->name('analitica.index');
     Route::get('/analitica/{id}/usuarios-por-referencia', [AnaliticaController::class, 'usuariosPorReferencia'])->name('analitica.usuarios_por_referencia');
 
@@ -90,16 +93,43 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/exportar-usuarios', function () {
-        return Excel::download(new UsuariosExport, 'usuarios.xlsx');
+        return Excel::download(
+            app(UsuariosExport::class),
+            'usuarios.xlsx'
+        );
     });
 
     Route::get('/exportar-clientes', function () {
-        return Excel::download(new ClientesExport, 'clientes.xlsx');
+        return Excel::download(
+            app(ClientesExport::class),
+            'clientes.xlsx'
+        );
     });
+
+    //IMPORTAR USUARIOS DESDE EXCEL
     Route::post('/importar-usuarios', function (Request $request) {
-        Excel::import(new UsuariosImport, $request->file('archivo_excel'));
-        return redirect()->back()->with('success', 'Los usuarios han sido importados correctamente.');
+
+        $request->validate([
+            'archivo_excel' => 'required|mimes:xlsx,xls',
+            'cedula_dueno' => 'required|string|max:20',
+            'heading_row' => 'required|integer|min:1',
+            'start_row' => 'required|integer|min:1',
+        ]);
+
+        Excel::import(
+            new UsuariosImport(
+                $request->heading_row,
+                $request->start_row,
+                $request->cedula_dueno
+            ),
+            $request->file('archivo_excel')
+        );
+
+        return redirect()->back()->with('success', 'Usuarios importados correctamente 🚀');
     });
+
+
+    // Preguntas y respuestas
 
     Route::resource('questions', App\Http\Controllers\QuestionController::class)->names('questions');
     Route::get('/questions/departments', [App\Http\Controllers\QuestionController::class, 'getDepartments'])->name('questions.departments');
@@ -154,8 +184,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/users/datatable', function () {
-    return DataTables::of(User::query())->make(true);
-});
+        return DataTables::of(User::query())->make(true);
+    });
 
 
 });
