@@ -11,11 +11,9 @@ class MesaController extends Controller
 {
     public function index()
     {
-        $mesas = Mesa::with([
-            'users' => function ($query) {
-                $query->whereNotNull('parent_id');
-            }
-        ])->paginate(15);
+        $mesas = Mesa::whereHas('users', function ($query) {
+            $query->where('parent_id', auth()->id());
+        })->paginate(15);
 
         return view('admin.mesa.index', compact('mesas'));
     }
