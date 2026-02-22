@@ -32,7 +32,7 @@ class MesaController extends Controller
 
         Mesa::create($request->all());
 
-        return redirect()->route('admin.mesa.index')
+        return redirect()->route('mesas.index')
                          ->with('success', 'Mesa creada correctamente.');
     }
 
@@ -59,7 +59,7 @@ class MesaController extends Controller
 
         $mesa->update($request->all());
 
-        return redirect()->route('admin.mesa.index')
+        return redirect()->route('mesas.index')
                          ->with('success', 'Mesa actualizada correctamente.');
     }
 
@@ -67,7 +67,7 @@ class MesaController extends Controller
     {
         $mesa->delete();
 
-        return redirect()->route('admin.mesa.index')
+        return redirect()->route('mesas.index')
                          ->with('success', 'Mesa eliminada correctamente.');
     }
 }
