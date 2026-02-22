@@ -212,4 +212,6 @@ class UserController extends Controller
             'campaña' => $campaña
         ]);
     }
+
+   
 }

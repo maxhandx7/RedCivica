@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         {!! Form::label('direccion', 'Dirección', ['class' => 'form-label']) !!}
                         {!! Form::text('direccion', null, [
                             'class' => 'form-control' . ($errors->has('direccion') ? ' is-invalid' : ''),
@@ -92,6 +92,46 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <hr>
+
+                    {{-- Buscador de usuario por cédula --}}
+                    <h5 class="mb-3">
+                        <span class="fas fa-user-plus text-primary me-2"></span>
+                        Asignar Usuario
+                        <span class="text-muted fs-10 fw-normal">(opcional)</span>
+                    </h5>
+
+                    <div class="mb-3">
+                        <label class="form-label">Buscar por cédula</label>
+                        <div class="input-group">
+                            <input type="text" id="cedulaBuscar" class="form-control"
+                                placeholder="Ingresa la cédula del usuario">
+                            <button class="btn btn-outline-primary" type="button" id="btnBuscarUsuario">
+                                <span class="fas fa-search"></span> Buscar
+                            </button>
+                        </div>
+                        <div id="buscarFeedback" class="mt-1"></div>
+                    </div>
+
+                    {{-- Tarjeta del usuario encontrado --}}
+                    <div id="usuarioEncontrado" class="card border-success mb-3" style="display:none;">
+                        <div class="card-body py-2 px-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fas fa-user-check text-success me-2"></span>
+                                <strong id="usuarioNombre"></strong>
+                                <span class="badge bg-secondary ms-2" id="usuarioCedula"></span>
+                                <small class="text-muted ms-2" id="usuarioEmail"></small>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="btnLimpiarUsuario"
+                                title="Quitar selección">
+                                <span class="fas fa-times"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Campo oculto enviado con el form --}}
+                    <input type="hidden" name="user_id" id="userIdSeleccionado">
 
                     <div class="d-flex gap-2 mt-4">
                         <button type="submit" class="btn btn-primary">
@@ -115,7 +155,8 @@
                         Información
                     </h5>
                     <p class="text-muted fs-10 mb-0">
-                        Completa los datos de la mesa de votación. Una vez creada, podrás asignarla a los usuarios registrados en el sistema.
+                        Completa los datos de la mesa de votación. Opcionalmente busca un usuario por cédula para
+                        asignarlo directamente. Solo aparecerán usuarios que aún no tienen mesa asignada.
                     </p>
                 </div>
             </div>
@@ -123,4 +164,74 @@
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btnBuscar      = document.getElementById('btnBuscarUsuario');
+    const inputCedula    = document.getElementById('cedulaBuscar');
+    const feedback       = document.getElementById('buscarFeedback');
+    const cardEncontrado = document.getElementById('usuarioEncontrado');
+    const userIdInput    = document.getElementById('userIdSeleccionado');
+    const btnLimpiar     = document.getElementById('btnLimpiarUsuario');
+
+    function limpiarResultado() {
+        cardEncontrado.style.display = 'none';
+        userIdInput.value = '';
+        inputCedula.value = '';
+        feedback.innerHTML = '';
+    }
+
+    function buscarUsuario() {
+        const cedula = inputCedula.value.trim();
+
+        if (!cedula) {
+            feedback.innerHTML = '<small class="text-warning"><span class="fas fa-exclamation-circle me-1"></span>Ingresa una cédula para buscar.</small>';
+            return;
+        }
+
+        feedback.innerHTML = '<small class="text-muted"><span class="fas fa-spinner fa-spin me-1"></span>Buscando...</small>';
+        cardEncontrado.style.display = 'none';
+        userIdInput.value = '';
+
+        fetch(`{{ route('mesa.buscar-usuario') }}?cedula=${encodeURIComponent(cedula)}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            }
+        })
+        .then(res => res.json().then(data => ({ ok: res.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok) {
+                feedback.innerHTML = `<small class="text-danger"><span class="fas fa-times-circle me-1"></span>${data.error}</small>`;
+                cardEncontrado.style.display = 'none';
+                return;
+            }
+
+            document.getElementById('usuarioNombre').textContent = `${data.name} ${data.surname}`;
+            document.getElementById('usuarioCedula').textContent = data.cedula;
+            document.getElementById('usuarioEmail').textContent  = data.email;
+            userIdInput.value = data.id;
+            cardEncontrado.style.display = 'block';
+            feedback.innerHTML = '<small class="text-success"><span class="fas fa-check-circle me-1"></span>Usuario encontrado y seleccionado.</small>';
+        })
+        .catch(() => {
+            feedback.innerHTML = '<small class="text-danger"><span class="fas fa-exclamation-triangle me-1"></span>Error al conectar con el servidor.</small>';
+        });
+    }
+
+    btnBuscar.addEventListener('click', buscarUsuario);
+
+    // Enter en el input también busca
+    inputCedula.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarUsuario();
+        }
+    });
+
+    btnLimpiar.addEventListener('click', limpiarResultado);
+});
+</script>
 @endsection
