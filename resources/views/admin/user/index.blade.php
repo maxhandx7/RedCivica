@@ -131,6 +131,7 @@
                                     <td class="name">{{ $user->name }}</td>
                                     <td class="surname">{{ $user->surname }}</td>
                                     <td class="email">{{ $user->email }}</td>
+                                    <td>
                                     @if ($user->mesa)
                                         <a href="{{ route('mesas.show', $user->mesa) }}">
                                             {{ $user->mesa->mesa }}
@@ -138,6 +139,7 @@
                                     @else
                                         <span class="text-muted">Sin mesa</span>
                                     @endif
+                                    </td>
                                     <td class="created" data-sort="{{ $user->created_at->timestamp }}">
                                         {{ $user->created_at->diffForHumans() }}
                                     </td>
