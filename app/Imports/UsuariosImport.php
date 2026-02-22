@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Mesa;
+use App\Models\Referencia;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -18,8 +19,8 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
 
     public function __construct($headingRow, $startRow, $cedulaDueno)
     {
-        $this->headingRow  = $headingRow;
-        $this->startRow    = $startRow;
+        $this->headingRow = $headingRow;
+        $this->startRow = $startRow;
         $this->cedulaDueno = $cedulaDueno;
 
         // Buscar al dueño una sola vez, no en cada fila
@@ -52,29 +53,34 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
             return null;
         }
 
+
+
         return DB::transaction(function () use ($row) {
+            $ultimaId = Referencia::max('id');
+
             $mesa = Mesa::create([
-                'departamento'   => $row['departamento']         ?? 'No especificado',
-                'municipio'      => $row['municipio']            ?? 'No especificado',
-                'puesto_votacion'=> $row['lugar_de_votacion']    ?? 'No especificado',
-                'mesa'           => $row['mesa']                 ?? 'No especificado',
-                'zona'           => $row['zona']                 ?? 'No especificado',
-                'direccion'      => $row['direccion_de_votacion'] ?? 'No especificado',
+                'departamento' => $row['departamento'] ?? 'No especificado',
+                'municipio' => $row['municipio'] ?? 'No especificado',
+                'puesto_votacion' => $row['lugar_de_votacion'] ?? 'No especificado',
+                'mesa' => $row['mesa'] ?? 'No especificado',
+                'zona' => $row['zona'] ?? 'No especificado',
+                'direccion' => $row['direccion_de_votacion'] ?? 'No especificado',
             ]);
 
             $user = User::create([
-                'mesa_id'        => $mesa->id,
-                'name'           => $row['nombre'],
-                'surname'        => $row['apellidos'],
-                'cedula'         => $row['cedula'],
-                'telefono'       => $row['celular'],
-                'email'          => $row['email'],
-                'comuna'         => $row['comuna']  ?? null,
-                'barrio'         => $row['barrio']  ?? null,
+                'mesa_id' => $mesa->id,
+                'name' => $row['nombre'],
+                'surname' => $row['apellidos'],
+                'cedula' => $row['cedula'],
+                'telefono' => $row['celular'],
+                'email' => $row['email'],
+                'comuna' => $row['comuna'] ?? null,
+                'barrio' => $row['barrio'] ?? null,
                 'tipo_documento' => 'cc',
-                'password'       => bcrypt('12345678'),
-                'pais'           => '3686110',
-                'parent_id'      => $this->dueno?->id ?? 1, 
+                'password' => bcrypt('12345678'),
+                'pais' => '3686110',
+                'parent_id' => $this->dueno?->id ?? 1,
+                'referncia_id' => $ultimaId->id ?? null,
             ]);
 
             return $user;
