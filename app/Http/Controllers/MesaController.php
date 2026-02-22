@@ -6,14 +6,19 @@ use App\Http\Controllers;
 use App\Models\Mesa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Traits\HasRoles;
 
 class MesaController extends Controller
 {
     public function index()
     {
-        $mesas = Mesa::whereHas('users', function ($query) {
+        if (auth()->user()->hasRole('admin')) {
+            $mesas = Mesa::with('users')->paginate(15);
+        } else {
+            $mesas = Mesa::whereHas('users', function ($query) {
             $query->where('parent_id', auth()->id());
         })->paginate(15);
+        }
 
         return view('admin.mesa.index', compact('mesas'));
     }
