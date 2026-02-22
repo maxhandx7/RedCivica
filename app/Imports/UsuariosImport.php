@@ -39,14 +39,22 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
 
     public function model(array $row)
     {
-        // Saltar filas vacías
-        if (empty($row['nombre'])) {
-            return null;
-        }
+
 
         // Saltar duplicados
-        if (User::where('email', $row['email'])->exists()) {
-            return null;
+        $email = $row['email'];
+
+        if (User::where('email', $email)->exists()) {
+
+            $baseEmail = explode('@', $email)[0];
+            $domain = explode('@', $email)[1];
+
+            $counter = 1;
+
+            while (User::where('email', $email)->exists()) {
+                $email = $baseEmail . $counter . '@' . $domain;
+                $counter++;
+            }
         }
 
         if (User::where('cedula', $row['cedula'])->exists()) {
