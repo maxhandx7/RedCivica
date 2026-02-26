@@ -175,7 +175,7 @@ class UserController extends Controller
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Ocurrió un error al crear el usuario ',
+                    'message' => 'Ocurrió un error al crear el usuario '.$th->getMessage(),
                     'error' => $th->getMessage()
                 ], 500);
             }

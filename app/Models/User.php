@@ -17,6 +17,7 @@ use App\Services\ActividadService;
 use App\Constants\ActividadPlantillas;
 use App\Mail\BienvenidaUsuarioMail;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
@@ -77,6 +78,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    
 
 
 
@@ -186,7 +189,7 @@ class User extends Authenticatable
             'telefono' => 'nullable|string|max:50',
             'pais' => 'nullable',
             'estado' => 'nullable|string|in:activo,inactivo',
-            'mesa' => 'nullable|string|max:50',
+            'mesa_id' => 'nullable|exists:mesas,id',
             'parent_id' => 'nullable|exists:users,id',
             'fuente' => 'nullable|string|max:50',
             'medio' => 'nullable|string|max:50',
@@ -224,7 +227,7 @@ class User extends Authenticatable
                 'comuna' => $request->comuna,
                 'pais' => $request->pais ?? 'Colombia',
                 'estado' => $request->estado ?? 'activo',
-                'mesa' => $request->mesa,
+                'mesa_id' => $request->mesa_id ?? null,
                 'parent_id' => $referenciaId ?? $request->parent_id,
                 'fuente' => $request->fuente,
                 'medio' => $request->medio,
@@ -247,7 +250,7 @@ class User extends Authenticatable
                 'comuna' => $request->comuna,
                 'pais' => $request->pais ?? 'Colombia',
                 'estado' => $request->estado ?? 'activo',
-                'mesa' => $request->mesa,
+                'mesa_id' => $request->mesa_id ?? null,
                 'parent_id' => $referenciaId ?? $request->parent_id,
                 'fuente' => $request->fuente,
                 'medio' => $request->medio,
@@ -287,6 +290,12 @@ class User extends Authenticatable
         }
     }
 
+    protected function formattedDate(): Attribute
+{
+    return Attribute::make(
+        get: fn() => $this->created_at->isoFormat('D [de] MMMM [de] YYYY')
+    );
+}
 
     public function my_update($request, $user)
     {

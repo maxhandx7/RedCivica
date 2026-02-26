@@ -1,4 +1,4 @@
-@extends('layouts.admin') {{-- Asegúrate de tener un layout base con Bootstrap y auth --}}
+@extends('layouts.admin')
 
 @section('content')
 <div class="container py-4">
@@ -9,12 +9,11 @@
         </button>
     </div>
 
-    {{-- Tabla de necesidades --}}
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table mb-0 table-hover align-middle">
-                    <thead class="table">
+                    <thead class="table-light">
                         <tr>
                             <th>Referido</th>
                             <th>Título</th>
@@ -26,29 +25,41 @@
                     </thead>
                     <tbody>
                         @forelse($needs as $need)
+                        @php
+                            $estadoColor = match($need->estado) {
+                                'resuelta'   => 'success',
+                                'en proceso' => 'warning',
+                                default      => 'secondary',
+                            };
+                        @endphp
                         <tr>
                             <td>
                                 <a href="{{ route('users.show', $need->registrado_por) }}" class="text-decoration-none">
                                     {{ $need->registradoPor->name ?? 'Desconocido' }}
                                 </a>
+                            </td>
                             <td>{{ $need->titulo }}</td>
                             <td>{{ Str::limit($need->descripcion, 60) }}</td>
                             <td>
-                                <span class="badge bg-{{ $need->estado == 'resuelta' ? 'success' : ($need->estado == 'en proceso' ? 'warning' : 'secondary') }}">
+                                <span class="badge bg-{{ $estadoColor }}">
                                     {{ ucfirst($need->estado) }}
                                 </span>
                             </td>
                             <td>{{ $need->created_at->format('d M Y') }}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-info me-1" 
-                                        onclick="editNeed({{ $need->id }}, '{{ $need->titulo }}', `{{ $need->descripcion }}`, '{{ $need->estado }}')">
+                                {{-- 👇 data-* en vez de onclick con interpolación directa (evita XSS) --}}
+                                <button class="btn btn-sm btn-outline-info me-1 btn-edit"
+                                        data-id="{{ $need->id }}"
+                                        data-titulo="{{ $need->titulo }}"
+                                        data-descripcion="{{ $need->descripcion }}"
+                                        data-estado="{{ $need->estado }}">
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <form method="POST" action="{{ route('needs.destroy', $need->id) }}" class="d-inline-block"
                                       onsubmit="return confirm('¿Estás seguro de eliminar esta necesidad?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
@@ -56,7 +67,9 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">No tienes necesidades registradas.</td>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No tienes necesidades registradas.
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -66,7 +79,7 @@
     </div>
 </div>
 
-{{-- Modal para crear necesidad --}}
+{{-- Modal Crear --}}
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form method="POST" action="{{ route('needs.store') }}" class="modal-content">
@@ -77,15 +90,15 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="referido_id" class="form-label">Referido</label>
+                    <label class="form-label">Referido</label>
                     <input type="number" class="form-control" name="referido_id" required>
                 </div>
                 <div class="mb-3">
-                    <label for="titulo" class="form-label">Título</label>
+                    <label class="form-label">Título</label>
                     <input type="text" class="form-control" name="titulo" required>
                 </div>
                 <div class="mb-3">
-                    <label for="descripcion" class="form-label">Descripción</label>
+                    <label class="form-label">Descripción</label>
                     <textarea class="form-control" name="descripcion" rows="3"></textarea>
                 </div>
             </div>
@@ -97,9 +110,7 @@
     </div>
 </div>
 
-
-
-{{-- Modal para editar necesidad --}}
+{{-- Modal Editar --}}
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form method="POST" id="editForm" class="modal-content">
@@ -110,17 +121,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="id" id="edit_id">
                 <div class="mb-3">
-                    <label for="edit_titulo" class="form-label">Título</label>
+                    <label class="form-label">Título</label>
                     <input type="text" class="form-control" id="edit_titulo" name="titulo" required>
                 </div>
                 <div class="mb-3">
-                    <label for="edit_descripcion" class="form-label">Descripción</label>
+                    <label class="form-label">Descripción</label>
                     <textarea class="form-control" id="edit_descripcion" name="descripcion" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="edit_estado" class="form-label">Estado</label>
+                    <label class="form-label">Estado</label>
                     <select class="form-select" id="edit_estado" name="estado">
                         <option value="pendiente">Pendiente</option>
                         <option value="en proceso">En proceso</option>
@@ -139,15 +149,19 @@
 
 @section('scripts')
 <script>
-    function editNeed(id, titulo, descripcion, estado) {
-        const form = document.getElementById('editForm');
-        form.action = `/needs/${id}`;
-        document.getElementById('edit_id').value = id;
+    // 👇 Un solo event listener en vez de onclick por fila (delegación de eventos)
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-edit');
+        if (!btn) return;
+
+        const { id, titulo, descripcion, estado } = btn.dataset;
+
+        document.getElementById('editForm').action = `/needs/${id}`;
         document.getElementById('edit_titulo').value = titulo;
         document.getElementById('edit_descripcion').value = descripcion;
         document.getElementById('edit_estado').value = estado;
-        const modal = new bootstrap.Modal(document.getElementById('editModal'));
-        modal.show();
-    }
+
+        bootstrap.Modal.getOrCreate(document.getElementById('editModal')).show();
+    });
 </script>
 @endsection
