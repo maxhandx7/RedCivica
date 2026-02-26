@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UsuariosImport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ConfigController extends Controller
 {
@@ -108,4 +109,42 @@ class ConfigController extends Controller
 
         return response()->json(['success' => false]);
     }
+
+
+    public function importarUsuarios(Request $request)
+    {
+        $request->validate([
+            'archivo_excel' => 'required|mimes:xlsx,xls',
+            'cedula_dueno' => 'string|max:20',
+            'heading_row' => 'required|integer|min:1',
+            'start_row' => 'required|integer|min:1',
+        ]);
+
+        $archivo = $request->file('archivo_excel');
+        $cedulaDueno = $request->input('cedula_dueno');
+        $headingRow = $request->input('heading_row');
+        $startRow = $request->input('start_row');
+
+        $dueno = User::where('cedula', $cedulaDueno)->first();
+
+        if (!$dueno) {
+            return redirect()->back()->with('error', 'No se encontró un usuario con la cédula proporcionada.');
+        }
+
+        try {
+           Excel::import(
+                new UsuariosImport(
+                    $headingRow ?? 1,
+                    $startRow ?? 2,
+                    $cedulaDueno ?? null
+                ),
+                $archivo
+            );
+            
+            return redirect()->back()->with('success', 'Usuarios importados exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ocurrió un error al importar los usuarios: ' . $e->getMessage());
+        }
+    }
 }
+
