@@ -56,14 +56,18 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
         return DB::transaction(function () use ($row) {
             $ultimaId = Referencia::max('id');
 
-            $mesa = Mesa::create([
-                'departamento' => $row['departamento'] ?? 'No especificado',
-                'municipio' => $row['municipio'] ?? 'No especificado',
-                'puesto_votacion' => $row['lugar_de_votacion'] ?? 'No especificado',
-                'mesa' => $row['mesa'] ?? 'No especificado',
-                'zona' => $row['zona'] ?? 'No especificado',
-                'direccion' => $row['dir_votacion'] ?? 'No especificado',
-            ]);
+            $mesa = Mesa::firstOrCreate(
+                [
+                    'municipio' => $row['municipio'] ?? 'No especificado',
+                    'puesto_votacion' => $row['lugar_de_votacion'] ?? 'No especificado',
+                    'mesa' => $row['mesa'] ?? 'No especificado',
+                    'zona' => $row['zona'] ?? 'No especificado',
+                ],
+                [
+                    'departamento' => $row['departamento'] ?? 'No especificado',
+                    'direccion' => $row['dir_votacion'] ?? 'No especificado',
+                ]
+            );
 
             $user = User::create([
                 'mesa_id' => $mesa->id ?? null,
@@ -78,7 +82,7 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
                 'password' => bcrypt('12345678'),
                 'pais' => '3686110',
                 'parent_id' => $this->dueno?->id ?? 1,
-                'referncia_id' => $ultimaId->id ?? null,
+                'referencia_id' => $ultimaId ?? null,
             ]);
 
             return $user;
