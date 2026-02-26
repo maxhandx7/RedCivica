@@ -132,13 +132,13 @@
                                     <td class="surname">{{ $user->surname }}</td>
                                     <td class="email">{{ $user->email }}</td>
                                     <td>
-                                    @if ($user->mesa)
-                                        <a href="{{ route('mesas.show', $user->mesa) }}">
-                                            {{ $user->mesa->mesa }}
-                                        </a>
-                                    @else
-                                        <span class="text-muted">Sin mesa</span>
-                                    @endif
+                                        @if ($user->mesa)
+                                            <a href="{{ route('mesas.show', $user->mesa) }}">
+                                                {{ $user->mesa->mesa }}
+                                            </a>
+                                        @else
+                                            <span class="text-muted">Sin mesa</span>
+                                        @endif
                                     </td>
                                     <td class="created" data-sort="{{ $user->created_at->timestamp }}">
                                         {{ $user->created_at->diffForHumans() }}
@@ -175,6 +175,7 @@
         </div>
     </div>
 
+    @include('admin.user.__loading')
 
     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -207,7 +208,7 @@
                                 Cédula del dueño del Excel
                             </label>
                             <input type="text" name="cedula_dueno" id="cedula_dueno" class="form-control"
-                                placeholder="Ej: 123456789" required>
+                                placeholder="Ej: 123456789">
                         </div>
 
                         <!-- Heading Row -->
@@ -243,6 +244,8 @@
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-upload me-1"></i> Importar
                         </button>
+
+
                     </div>
                 </form>
 
@@ -292,6 +295,16 @@
             window.confirmDelete = function() {
                 return confirm('¿Estás seguro de eliminar este usuario?');
             };
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector('#createModal form');
+
+            form.addEventListener('submit', function() {
+                LoadingScreen.show();
+            });
         });
     </script>
 @endsection

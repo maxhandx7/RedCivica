@@ -24,9 +24,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PropuestaController;
 use App\Http\Controllers\TarjetonController;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\UsuariosImport;
 use App\Models\User;
 use Illuminate\Http\Request;
+use PSpell\Config;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables;
 
@@ -109,26 +109,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //IMPORTAR USUARIOS DESDE EXCEL
-    Route::post('/importar-usuarios', function (Request $request) {
-
-        $request->validate([
-            'archivo_excel' => 'required|mimes:xlsx,xls',
-            'cedula_dueno' => 'required|string|max:20',
-            'heading_row' => 'required|integer|min:1',
-            'start_row' => 'required|integer|min:1',
-        ]);
-
-        Excel::import(
-            new UsuariosImport(
-                $request->heading_row,
-                $request->start_row,
-                $request->cedula_dueno
-            ),
-            $request->file('archivo_excel')
-        );
-
-        return redirect()->back()->with('success', 'Usuarios importados correctamente 🚀');
-    });
+    Route::post('/importar-usuarios', [ConfigController::class, 'importarUsuarios'])->name('importar.usuarios');
 
 
     // Preguntas y respuestas

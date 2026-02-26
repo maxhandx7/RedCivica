@@ -40,26 +40,16 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
     public function model(array $row)
     {
 
+        $email = $row['email'] ?? null;
 
-        // Saltar duplicados
-        $email = $row['email'];
-
-        if (User::where('email', $email)->exists()) {
-
-            $baseEmail = explode('@', $email)[0];
-            $domain = explode('@', $email)[1];
-
-            $counter = 1;
-
-            while (User::where('email', $email)->exists()) {
-                $email = $baseEmail . $counter . '@' . $domain;
-                $counter++;
-            }
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $email = null;
         }
 
         if (User::where('cedula', $row['cedula'])->exists()) {
             return null;
         }
+
 
 
 
@@ -72,19 +62,19 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
                 'puesto_votacion' => $row['lugar_de_votacion'] ?? 'No especificado',
                 'mesa' => $row['mesa'] ?? 'No especificado',
                 'zona' => $row['zona'] ?? 'No especificado',
-                'direccion' => $row['direccion_de_votacion'] ?? 'No especificado',
+                'direccion' => $row['dir_votacion'] ?? 'No especificado',
             ]);
 
             $user = User::create([
-                'mesa_id' => $mesa->id,
+                'mesa_id' => $mesa->id ?? null,
                 'name' => $row['nombre'],
-                'surname' => $row['apellidos'],
-                'cedula' => $row['cedula'],
-                'telefono' => $row['celular'],
-                'email' => $row['email'],
-                'comuna' => $row['comuna'] ?? null,
-                'barrio' => $row['barrio'] ?? null,
+                'surname' => $row['apellidos'] ?? "no especificado",
+                'cedula' => $row['cedula'] ?? rand(10000000, 99999999),
                 'tipo_documento' => 'cc',
+                'telefono' => $row['celular'] ?? "no especificado",
+                'email' => $row['email'] ?? "no especificado",
+                'comuna' => $row['comuna'] ?? "no especificado",
+                'barrio' => $row['barrio'] ?? "no especificado",
                 'password' => bcrypt('12345678'),
                 'pais' => '3686110',
                 'parent_id' => $this->dueno?->id ?? 1,
