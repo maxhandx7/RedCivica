@@ -698,7 +698,7 @@
                         }
                     },
                     error: function(xhr) {
-                        let errorMessage = 'Ocurrió un error al enviar el formulario';
+                        let errorMessage = 'Ocurrió un error al enviar el formulario' + xhr.status + ': ' + xhr.error;
 
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;

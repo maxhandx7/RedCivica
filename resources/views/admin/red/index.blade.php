@@ -7,7 +7,6 @@
 @endsection
 @section('content')
     {!! Html::style('/falcon/public/assets/css/vis-network.css') !!}
-    {!! Html::style('/falcon/public/vendors/jquery/jquery.min.js') !!}
     {!! Html::style('/falcon/public/vendors/datatables.net/dataTables.min.js') !!}
     {!! Html::style('/falcon/public/vendors/datatables.net-bs5/dataTables.bootstrap5.min.js') !!}
     {!! Html::style('/falcon/public/vendors/datatables.net-fixedcolumns/dataTables.fixedColumns.min.js') !!}
