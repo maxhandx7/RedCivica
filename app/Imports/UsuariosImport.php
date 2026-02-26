@@ -5,17 +5,21 @@ namespace App\Imports;
 use App\Models\Mesa;
 use App\Models\Referencia;
 use App\Models\User;
+use Maatwebsite\Excel\Concerns\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
+class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow, ShouldQueue
 {
     protected $headingRow;
     protected $startRow;
     protected $cedulaDueno;
     protected $dueno;
+    protected $ultimaReferenciaId;
+    protected $defaultPassword;
 
     public function __construct($headingRow, $startRow, $cedulaDueno)
     {
@@ -25,6 +29,8 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
 
         // Buscar al dueño una sola vez, no en cada fila
         $this->dueno = User::where('cedula', $cedulaDueno)->first();
+        $this->ultimaReferenciaId = Referencia::max('id');
+        $this->defaultPassword = bcrypt('12345678');
     }
 
     public function startRow(): int
@@ -35,6 +41,11 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
     public function headingRow(): int
     {
         return $this->headingRow;
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 
     public function model(array $row)
@@ -79,10 +90,10 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow
                 'email' => $row['email'] ?? "no especificado",
                 'comuna' => $row['comuna'] ?? "no especificado",
                 'barrio' => $row['barrio'] ?? "no especificado",
-                'password' => bcrypt('12345678'),
+                'password' => $this->defaultPassword,
                 'pais' => '3686110',
                 'parent_id' => $this->dueno?->id ?? 1,
-                'referencia_id' => $ultimaId ?? null,
+                'referencia_id' => $this->ultimaReferenciaId,
             ]);
 
             return $user;
