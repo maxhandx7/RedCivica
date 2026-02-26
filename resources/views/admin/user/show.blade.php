@@ -148,6 +148,19 @@
                                                     @endif
                                                 </p>
                                             </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Mesa de votación</label>
+                                                <p class="form-control-static">
+                                                    @if ($user->mesa)
+                                                        <a href="{{ route('mesas.show', $user->mesa) }}"
+                                                            class="text-decoration-none">
+                                                            {{ $user->mesa->puesto_votacion }} | Mesa #{{ $user->mesa->mesa }} 
+                                                        </a>
+                                                    @else
+                                                        No asignada
+                                                    @endif
+                                                </p>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
@@ -163,7 +176,6 @@
                                                         class="badge bg-{{ $user->estado()['estado'] ? 'success' : 'danger' }}">
                                                         {{ $user->estado()['text'] }}
                                                     </span>
-
                                                 </p>
                                             </div>
                                         </div>

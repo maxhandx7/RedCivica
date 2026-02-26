@@ -45,7 +45,7 @@
                         <li class="list-group-item d-flex justify-content-between fs-10">
                             <span class="text-muted">Dirección</span>
                             <strong> <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($mesa->direccion) }}"
-                                target="_blank" class="text-decoration-none text-dark"></a> </strong>
+                                target="_blank" class="text-decoration-none text-dark">{{ $mesa->direccion }} </a></strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between fs-10">
                             <span class="text-muted">Total usuarios</span>
