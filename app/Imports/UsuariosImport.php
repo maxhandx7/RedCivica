@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow, ShouldQueue
+class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow, WithChunkReading
 {
     protected $headingRow;
     protected $startRow;
