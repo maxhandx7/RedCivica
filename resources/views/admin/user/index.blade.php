@@ -132,13 +132,17 @@
                                     <td class="surname">{{ $user->surname }}</td>
                                     <td class="email">{{ $user->email }}</td>
                                     <td>
-                                        @if ($user->mesa)
-                                            <a href="{{ route('mesas.show', $user->mesa) }}">
-                                                {{ $user->mesa->mesa }}
-                                            </a>
-                                        @else
-                                            <span class="text-muted">Sin mesa</span>
-                                        @endif
+                                         @if ($user->mesa)
+                                                        <a href="{{ route('mesas.show', $user->mesa) }}"
+                                                            class="text-decoration-none">
+                                                            {{ $user->mesa->puesto_votacion }} | Mesa #{{ $user->mesa->mesa }} 
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ route('mesas.create', ['cedula' => $user->cedula, 'name' => $user->name, 'surname' => $user->surname]) }}"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi-plus-circle me-1"></i> Asignar mesa
+                                                        </a>
+                                                    @endif
                                     </td>
                                     <td class="created" data-sort="{{ $user->created_at->timestamp }}">
                                         {{ $user->created_at->diffForHumans() }}

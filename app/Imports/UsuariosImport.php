@@ -82,7 +82,7 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithStartRow, WithChunk
 
             $user = User::create([
                 'mesa_id' => $mesa->id ?? null,
-                'name' => $row['nombre'],
+                'name' => $row['nombre'] ?? "no especificado",
                 'surname' => $row['apellidos'] ?? "no especificado",
                 'cedula' => $row['cedula'] ?? rand(10000000, 99999999),
                 'tipo_documento' => 'cc',

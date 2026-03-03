@@ -157,7 +157,10 @@
                                                             {{ $user->mesa->puesto_votacion }} | Mesa #{{ $user->mesa->mesa }} 
                                                         </a>
                                                     @else
-                                                        No asignada
+                                                        <a href="{{ route('mesas.create', ['cedula' => $user->cedula, 'name' => $user->name, 'surname' => $user->surname]) }}"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi-plus-circle me-1"></i> Asignar mesa
+                                                        </a>
                                                     @endif
                                                 </p>
                                             </div>
