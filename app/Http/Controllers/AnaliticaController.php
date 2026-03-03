@@ -2,88 +2,135 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaña;
 use App\Models\Referencia;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AnaliticaController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('role:admin');
-    }
+    // ═══════════════════════════════════════════════════════════════
+    //  INDEX — Panel principal
+    // ═══════════════════════════════════════════════════════════════
     public function index()
     {
-        $user = auth()->user();
-
-        // 📊 Total de referencias por campaña
-        $referenciasPorCampaña = \DB::table('referencias')
-            ->join('campañas', 'referencias.campaña_id', '=', 'campañas.id')
-            ->select('campañas.name', \DB::raw('COUNT(*) as total'))
-            ->groupBy('campañas.name')
-            ->pluck('total', 'campañas.name');
-
-        // 👥 Usuarios registrados por referencia (dentro de tu red)
-        $descendientes = $user->descendants()->whereNotNull('referencia_id')->get();
-        $usuariosPorReferencia = $descendientes
-            ->groupBy('referencia_id')
-            ->map(fn($grupo) => $grupo->count());
-
-        // 🧩 Otros KPIs
-        $usuariosConReferidos = User::has('referencias')->count();
-
-
-        $totalReferencias = Referencia::count();
-        $usuariosDesdeReferencias = User::whereNotNull('referencia_id')->count();
-
-        $referenciasConUsuarios = Referencia::has('usuariosRegistrados')->count();
-
-        $conversion = $referenciasConUsuarios > 0
-            ? round($usuariosDesdeReferencias / $referenciasConUsuarios, 2)
-            : 0;
-
-        /*  $conversion = $totalReferencias > 0
-             ? round(($referenciasConUsuarios / $totalReferencias) * 100, 2)
-             : 0; */
-
-
-
-
-
-
-        $usuariosPorReferencia = $descendientes
-            ->load('referencia.user')
-            ->groupBy('referencia_id')
-            ->mapWithKeys(function ($grupo, $refId) {
-
-                $referencia = $grupo->first()->referencia;
-                $nombre = optional($referencia->user)->name ?? 'Sin nombre';
-                $campaña = optional($referencia->campaña)->name ?? 'Sin campaña';
-                return ["$nombre – $campaña ($refId)" => $grupo->count()];
-            });
-        return view('admin.analitica.index', compact(
-            'referenciasPorCampaña',
-            'usuariosPorReferencia',
-            'usuariosConReferidos',
-            'conversion',
-            'usuariosDesdeReferencias',
-            'totalReferencias'
-        ));
-
+        return view('admin.analitica.index', [
+            'kpis'                  => $this->kpisGlobales(),
+            'referenciasPorCampaña' => $this->referenciasPorCampaña(),
+            'topReferencias'        => $this->topReferencias(),
+            'rankingReferidores'    => $this->rankingReferidores(),
+        ]);
     }
 
-
-    public function usuariosPorReferencia($id)
+    // ═══════════════════════════════════════════════════════════════
+    //  DETALLE — Usuarios que llegaron por una referencia concreta
+    // ═══════════════════════════════════════════════════════════════
+    public function usuariosPorReferencia(int $referenciaId)
     {
-        $referencia = Referencia::with('user')->findOrFail($id);
+        $referencia = Referencia::with('user', 'campaña')->findOrFail($referenciaId);
 
-        $usuarios = $referencia->usuariosRegistrados;
+        $usuarios = $referencia->usuariosRegistrados()
+            ->latest()
+            ->paginate(25);
 
-        return view(
-            'admin.analitica.usuarios_por_referencia',
-            compact('usuarios', 'referencia')
-        );
+        return view('admin.analitica.usuarios_por_referencia', compact('referencia', 'usuarios'));
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    //  PRIVADOS — Cada uno resuelve UNA sola pregunta
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * KPIs globales del sistema.
+     *
+     * Responde:
+     *  - ¿Cuántos links de marketing existen?
+     *  - ¿Cuántos usuarios llegaron a través de un link?
+     *  - ¿Cuántos links han traído al menos un usuario?
+     *  - ¿Cuál es el promedio de usuarios por link activo?
+     *  - ¿Cuántos usuarios tienen al menos un referido en su red política?
+     */
+    private function kpisGlobales(): array
+    {
+        $totalReferencias         = Referencia::count();
+        $usuariosDesdeReferencias = User::whereNotNull('referencia_id')->count();
+        $referenciasActivas       = Referencia::has('usuariosRegistrados')->count();
+
+        return [
+            'total_referencias'          => $totalReferencias,
+            'usuarios_desde_referencias' => $usuariosDesdeReferencias,
+            'referencias_activas'        => $referenciasActivas,
+            'promedio_por_referencia'    => $referenciasActivas > 0
+                                                ? round($usuariosDesdeReferencias / $referenciasActivas, 2)
+                                                : 0,
+            // usuarios_con_referidos usa parent_id (red política), NO referencia_id
+            'usuarios_con_referidos'     => User::has('children')->count(),
+        ];
+    }
+
+    /**
+     * Agrupa por campaña: cuántos links y cuántos usuarios llegaron por cada una.
+     *
+     * Responde: ¿qué campaña de marketing funciona mejor?
+     *
+     * Una sola query con subqueries correlacionadas; sin N+1.
+     */
+    private function referenciasPorCampaña()
+    {
+        return Campaña::select('campañas.id', 'campañas.name')
+            ->selectSub(
+                DB::table('referencias')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('referencias.campaña_id', 'campañas.id'),
+                'total_referencias'
+            )
+            ->selectSub(
+                DB::table('users')
+                    ->selectRaw('COUNT(*)')
+                    ->whereIn(
+                        'users.referencia_id',
+                        DB::table('referencias')
+                            ->select('id')
+                            ->whereColumn('referencias.campaña_id', 'campañas.id')
+                    ),
+                'total_usuarios'
+            )
+            ->having('total_referencias', '>', 0)
+            ->orderByDesc('total_usuarios')
+            ->get();
+    }
+
+    /**
+     * Top N links de marketing ordenados por usuarios convertidos.
+     *
+     * Responde: ¿qué links específicos trajeron más gente?
+     */
+    private function topReferencias(int $limit = 10)
+    {
+        return Referencia::with('user:id,name,surname', 'campaña:id,name')
+            ->withCount('usuariosRegistrados')
+            ->having('usuarios_registrados_count', '>', 0)
+            ->orderByDesc('usuarios_registrados_count')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Ranking de usuarios que más personas han traído a la red (árbol parent_id).
+     *
+     * Responde: ¿quién está creciendo más su red política?
+     *
+     * IMPORTANTE: esto es distinto a referencias de marketing.
+     * parent_id = quién me trajo a la red política.
+     * referencia_id = por qué link de campaña me registré.
+     */
+    private function rankingReferidores(int $limit = 10)
+    {
+        return User::select('id', 'name', 'surname', 'cedula')
+            ->withCount('children')
+            ->having('children_count', '>', 0)
+            ->orderByDesc('children_count')
+            ->limit($limit)
+            ->get();
+    }
 }
