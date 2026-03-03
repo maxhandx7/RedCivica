@@ -411,7 +411,7 @@
 
     <script>
         let network;
-
+        const baseUrl = "{{ url('mesa') }}";
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('networkContainer');
             const data = @json($networkData ?? []);
@@ -423,14 +423,14 @@
             const addedIds = new Set();
 
             function mostrarUsuario(userId) {
-                
+
                 const usuario = data.find(u => u.id == userId);
 
                 if (!usuario) {
                     console.warn(`No se encontró el usuario con ID ${userId}`);
                     return;
                 }
-                
+
                 if (usuario.id === authUserId) {
                     return;
                 }
@@ -601,7 +601,13 @@
                     </div>
                     <div class="info-row">
                         <div class="info-label">Mesa:</div>
-                        <div class="info-value">${usuario.mesa || 'No asignada'}</div>
+                        <div class="info-value">  <a href="${usuario.mesa 
+            ? `${baseUrl}/${usuario.mesa.id}` 
+            : `${baseUrl}/create?cedula=${usuario.cedula}&name=${encodeURIComponent(usuario.name)}&surname=${encodeURIComponent(usuario.surname)}`}">
+            ${usuario.mesa 
+                ? usuario.mesa.puesto_votacion 
+                : 'Crear mesa'}
+                         </a> </div>
                     </div>
                 </div>
                 

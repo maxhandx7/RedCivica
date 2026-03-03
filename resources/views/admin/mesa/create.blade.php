@@ -99,7 +99,7 @@
                     <h5 class="mb-3">
                         <span class="fas fa-user-plus text-primary me-2"></span>
                         Asignar Usuario
-                        <span class="text-muted fs-10 fw-normal">(opcional)</span>
+                        <span class="text-danger">*</span>
                     </h5>
 
                     <div class="mb-3">
@@ -130,11 +130,17 @@
                         </div>
                     </div>
 
+                    {{-- Alerta visible si intentan enviar sin usuario --}}
+                    <div id="alertaUsuarioRequerido" class="alert alert-danger py-2" style="display:none;">
+                        <span class="fas fa-exclamation-triangle me-1"></span>
+                        Debes seleccionar un usuario antes de guardar la mesa.
+                    </div>
+
                     {{-- Campo oculto enviado con el form --}}
                     <input type="hidden" name="user_id" id="userIdSeleccionado">
 
                     <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="btnGuardar">
                             <span class="fas fa-save me-1"></span> Guardar Mesa
                         </button>
                         <a href="{{ route('mesas.index') }}" class="btn btn-secondary">
@@ -155,8 +161,8 @@
                         Información
                     </h5>
                     <p class="text-muted fs-10 mb-0">
-                        Completa los datos de la mesa de votación. Opcionalmente busca un usuario por cédula para
-                        asignarlo directamente. Solo aparecerán usuarios que aún no tienen mesa asignada.
+                        Completa los datos de la mesa de votación. Debes buscar un usuario por cédula para
+                        asignarlo a la mesa. Solo aparecerán usuarios que aún no tienen mesa asignada.
                     </p>
                 </div>
             </div>
@@ -169,18 +175,38 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const btnBuscar      = document.getElementById('btnBuscarUsuario');
-    const inputCedula    = document.getElementById('cedulaBuscar');
-    const feedback       = document.getElementById('buscarFeedback');
-    const cardEncontrado = document.getElementById('usuarioEncontrado');
-    const userIdInput    = document.getElementById('userIdSeleccionado');
-    const btnLimpiar     = document.getElementById('btnLimpiarUsuario');
+    const btnBuscar          = document.getElementById('btnBuscarUsuario');
+    const inputCedula        = document.getElementById('cedulaBuscar');
+    const feedback           = document.getElementById('buscarFeedback');
+    const cardEncontrado     = document.getElementById('usuarioEncontrado');
+    const userIdInput        = document.getElementById('userIdSeleccionado');
+    const btnLimpiar         = document.getElementById('btnLimpiarUsuario');
+    const btnGuardar         = document.getElementById('btnGuardar');
+    const alertaRequerido    = document.getElementById('alertaUsuarioRequerido');
 
+    // ── Auto-búsqueda si viene ?cedula= en la URL ──────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const cedulaParam = params.get('cedula');
+    if (cedulaParam) {
+        inputCedula.value = cedulaParam.trim();
+        buscarUsuario();
+    }
+
+    // ── Helpers ────────────────────────────────────────────────────────────
     function limpiarResultado() {
         cardEncontrado.style.display = 'none';
         userIdInput.value = '';
         inputCedula.value = '';
         feedback.innerHTML = '';
+        alertaRequerido.style.display = 'none';
+        actualizarBoton();
+    }
+
+    function actualizarBoton() {
+        const tieneUsuario = userIdInput.value !== '';
+        btnGuardar.disabled = !tieneUsuario;
+        btnGuardar.classList.toggle('btn-primary', tieneUsuario);
+        btnGuardar.classList.toggle('btn-secondary', !tieneUsuario);
     }
 
     function buscarUsuario() {
@@ -194,6 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
         feedback.innerHTML = '<small class="text-muted"><span class="fas fa-spinner fa-spin me-1"></span>Buscando...</small>';
         cardEncontrado.style.display = 'none';
         userIdInput.value = '';
+        alertaRequerido.style.display = 'none';
+        actualizarBoton();
 
         fetch(`{{ route('mesa.buscar-usuario') }}?cedula=${encodeURIComponent(cedula)}`, {
             headers: {
@@ -206,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!ok) {
                 feedback.innerHTML = `<small class="text-danger"><span class="fas fa-times-circle me-1"></span>${data.error}</small>`;
                 cardEncontrado.style.display = 'none';
+                actualizarBoton();
                 return;
             }
 
@@ -215,15 +244,25 @@ document.addEventListener('DOMContentLoaded', function () {
             userIdInput.value = data.id;
             cardEncontrado.style.display = 'block';
             feedback.innerHTML = '<small class="text-success"><span class="fas fa-check-circle me-1"></span>Usuario encontrado y seleccionado.</small>';
+            actualizarBoton();
         })
         .catch(() => {
             feedback.innerHTML = '<small class="text-danger"><span class="fas fa-exclamation-triangle me-1"></span>Error al conectar con el servidor.</small>';
+            actualizarBoton();
         });
     }
 
+    // ── Validación antes de enviar ─────────────────────────────────────────
+    btnGuardar.closest('form').addEventListener('submit', function (e) {
+        if (!userIdInput.value) {
+            e.preventDefault();
+            alertaRequerido.style.display = 'block';
+            alertaRequerido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+
     btnBuscar.addEventListener('click', buscarUsuario);
 
-    // Enter en el input también busca
     inputCedula.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -232,6 +271,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     btnLimpiar.addEventListener('click', limpiarResultado);
+
+    // Estado inicial del botón
+    actualizarBoton();
 });
 </script>
 @endsection
