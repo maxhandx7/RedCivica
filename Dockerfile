@@ -1,4 +1,6 @@
-# ---------- STAGE 1: BUILD FRONTEND ----------
+# ================================
+# 1. BUILD FRONTEND (Node)
+# ================================
 FROM node:18 AS node_builder
 
 WORKDIR /app
@@ -10,10 +12,12 @@ COPY . .
 RUN npm run build
 
 
-# ---------- STAGE 2: PHP + NGINX ----------
+# ================================
+# 2. BUILD BACKEND (PHP)
+# ================================
 FROM php:8.2-fpm
 
-# Instalar dependencias necesarias
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -24,47 +28,72 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     nginx \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
     && apt-get clean
 
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Configurar directorio
+# Directorio de trabajo
 WORKDIR /var/www
 
 # Copiar proyecto
 COPY . .
 
+# Instalar dependencias Laravel
+RUN composer install --no-dev --optimize-autoloader
+
 # Copiar build de Vite
 COPY --from=node_builder /app/public/build ./public/build
 
-# Instalar dependencias PHP
-RUN composer install --no-dev --optimize-autoloader
+# Permisos (Laravel se pone delicado si no)
+RUN mkdir -p storage/logs \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/cache \
+    && chown -R www-data:www-data /var/www \
+    && chmod -R 775 storage bootstrap/cache
 
-# ... (después de composer install)
-
-# Asegurar que el directorio de logs existe antes de cambiar dueños
-RUN mkdir -p /var/www/storage/logs /var/www/storage/framework/sessions /var/www/storage/framework/views /var/www/storage/framework/cache
-
-# Cambiar el dueño de TODO el proyecto a www-data (el usuario de PHP-FPM y Nginx)
-RUN chown -R www-data:www-data /var/www
-
-# Aplicar permisos específicos
-RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-
-# Eliminar config default de nginx
+# ================================
+# 3. NGINX CONFIG INLINE (SIN ARCHIVO EXTERNO 👀)
+# ================================
 RUN rm -f /etc/nginx/sites-enabled/default
 
-# Configurar PHP-FPM para escuchar en puerto 9000
+RUN echo "server { \
+    listen 80; \
+    index index.php index.html; \
+    root /var/www/public; \
+    \
+    location / { \
+        try_files \$uri \$uri/ /index.php?\$query_string; \
+    } \
+    \
+    location ~ \.php$ { \
+        fastcgi_pass 127.0.0.1:9000; \
+        fastcgi_index index.php; \
+        include fastcgi_params; \
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name; \
+    } \
+    \
+    location ~ /\.ht { \
+        deny all; \
+    } \
+}" > /etc/nginx/conf.d/default.conf
+
+# Ajustar PHP-FPM
 RUN sed -i 's|listen = .*|listen = 9000|' /usr/local/etc/php-fpm.d/www.conf
 
-# Copiar config nginx
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-
+# Exponer puerto
 EXPOSE 80
 
-# Crear el archivo de log y dar permiso explícito
-RUN touch /var/www/storage/logs/laravel.log && chmod 664 /var/www/storage/logs/laravel.log && chown www-data:www-data /var/www/storage/logs/laravel.log
-
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+# ================================
+# 4. ARRANQUE
+# ================================
+CMD service nginx start && php-fpm
