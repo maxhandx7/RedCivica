@@ -1,54 +1,64 @@
-# ========================
-# Stage 1: Composer
-# ========================
-FROM composer:2 AS composer
+# --- Etapa 1: Composer (Dependencias de PHP) ---
+FROM composer:2.7 AS builder
 
 WORKDIR /app
 
+# Copiamos solo los archivos necesarios para instalar dependencias primero (aprovecha caché de Docker)
 COPY composer.json composer.lock ./
 
-RUN composer install --no-dev --optimize-autoloader --no-scripts
-
-COPY . .
-
-RUN composer dump-autoload --optimize
-
-# ========================
-# Stage 2: Node (assets)
-# ========================
-FROM node:18 AS node
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
-# ========================
-# Stage 3: PHP-FPM
-# ========================
-FROM php:8.2-fpm
-
-# Instalar dependencias
+# Instalamos dependencias del sistema necesarias para extensiones de PHP (como GD)
+# Esto soluciona el error: "phpoffice/phpspreadsheet requires ext-gd * -> it is missing"
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
-    && apt-get clean
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
 
-WORKDIR /var/www
+# Instalamos dependencias de producción
+RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
-# Copiar código
-COPY --from=composer /app /var/www
-COPY --from=node /app/public/build /var/www/public/build
+# --- Etapa 2: Imagen Final (Runtime) ---
+FROM php:8.2-fpm-alpine
 
-# Permisos Laravel
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+# Instalamos dependencias de tiempo de ejecución y extensiones necesarias
+RUN apk add --no-cache \
+    libpng \
+    libjpeg-turbo \
+    freetype \
+    icu-dev \
+    libzip-dev \
+    oniguruma-dev \
+    nginx \
+    supervisor
 
-EXPOSE 9000
+# Instalamos extensiones de PHP en la imagen final
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    zip \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    intl
 
+WORKDIR /var/www/html
+
+# Copiamos el código del proyecto y las dependencias instaladas en la etapa anterior
+COPY . .
+COPY --from=builder /app/vendor ./vendor
+
+# Ajustamos permisos para Laravel
+RUN chown -R swww-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# NOTA SOBRE SEGURIDAD: 
+# No uses ARG para APP_KEY o DB_PASSWORD aquí. 
+# Configúralos directamente en el panel de Coolify (Variables de Entorno).
+
+EXPOSE 80
+
+# Comando para iniciar (Asegúrate de tener un script de inicio o usar supervisor)
 CMD ["php-fpm"]
