@@ -1,18 +1,39 @@
+# Dependencies - se instalan en el build
+node_modules
+vendor
+
+# Assets sin compilar (se compilan en el build)
+resources/js
+resources/sass
+resources/css
+
+# Git
 .git
-.github
+.gitignore
+.gitattributes
+
+# Tests
+tests
+phpunit.xml
+
+# Entornos locales
 .env
-.editorconfig
-.styleci.yml
-vendor/
-node_modules/
-storage/.key
-storage/framework/cache/data/
+.env.*
+!.env.example
+
+# Documentación y config de dev
+README.md
+docker-compose*.yml
+Makefile
+
+# Caché local
+.phpunit.cache
+storage/logs/*
+storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
-storage/logs/*
-tests/
-Dockerfile
-.dockerignore
-npm-debug.log
-yarn-error.log
-docker-compose.yml
+
+# IDE
+.idea
+.vscode
+*.code-workspace
