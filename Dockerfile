@@ -24,17 +24,16 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platfo
 FROM php:8.2-fpm-alpine
 
 # Instalamos dependencias de tiempo de ejecución y extensiones necesarias
+# En stage-1, instalar dependencias de compilación (paquetes -dev)
 RUN apk add --no-cache \
-    libpng \
-    libjpeg-turbo \
-    freetype \
-    icu-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     libzip-dev \
-    oniguruma-dev \
-    nginx \
-    supervisor
+    icu-dev \
+    oniguruma-dev
 
-# Instalamos extensiones de PHP en la imagen final
+# Luego configurar e instalar las extensiones
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
     pdo_mysql \
