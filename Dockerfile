@@ -8,10 +8,10 @@ COPY composer.json composer.lock ./
 
 # Instalamos dependencias del sistema necesarias para extensiones de PHP (como GD)
 # Esto soluciona el error: "phpoffice/phpspreadsheet requires ext-gd * -> it is missing"
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     zip \
     unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
