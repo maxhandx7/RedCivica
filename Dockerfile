@@ -35,7 +35,8 @@ RUN apk add --no-cache \
     supervisor
 
 # Instalamos extensiones de PHP en la imagen final
-RUN docker-php-ext-install \
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
     pdo_mysql \
     mbstring \
     zip \
