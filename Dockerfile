@@ -16,7 +16,7 @@ RUN npm run build
 # Usamos php:8.2-fpm-alpine + composer para que ext-gd
 # esté disponible (lo necesita maatwebsite/excel / phpspreadsheet)
 # ============================================================
-FROM php:8.2-fpm-alpine AS composer-builder
+FROM php:8.3-fpm-alpine AS composer-builder
 
 # Instalar ext-gd y librerías mínimas que necesita phpspreadsheet
 RUN apk add --no-cache \
