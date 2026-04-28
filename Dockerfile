@@ -11,7 +11,7 @@ RUN npm run build
 
 
 # ---------- STAGE 2: PHP + NGINX ----------
-FROM php:8.2-fpm-bookworm
+FROM php:8.1-fpm
 
 # Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
