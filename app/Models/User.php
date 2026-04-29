@@ -447,7 +447,7 @@ class User extends Authenticatable
 
     }
 
-    public function mesa()
+    public function Mesa()
     {
         return $this->belongsTo(Mesa::class, 'mesa_id');
     }
