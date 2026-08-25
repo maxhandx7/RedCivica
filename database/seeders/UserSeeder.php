@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'image' => "https://unsplash.it/400/200",
             'departamento' => "Valle del Cauca",
             'pais' => "Colombia",
-            'mesa' => "A117",
+            'mesa_id' => null,
             'email_verified_at' => now(),
             'password' => Hash::make('17964290'),
             'parent_id' => null,
