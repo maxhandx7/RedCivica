@@ -183,7 +183,7 @@ class RedController extends Controller
 
     public function getCity($ciudad)
     {
-        $response = Http::get('https://api.afdeveloper.online/api/city/' . $ciudad);
+        $response = Http::get('https://api.afdeveloper.com/api/city/' . $ciudad);
 
         if ($response->successful()) {
             return collect($response->json())
@@ -195,7 +195,7 @@ class RedController extends Controller
 
     public function getDep($dep)
     {
-        $response = Http::get('https://api.afdeveloper.online/api/department/' . $dep);
+        $response = Http::get('https://api.afdeveloper.com/api/department/' . $dep);
 
         if ($response->successful()) {
             return collect($response->json())

@@ -88,7 +88,7 @@
                 }
 
                 $.ajax({
-                    url: `https://api.afdeveloper.online/api/countries/${colombiaGeonameId}/departments`,
+                    url: `https://api.afdeveloper.com/api/countries/${colombiaGeonameId}/departments`,
                     type: 'GET',
                     dataType: 'json',
 
@@ -137,7 +137,7 @@
 
 
                 $.ajax({
-                    url: `https://api.afdeveloper.online/api/departments/${stateGeonameId}/cities`,
+                    url: `https://api.afdeveloper.com/api/departments/${stateGeonameId}/cities`,
                     type: 'GET',
                     dataType: 'json',
 

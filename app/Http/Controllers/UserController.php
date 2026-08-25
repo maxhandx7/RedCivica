@@ -60,8 +60,8 @@ class UserController extends Controller
     public function show(User $user)
     {
         $responses = Http::pool(fn(Pool $pool) => [
-            $pool->as('city')->get('https://api.afdeveloper.online/api/city/' . $user->ciudad),
-            $pool->as('dept')->get('https://api.afdeveloper.online/api/department/' . $user->departamento),
+            $pool->as('city')->get('https://api.afdeveloper.com/api/city/' . $user->ciudad),
+            $pool->as('dept')->get('https://api.afdeveloper.com/api/department/' . $user->departamento),
         ]);
 
         if ($responses['city']?->successful() && isset($responses['city']->json()[0])) {
@@ -84,8 +84,8 @@ class UserController extends Controller
         }
     
         $responses = Http::pool(fn(Pool $pool) => [
-            $pool->as('city')->get('https://api.afdeveloper.online/api/city/' . $user->ciudad),
-            $pool->as('dept')->get('https://api.afdeveloper.online/api/department/' . $user->departamento),
+            $pool->as('city')->get('https://api.afdeveloper.com/api/city/' . $user->ciudad),
+            $pool->as('dept')->get('https://api.afdeveloper.com/api/department/' . $user->departamento),
         ]);
 
         if ($responses['city']?->successful() && isset($responses['city']->json()[0])) {

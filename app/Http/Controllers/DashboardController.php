@@ -129,7 +129,7 @@ class DashboardController extends Controller
 
     public function getDepName($data)
     {
-        $response = Http::get("https://api.afdeveloper.online/api/countries/3686110/departments");
+        $response = Http::get("https://api.afdeveloper.com/api/countries/3686110/departments");
 
         if (!$response->successful()) {
             return $data->pluck('departamento');
@@ -166,7 +166,7 @@ class DashboardController extends Controller
                 return null;
             }
             $response = Http::get(
-                "https://api.afdeveloper.online/api/city/{$item->ciudad}"
+                "https://api.afdeveloper.com/api/city/{$item->ciudad}"
             );
             if (!$response->successful()) {
                 return $item->ciudad;

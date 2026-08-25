@@ -17,7 +17,7 @@ class LocationService
         $depMap = [];
 
         foreach ($departmentIds as $id) {
-            $response = Http::get("https://api.afdeveloper.online/api/department/{$id}");
+            $response = Http::get("https://api.afdeveloper.com/api/department/{$id}");
 
             if ($response->successful()) {
                 $dep = collect($response->json())
@@ -47,7 +47,7 @@ class LocationService
         $cityMap = [];
 
         foreach ($cityIds as $id) {
-            $response = Http::get("https://api.afdeveloper.online/api/city/{$id}");
+            $response = Http::get("https://api.afdeveloper.com/api/city/{$id}");
 
             if ($response->successful()) {
                 $city = collect($response->json())
@@ -74,7 +74,7 @@ class LocationService
         $depMap = [];
 
         foreach ($depIds as $id) {
-            $response = Http::get("https://api.afdeveloper.online/api/department/{$id}");
+            $response = Http::get("https://api.afdeveloper.com/api/department/{$id}");
             if ($response->successful()) {
                 $dep = collect($response->json())->firstWhere('geonameId', $id);
                 if ($dep)
@@ -87,7 +87,7 @@ class LocationService
         $cityMap = [];
 
         foreach ($cityIds as $id) {
-            $response = Http::get("https://api.afdeveloper.online/api/city/{$id}");
+            $response = Http::get("https://api.afdeveloper.com/api/city/{$id}");
             if ($response->successful()) {
                 $city = collect($response->json())->firstWhere('geonameId', $id);
                 if ($city)
